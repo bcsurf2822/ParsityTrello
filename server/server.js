@@ -3,10 +3,10 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors")
 
-// mongoose.connect("mongodb://localhost/trello2", {
-//   useNewUrlParser: true,
-//   useUnifiedTopology: true,
-// });
+mongoose.connect("mongodb://localhost/trello2", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 const app = express();
 //Cors for all endpoints
@@ -21,7 +21,7 @@ app.use(
 
 const mainRoutes = require("./routes/main");
 
-// app.use(mainRoutes);
+app.use(mainRoutes);
 
 app.listen(8000, () => {
   console.log("Node.js listening on port " + 8000);
