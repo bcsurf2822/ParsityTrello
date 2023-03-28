@@ -20,10 +20,15 @@ const CommentSchema = new Schema({
   comment: String,
 });
 
+const LabelSchema = new Schema({
+  text: String,
+  color: String,
+});
+
 //Main Card would probably be list/:id
 const CardSchema = new Schema({
   title: String,
-  category: String,
+  label: {LabelSchema},
   description: String,
   comment: [CommentSchema],
 });
