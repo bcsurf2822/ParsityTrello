@@ -2,7 +2,7 @@ const router = require("express").Router();
 const faker = require('faker');
 const { User, Board, List, Comment, Card } = require("../models/models");
 
-const categories = ["Frontend", "Backend", "Deployment", "Testing"];
+const colors = ["Green", "Yellow", "Orange", "Red", "Blue"];
 
 //to generate fake data
 router.get("/generate-lists", (req, res, next) => {
@@ -10,7 +10,6 @@ router.get("/generate-lists", (req, res, next) => {
     let card = new Card();
 
     card.title = faker.lorem.sentence();
-    card.category = faker.random.arrayElement(categories);
     card.description = faker.lorem.paragraph();
 
     const result = card.save();
