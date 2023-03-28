@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const faker = require('faker');
-const { User, Board, List, Comment, Card } = require("../models/models");
+const { User, Board, List, Comment, Card, Label } = require("../models/models");
 
 const colors = ["Green", "Yellow", "Orange", "Red", "Blue"];
 

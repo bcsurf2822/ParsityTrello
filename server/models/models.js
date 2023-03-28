@@ -28,7 +28,7 @@ const LabelSchema = new Schema({
 //Main Card would probably be list/:id
 const CardSchema = new Schema({
   title: String,
-  label: {LabelSchema},
+  label: [LabelSchema],
   description: String,
   comment: [CommentSchema],
 });
@@ -47,4 +47,5 @@ module.exports = {
   List: mongoose.model("List", ListSchema),
   Comment: mongoose.model("Comment", CommentSchema),
   Card: mongoose.model("Card", CardSchema),
+  Label: mongoose.model("Label", LabelSchema),
 };
