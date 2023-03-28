@@ -10,14 +10,20 @@ const BoardsSchema = new Schema({
 
 //This Is the List view of the cards
 const ListSchema = new Schema({
-  category: String,
-  title: String
+  progress: String,
+  card: {
+    type: Schema.Types.ObjectId,
+    ref: "Card"
+  }
 });
 
 //Comments
 const CommentSchema = new Schema({
-  name: String,
   comment: String,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+  }
 });
 
 const LabelSchema = new Schema({
@@ -37,7 +43,12 @@ const CardSchema = new Schema({
 const UserSchema = new Schema({
   username: String,
   password: String,
-  comments: [CommentSchema],
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Comment"
+    }
+  ]
 });
 
 
