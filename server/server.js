@@ -35,20 +35,9 @@ const jwtOptions = {
 };
 
 passport.use(
-  new JwtStrategy(jwtOptions, async (payload, done) => {
-    try {
-      console.log("JWT Strategy", payload)
-      const user = { myUser: 'user', myID: payload.sub }; 
-      // (payload.sub);
-
-      if (!user) {
-        return done(null, false);
-      }
-
-      return done(null, user);
-    } catch (err) {
-      return done(err);
-    }
+  "jwt",
+  new JwtStrategy(jwtOptions, function (payload, done) {
+    return done(null, { myUser: "user", myID: 1234 });
   })
 );
 //passport use local strategy with hardcoded username and password
