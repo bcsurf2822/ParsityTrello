@@ -1,6 +1,30 @@
 import Logo from "../public/logo.png";
+import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { useHistory } from 'react-router-dom';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
+
+import { logIn } from "../actions";
+
+const userSchema = Yup.object().shape({
+  username: Yup.string().username().required(),
+  password: Yup.string().required()
+});
 
 const Login = () => {
+  const {signIn, handleSubmit, errors} = useForm({
+    reslover: yupResolver(userSchema)
+  });
+
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const handleLogin = (data) => {
+    dispatch(logIn(data, () => {
+      history.push("/");
+    }));
+  };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -15,17 +39,17 @@ const Login = () => {
             <form className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label
-                  for="email"
+                  for="username"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
                   Email
                 </label>
                 <input
-                  type="email"
-                  name="email"
-                  id="email"
+                  type="username"
+                  name="username"
+                  id="username"
                   className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder="email"
+                  placeholder="username"
                   required=""
                 />
               </div>
