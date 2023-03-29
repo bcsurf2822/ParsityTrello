@@ -17,6 +17,7 @@ root.render(
           <Routes>
             <Route exact path="/" Component={Login} />
             <Route path="/home" Component={Home} />
+            <Route path="/board" Component={Board}/>
           </Routes>
         </App>
       </BrowserRouter>
