@@ -1,30 +1,10 @@
 import Logo from "../public/logo.png";
-import { useForm } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { useHistory } from 'react-router-dom';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as Yup from 'yup';
+
 
 import { logIn } from "../actions";
 
-const userSchema = Yup.object().shape({
-  username: Yup.string().username().required(),
-  password: Yup.string().required()
-});
 
 const Login = () => {
-  const {signIn, handleSubmit, errors} = useForm({
-    reslover: yupResolver(userSchema)
-  });
-
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  const handleLogin = (data) => {
-    dispatch(logIn(data, () => {
-      history.push("/");
-    }));
-  };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
