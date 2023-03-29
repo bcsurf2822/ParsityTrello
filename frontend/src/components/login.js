@@ -1,10 +1,28 @@
 import Logo from "../public/logo.png";
-
-
+import {useState} from "react";
+import {useDispatch} from "react-redux";
 import { logIn } from "../actions";
 
 
-const Login = () => {
+const Login = ({history}) => {
+  const [user, setUser] = useState("");
+  const [pass, setPass] = useState("");
+
+  const dispatch = useDispatch();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      await dispatch(logIn({user, pass}, () => {
+        history.push("/home")
+      }));
+    } catch (error) {
+      console.log("Invalid UserName and Password")
+    }
+  };
+
+  
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
@@ -16,13 +34,13 @@ const Login = () => {
             <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
               Sign in to your account
             </h1>
-            <form className="space-y-4 md:space-y-6" action="#">
+            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6" action="#">
               <div>
                 <label
                   for="username"
                   class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                 >
-                  Email
+                  UserName
                 </label>
                 <input
                   type="username"
