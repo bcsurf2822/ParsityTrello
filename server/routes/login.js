@@ -1,34 +1,33 @@
 const router = require("express").Router();
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/models");
+const jwt = require("jwt-simple");
+const passport = require("passport");
+// const User = require('../models/User');
 
-const findUser = async (username) => {
-  try {
-    const user = await User.findone ({username});
-    return user;
-  } catch (error) {
-    console.log("Cant find User");
-    return null;
-  }
-}
+const userToken = function (user) {
+  return jwt.encode({ sub: user.myID,
+    iat: Math.round(Date.now() / 1000),
+    exp: Math.round(Date.now() / 1000 + 5 * 60 * 60)}, "trello");
+};
 
-router.post("/login",  async (req, res, done) => {
-  const {username, password} = req.body;
+//middleware to ensure correct username and pass
+const requireLogin = passport.authenticate("login", {session: false});
 
-  try {
-    const user = await User.findOne({username});
 
-    if (!user) {
-      return done(null, false)
-    }
-
-    const checkPassword = password === user.password;
-
-    if (!checkPassword) {
-      return done (null, false, {message: "Incorrect Password"})
-    }
-  }
+router.post("/login", requireLogin, function(req, res, next) {
+  const token = userToken(req.user);
+  console.log("JWT", token);
+  res.send({
+    token: token
+  })
 });
+
+//middleware to see if user has sent JWT with their request before getting response
+// const requireAuth = passport.authenticate('jwt', {session: false});
+
+//Go to docs for passport authenticate  How to auth a JWT when using node
+//Mig also be get route for HTML
+// router.get("/protected", requireAuth, function(req, res) {
+//   res.send("JWT Present Access Granted");
+// })
 
 module.exports = router;
