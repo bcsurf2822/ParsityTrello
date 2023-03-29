@@ -3,6 +3,7 @@ import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
 import { useState } from "react";
 import Modal from "react-modal";
+import { Link } from "react-router-dom";
 
 Modal.setAppElement("#root");
 
@@ -42,9 +43,11 @@ const Home = () => {
             />
             <p className="ml-2 font-bold">Add Board</p>
           </div>
-          <div className="bg-gray-100 hover:bg-gray-200 rounded-lg h-28 flex items-center cursor-pointer">
-            <p className="ml-4 font-bold">Title</p>
-          </div>
+          <Link to="/board">
+            <div className="bg-gray-100 hover:bg-gray-200 rounded-lg h-28 flex items-center cursor-pointer">
+              <p className="ml-4 font-bold">Title</p>
+            </div>
+          </Link>
 
           <div className="">
             <Modal
