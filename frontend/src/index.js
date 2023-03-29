@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "./components/login";
 import Home from "./components/home";
 import store from "./reducers";
+import Board from "./components/boardscreen";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
