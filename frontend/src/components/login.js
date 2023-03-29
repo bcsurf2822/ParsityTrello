@@ -12,10 +12,18 @@ const Login = ({history}) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    dispatch(logIn({username, password}, () => history.push("/home")));
+    console.log("Values:", e);
+
+    try {
+       dispatch(logIn({username, password}, () => {
+        history.push("/home")
+      }));
+    } catch (error) {
+      console.log("Invalid UserName and Password")
+    }
   };
 
-  
+
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
