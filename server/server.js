@@ -5,10 +5,6 @@ const cors = require("cors")
 const passport = require("passport");
 
 
-// const ExtractJwt = require("passport-jwt").ExtractJwt;
-// const LocalStrategy = require("passport-local").Strategy;
-// const JwtStrategy = require('passport-jwt').Strategy;
-
 require("./services/passport")(passport);
 
 mongoose.connect("mongodb://127.0.0.1/trello2", {

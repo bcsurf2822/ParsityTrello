@@ -3,31 +3,32 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../models/models");
 
-router.post("/login", (req, res) => {
+const findUser = async (username) => {
+  try {
+    const user = await User.findone ({username});
+    return user;
+  } catch (error) {
+    console.log("Cant find User");
+    return null;
+  }
+}
+
+router.post("/login",  async (req, res, done) => {
   const {username, password} = req.body;
 
-  User.findone({username})
-  .then(user => {
+  try {
+    const user = await User.findOne({username});
+
     if (!user) {
-      return res.status(404).json({message: "Username Doesn't Exist"});
+      return done(null, false)
     }
 
-    bcrypt.compare(password, user.password)
-    .then(isMatch => {
-      if (isMatch) {
-        const payload = {
-          id: user.id,
-          username: user.username
-        };
+    const checkPassword = password === user.password;
 
-        jwt.sign(payload, "trello", {expiresIn: 6000}, (err, token) => {
-          res.send({success: true, token: "Bearer" + token});
-        });
-      } else {
-        res.status(400);
-      }
-    });
-  });
+    if (!checkPassword) {
+      return done (null, false, {message: "Incorrect Password"})
+    }
+  }
 });
 
 module.exports = router;

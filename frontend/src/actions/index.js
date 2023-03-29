@@ -4,7 +4,7 @@ import { AUTH_USER, AUTH_ERROR } from "./types";
 
 export const logIn = (formProps, callback) => dispatch => {
   axios.post(
-    "localhost:8000/login",
+    "http://localhost:8000/login",
     formProps
   ).then(function (response) {
     dispatch({type: AUTH_USER, payload: response.data});
