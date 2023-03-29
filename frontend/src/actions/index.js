@@ -4,7 +4,7 @@ import { AUTH_USER, AUTH_ERROR } from "./types";
 
 export const logIn = (formProps, callback) => dispatch => {
   axios.post(
-    "/login",
+    "localhost:8000/login",
     formProps
   ).then(function (response) {
     dispatch({type: AUTH_USER, payload: response.data});
@@ -16,21 +16,21 @@ export const logIn = (formProps, callback) => dispatch => {
   })
 };
 
-export const fetchUser = () => dispatch => {
-  const config = {
-    headers: {
-      Authroization: "Bearer" + localStorage.getItem("token"),
-    }
-  };
+// export const fetchUser = () => dispatch => {
+//   const config = {
+//     headers: {
+//       Authroization: "Bearer" + localStorage.getItem("token"),
+//     }
+//   };
 
-  axios.get(
-    "/currentUser", 
-    config
-  ).then(function (response) {
-    dispatch({type: AUTH_USER, payload: response.data});
-    localStorage.setItem("token", response.data.token);
-  })
-  .catch(function (error) {
-    console.log(error);
-  })
-}
+//   axios.get(
+//     "/currentUser", 
+//     config
+//   ).then(function (response) {
+//     dispatch({type: AUTH_USER, payload: response.data});
+//     localStorage.setItem("token", response.data.token);
+//   })
+//   .catch(function (error) {
+//     console.log(error);
+//   })
+// }
