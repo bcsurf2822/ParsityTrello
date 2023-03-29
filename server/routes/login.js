@@ -1,37 +1,33 @@
 const router = require("express").Router();
-const jwt = require("jwt-simple");
-const passport = require("passport");
-// const User = require('../models/User');
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const User = require("../models/models");
 
-const userToken = function (user) {
-  return jwt.encode({ sub: user.myID,
-    iat: Math.round(Date.now() / 1000),
-    exp: Math.round(Date.now() / 1000 + 5 * 60 * 60)}, "trello");
-};
+router.post("/login", (req, res) => {
+  const {username, password} = req.body;
 
-//middleware to ensure correct username and pass
-const requireLogin = passport.authenticate("login", {session: false});
+  User.findone({username})
+  .then(user => {
+    if (!user) {
+      return res.status(404).json({message: "Username Doesn't Exist"});
+    }
 
-// browser or postman http://localhost:8000/login user: trello pass: pass and you will see token in your console we will get rid of the login html but this was just for test
-router.get('/login', function (req, res) {
-  res.sendFile(__dirname + '/login.html');
+    bcrypt.compare(password, user.password)
+    .then(isMatch => {
+      if (isMatch) {
+        const payload = {
+          id: user.id,
+          username: user.username
+        };
+
+        jwt.sign(payload, "trello", {expiresIn: 6000}, (err, token) => {
+          res.send({success: true, token: "Bearer" + token});
+        });
+      } else {
+        res.status(400);
+      }
+    });
+  });
 });
-
-router.post("/login", requireLogin, function(req, res, next) {
-  const token = userToken(req.user);
-  console.log("JWT", token);
-  res.send({
-    token: token
-  })
-});
-
-//middleware to see if user has sent JWT with their request before getting response
-const requireAuth = passport.authenticate('jwt', {session: false});
-
-//Go to docs for passport authenticate  How to auth a JWT when using node
-//Mig also be get route for HTML
-router.get("/protected", requireAuth, function(req, res) {
-  res.send("JWT Present Access Granted");
-})
 
 module.exports = router;
