@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 const BoardsSchema = new Schema({
   title: String,
   lastUsed: Date,
+  // list: 
 });
 
 //This Is the List view of the cards

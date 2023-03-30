@@ -1,10 +1,14 @@
 import axios from "axios";
 import { AUTH_USER, AUTH_ERROR } from "./types";
 
+const useProxy = function (route) {
+  return `http://localhost:8000${route}`
+}
+
 
 export const logIn = (formProps, callback) => dispatch => {
   axios.post(
-    "http://localhost:8000/login",
+    useProxy("/login"),
     formProps
   ).then(function (response) {
     dispatch({type: AUTH_USER, payload: response.data});
