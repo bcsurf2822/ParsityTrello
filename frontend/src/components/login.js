@@ -2,26 +2,36 @@ import Logo from "../public/logo.png";
 import {useState} from "react";
 import {useDispatch} from "react-redux";
 import { logIn } from "../actions";
+import { useNavigate } from "react-router-dom";
 
 
-const Login = ({history}) => {
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Values:", e);
+    console.log("vals", e)
+    dispatch(logIn({username, password}, () => {
+      navigate("/home")
+    }))
+  } 
 
-    try {
-       dispatch(logIn({username, password}, () => {
-        history.push("/home")
-      }));
-    } catch (error) {
-      console.log("Invalid UserName and Password")
-    }
-  };
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   console.log("Values:", e);
+
+  //   try {
+  //      dispatch(logIn({username, password}, () => {
+  //       history.go("/home")
+  //     }));
+  //   } catch (error) {
+  //     console.log("Invalid UserName and Password")
+  //   }
+  // };
 
 
   return (
