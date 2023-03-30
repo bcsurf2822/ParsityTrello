@@ -4,13 +4,11 @@ const List = require("../models/listSchema")
 
 
 
-const BoardsSchema = new Schema({
+const BoardSchema = new Schema({
   title: String,
   list: [{ type: List.ListSchema }]
 });
 
-const BoardModel = mongoose.model("Board", BoardsSchema);
-module.exports = {
-  BoardModel,
-  BoardsSchema: BoardsSchema
-};
+const BoardModel = mongoose.model("Board", BoardSchema);
+
+module.exports = BoardModel

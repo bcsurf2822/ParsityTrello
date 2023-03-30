@@ -1,6 +1,6 @@
 
 const router = require("express").Router();
-const Board = require("../models/models")
+const Board = require("../models/boardSchema")
 router.get("/boards", async (req, res, next) => {
 
   try {
