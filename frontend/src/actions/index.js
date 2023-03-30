@@ -29,7 +29,7 @@ export const fetchAuthorized = () => dispatch => {
   };
 
   axios.get(
-    useProxy("/authorized",
+    useProxy("/authorized"),
     config
     ).then(function (response) {
       dispatch({type: AUTH_USER, payload: response.data});
@@ -38,5 +38,4 @@ export const fetchAuthorized = () => dispatch => {
     .catch(function (error) {
       console.log(error)
     })
-  )
 }
