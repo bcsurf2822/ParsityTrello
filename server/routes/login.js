@@ -21,8 +21,7 @@ router.post("/login", requireLogin, function(req, res, next) {
   })
 });
 
-//middleware to see if user has sent JWT with their request before getting response
-// const requireAuth = passport.authenticate('jwt', {session: false});
+const requireAuth = passport.authenticate('jwt', {session: false});
 
 //Go to docs for passport authenticate  How to auth a JWT when using node
 //Mig also be get route for HTML

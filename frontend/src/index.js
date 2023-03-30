@@ -8,6 +8,16 @@ import Login from "./components/login";
 import Home from "./components/home";
 import store from "./reducers";
 import Board from "./components/boardscreen";
+import Protected from "./components/ProtectedRoutes";
+
+const [isAuthorized, setIsAuthroized] = useState(null)
+const logIn = () => {
+  isAuthorized(true)
+}
+
+const logOut = () => {
+  isAuthorized(false)
+}
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
