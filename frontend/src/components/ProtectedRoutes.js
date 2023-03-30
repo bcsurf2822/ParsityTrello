@@ -1,9 +1,8 @@
-import { Outlet, Navigate, useNavigate, useLocation } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const Protected = () => {
   const authorized = useSelector(state => state.authentication.authorized);
-  const navigate = useNavigate();
   const location = useLocation();
 
   if (!authorized) {
