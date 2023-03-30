@@ -6,7 +6,6 @@ const Schema = mongoose.Schema;
 const BoardsSchema = new Schema({
   title: String,
   lastUsed: Date,
-  // list: 
 });
 
 //This Is the List view of the cards
@@ -44,6 +43,12 @@ const CardSchema = new Schema({
 const UserSchema = new Schema({
   username: String,
   password: String,
+  board: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "Board"
+    }
+  ],
   comments: [
     {
       type: Schema.Types.ObjectId,

@@ -28,6 +28,7 @@ export const fetchAuthorized = () => dispatch => {
     }
   };
 
+  //Protected Endpoint use
   axios.get(
     useProxy("/authorized"),
     config
