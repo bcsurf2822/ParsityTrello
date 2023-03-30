@@ -34,6 +34,7 @@ export const fetchAuthorized = () => dispatch => {
     ).then(function (response) {
       dispatch({type: AUTH_USER, payload: response.data});
       localStorage.setItem("token", response.data.token)
+      console.log("Get Auth User", response)
     })
     .catch(function (error) {
       console.log(error)
