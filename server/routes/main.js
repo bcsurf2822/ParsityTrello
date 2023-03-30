@@ -1,21 +1,23 @@
 const router = require("express").Router();
 const faker = require('faker');
-const {User} = require("../models/userSchema")
-const {Board} = require("../models/boardSchema")
-const {List} = require("../models/listSchema")
-const {Comment} = require("../models/commentSchema")
-const {Card} = require("../models/cardSchema")
-const {Label} = require("../models/labelSchema")
+// const {User} = require("../models/userSchema")
+// const {Board} = require("../models/boardSchema")
+// const {List} = require("../models/listSchema")
+// const {Comment} = require("../models/commentSchema")
+// const {Card} = require("../models/cardSchema")
+// const {Label} = require("../models/labelSchema")
 
+const {Label, Card, Board, User, List, Comment} = require("../models/models")
 const boardTitles = ["Frontend", "Backend", "Project"];
 
 
 //to generate labels
 router.get("/generate-boards", (req, res, next) => {
-  for (i=0; i < 3; i++) {
+  for (i=0; i < 10; i++) {
     let board = new Board();
 
     board.title = faker.random.arrayElement(boardTitles);
+    board.list = faker.lorem.sentence(10);
 
     const boardResult = board.save();
     console.log(boardResult);
