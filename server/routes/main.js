@@ -17,7 +17,6 @@ router.get("/generate-boards", (req, res, next) => {
     let board = new Board();
 
     board.title = faker.random.arrayElement(boardTitles);
-    board.list = faker.lorem.sentence(10);
 
     const boardResult = board.save();
     console.log(boardResult);
@@ -25,11 +24,28 @@ router.get("/generate-boards", (req, res, next) => {
   }
 });
 
+router.get("/boards", async (req,res, next) => {
+  try {
+    const boards = await Board.find({}).exec();
+
+    const response = {
+      results: boards,
+    };
+    console.log(response);
+    console.log(response.results)
+    console.log(response)
+
+  } catch (err) {
+    console.log(err)
+    res.status(500).send({error: "Error Occured fetching data"});
+  }
+})
+
 //use if you want to test the List View But we will probably just be posting new new cards to populate this area
 const progress = ["To Do", "Doing", "Done", "RoadBlocks"];
 
 router.get("/generate-list", (req, res, next) => {
-  for (i=0; i < 4; i++) {
+  for (i=0; i < 50; i++) {
     let list = new List();
 
     list.progress = faker.random.arrayElement(progress);
@@ -59,7 +75,7 @@ router.get("/generate-users", (req,res) => {
 
 //to generate fake data
 router.get("/generate-cards", (req, res, next) => {
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 40; i++) {
     let card = new Card();
 
     card.title = faker.lorem.sentence();

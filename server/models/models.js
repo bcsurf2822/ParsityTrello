@@ -37,12 +37,7 @@ const BoardsSchema = new Schema({
 const UserSchema = new Schema({
   username: String,
   password: String,
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: "Comment"
-    }
-  ]
+  comments: [CommentSchema]
 });
 
 
