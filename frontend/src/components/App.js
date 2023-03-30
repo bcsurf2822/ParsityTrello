@@ -4,13 +4,13 @@ import { fetchAuthorized } from "../actions";
 
 const App = (props) => {
   const dispatch = useDispatch();
-  const authUser = useSelector(state => state.authentication.authorized)
+  const authorized = useSelector(state => state.authentication.authorized)
 
   useEffect(() => {
-    if (authUser) {
+    if (authorized) {
       dispatch(fetchAuthorized())
   }
-}, [authUser]);
+}, [authorized]);
 
   return (
     <div>
