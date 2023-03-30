@@ -22,6 +22,7 @@ const Home = () => {
     // TODO: dispatch to addBoard
     console.log("dispatch sent!");
   };
+  
 
   return (
     <div>

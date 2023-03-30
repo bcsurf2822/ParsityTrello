@@ -14,12 +14,9 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-      <Routes>
-        <Route exact path="/" Component={Login} />
-      </Routes>
         <App>
           <Routes>
-            {/* <Route exact path="/" Component={Login} /> */}
+            <Route exact path="/" Component={Login} />
             <Route path="/home" Component={Home} />
             <Route path="/board" Component={Board}/>
           </Routes>

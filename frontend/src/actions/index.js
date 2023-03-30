@@ -13,7 +13,7 @@ export const logIn = (formProps, callback) => dispatch => {
   ).then(function (response) {
     dispatch({type: AUTH_USER, payload: response.data});
     localStorage.setItem("token", response.data.token);
-    console.log(response)
+    console.log("API RES", response.data.token)
     callback();
   })
   .catch(function (error) {
