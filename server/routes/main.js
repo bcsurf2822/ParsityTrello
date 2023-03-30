@@ -1,10 +1,14 @@
 const router = require("express").Router();
 const faker = require('faker');
-const { User, Board, List, Comment, Card, Label } = require("../models/models");
+const {User} = require("../models/userSchema")
+const {Board} = require("../models/boardSchema")
+const {List} = require("../models/listSchema")
+const {Comment} = require("../models/commentSchema")
+const {Card} = require("../models/cardSchema")
+const {Label} = require("../models/labelSchema")
 
 const boardTitles = ["Frontend", "Backend", "Project"];
 
-const boardDates = ['03-08-2023', '03-04-2023', '2-09-2023']
 
 //to generate labels
 router.get("/generate-boards", (req, res, next) => {
@@ -12,7 +16,6 @@ router.get("/generate-boards", (req, res, next) => {
     let board = new Board();
 
     board.title = faker.random.arrayElement(boardTitles);
-    board.lastUsed = faker.random.arrayElement(boardDates);
 
     const boardResult = board.save();
     console.log(boardResult);

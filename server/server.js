@@ -59,6 +59,9 @@ app.use(mainRoutes);
 const authorizedRoutes = require("./routes/login");
 app.use(authorizedRoutes);
 
+const boardRoutes = require("./routes/boards")
+app.use(boardRoutes);
+
 app.listen(8000, () => {
   console.log("Node.js listening on port " + 8000);
 });
