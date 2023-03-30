@@ -4,6 +4,7 @@ const Schema = mongoose.Schema;
 
 //This is the schema when you first enter the page on ours its Backend Agile, Front end and design
 const BoardsSchema = new Schema({
+  //USER ID mabye an optional field
   title: String,
   lastUsed: Date,
 });
@@ -40,6 +41,8 @@ const CardSchema = new Schema({
 });
 
 //This is for the user information
+//Have these models separate 
+// Have sepearte state for users and boards
 const UserSchema = new Schema({
   username: String,
   password: String,
