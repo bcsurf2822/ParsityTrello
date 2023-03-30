@@ -23,10 +23,15 @@ router.post("/login", requireLogin, function(req, res, next) {
 
 const requireAuth = passport.authenticate('jwt', {session: false});
 
-//Go to docs for passport authenticate  How to auth a JWT when using node
-//Mig also be get route for HTML
-// router.get("/protected", requireAuth, function(req, res) {
-//   res.send("JWT Present Access Granted");
-// })
+router.get("/authorized", requireAuth, function (req, res, next) {
+  const token = userToken(req.user);
+  console.log("NewJWT", token)
+  const authUser = {
+    username: req.user.username,
+    token: token,
+};
+console.log(authUser);
+res.send(authUser);
+});
 
 module.exports = router;

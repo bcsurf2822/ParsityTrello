@@ -1,9 +1,10 @@
-const App = (props) => {
-  // TODO: add authentication here
+
+const App = () => {
+
+
 
   return (
     <div>
-      {props.children}
     </div>
   );
 }
