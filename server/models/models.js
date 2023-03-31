@@ -7,12 +7,10 @@ const CommentSchema = new Schema({
   comment: String,
 });
 
-
 const LabelSchema = new Schema({
   text: String,
   color: String,
 });
-
 
 const CardSchema = new Schema({
   title: String,
@@ -23,13 +21,14 @@ const CardSchema = new Schema({
 
 //This Is the List view of the cards
 const ListSchema = new Schema({
-  progress: String,
-  card: [CardSchema]
+  title: String,
+  cards: [CardSchema],
 });
 
 const BoardsSchema = new Schema({
   title: String,
-  lists: [{ type: Schema.Types.ObjectId, ref: "List" }]
+  lists: [{ type: Schema.Types.ObjectId, ref: "List" }],
+
 });
 
 
