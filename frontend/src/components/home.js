@@ -6,12 +6,13 @@ import Modal from "react-modal";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchBoards } from "../actions/boards";
+import { fetchBoards, postBoards } from "../actions/boards";
 
 Modal.setAppElement("#root");
 
 const Home = () => {
   const [modal, toggleModal] = useState(false);
+  const [newBoard, setNewBoard] = useState("");
 
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
@@ -24,8 +25,9 @@ const Home = () => {
   };
 
   const addBoard = () => {
-    // TODO: get value of input
-    // TODO: dispatch to addBoard
+    dispatch(postBoards(newBoard));
+    setNewBoard("");
+    closeModal();
     console.log("dispatch sent!");
   };
 
@@ -80,7 +82,9 @@ const Home = () => {
                 </div>
                 <label className="block mt-4">
                   <span className="text-sm">Board Title</span>
-                  <input className="border-black border rounded mt-1 w-full"></input>
+                  <input
+                  value={newBoard}
+                  onChange={(e) => setNewBoard(e.target.value)} className="border-black border rounded mt-1 w-full"></input>
                 </label>
                 <div className="flex items-center justify-center">
                   <button

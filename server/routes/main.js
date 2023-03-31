@@ -53,6 +53,7 @@ router.get("/generate-boards", async (req, res, next) => {
   }
 });
 
+//Gets Boards
 router.get("/boards", async (req, res, next) => {
   try {
     const boards = await Board.find({}).exec();
@@ -67,7 +68,26 @@ router.get("/boards", async (req, res, next) => {
     console.log(err)
     res.status(500).send({error: "Error Occured fetching data"});
   }
+});
+
+//Post Boards
+router.post("/boards", async (req, res, next) => {
+  try {
+    console.log("body", req.body)
+    const postedBoard = req.body;
+
+    const newBoard = new Board(postedBoard);
+
+    newBoard.save();
+    console.log("New Board", newBoard);
+    res.status(201).send(newBoard);
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({error: "error"});
+  }
 })
+
 
 //Post Boards
 router.post("/boards", async (req, res, next) => {
@@ -83,6 +103,7 @@ router.post("/boards", async (req, res, next) => {
     res.status(500).send({error: "error"});
   }
 })
+
 
 // router.get("/generate-list", (req, res, next) => {
 //   for (i=0; i < 50; i++) {
