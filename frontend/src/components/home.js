@@ -5,7 +5,7 @@ import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchBoards, postBoards } from "../actions/boards";
+import { fetchBoards, postBoards, deleteBoard } from "../actions/boards";
 
 Modal.setAppElement("#root");
 
@@ -30,9 +30,15 @@ const Home = () => {
     console.log("dispatch sent!");
   };
 
+  const deleteBoards = (e, id) => {
+    e.stopPropagation();
+    dispatch(deleteBoard(id));
+  }
+
   useEffect(() => {
     dispatch(fetchBoards());
   }, [dispatch]);
+
   
 
   return (
@@ -56,11 +62,14 @@ const Home = () => {
             <p className="ml-2 font-bold">Add Board</p>
           </div>
           {boards.map((board) => (
-            <Link to={`/board/${board._id}`} key={board._id}>
+            <div key={board._id} className="relative">
+              <Link to={`/board/${board._id}`} key={board._id}>
               <div className="bg-gray-100 hover:bg-gray-200 rounded-lg h-28 flex items-center cursor-pointer">
                 <h2>{board.title}</h2>
+                </div>
+                </Link>
+                <button className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer font-semibold mt-6 mb-4" onClick={(e) => deleteBoards(e, board._id)}>DeleteBoard</button>
               </div>
-            </Link>
           ))}
 
           <div className="">
