@@ -1,6 +1,7 @@
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
+import TrashSvg from "../public/trash.svg";
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
@@ -33,13 +34,11 @@ const Home = () => {
   const deleteBoards = (e, id) => {
     e.stopPropagation();
     dispatch(deleteBoard(id));
-  }
+  };
 
   useEffect(() => {
     dispatch(fetchBoards());
   }, [dispatch]);
-
-  
 
   return (
     <div>
@@ -62,14 +61,24 @@ const Home = () => {
             <p className="ml-2 font-bold">Add Board</p>
           </div>
           {boards.map((board) => (
-            <div key={board._id} className="relative">
+            <div key={board._id} className="group">
               <Link to={`/board/${board._id}`} key={board._id}>
-              <div className="bg-gray-100 hover:bg-gray-200 rounded-lg h-28 flex items-center cursor-pointer">
-                <h2>{board.title}</h2>
+                <div className="bg-gray-100 hover:bg-gray-200 rounded-lg h-28 flex items-center cursor-pointer justify-between">
+                  <p className="ml-4">{board.title}</p>
+                  <div className="opacity-0 group-hover:opacity-100">
+                    <img
+                      src={TrashSvg}
+                      alt="trashsvg"
+                      className="object-contain w-6 mr-2"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        deleteBoards(e, board._id);
+                      }}
+                    />
+                  </div>
                 </div>
-                </Link>
-                <button className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer font-semibold mt-6 mb-4" onClick={(e) => deleteBoards(e, board._id)}>DeleteBoard</button>
-              </div>
+              </Link>
+            </div>
           ))}
 
           <div className="">
@@ -91,8 +100,10 @@ const Home = () => {
                 <label className="block mt-4">
                   <span className="text-sm">Board Title</span>
                   <input
-                  value={newBoard}
-                  onChange={(e) => setNewBoard(e.target.value)} className="border-black border rounded mt-1 w-full"></input>
+                    value={newBoard}
+                    onChange={(e) => setNewBoard(e.target.value)}
+                    className="border-black border rounded mt-1 w-full"
+                  ></input>
                 </label>
                 <div className="flex items-center justify-center">
                   <button
