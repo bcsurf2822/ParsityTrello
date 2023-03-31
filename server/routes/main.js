@@ -1,11 +1,5 @@
 const router = require("express").Router();
 const faker = require('faker');
-// const {User} = require("../models/userSchema")
-// const {Board} = require("../models/boardSchema")
-// const {List} = require("../models/listSchema")
-// const {Comment} = require("../models/commentSchema")
-// const {Card} = require("../models/cardSchema")
-// const {Label} = require("../models/labelSchema")
 
 const {Label, Card, Board, User, List, Comment} = require("../models/models")
 const boardTitles = ["Frontend", "Backend", "Project"];
@@ -111,6 +105,33 @@ router.get("/board/:board/lists", async (req, res) => {
   }
 });
 
+//Post Lists
+router.post("/board/:boardId/lists", async (req, res, next) => {
+  try {
+    const { boardId } = req.params;
+    const board = await Board.findById(boardId);
+
+    if (!board) {
+      return res.status(404).send({ error: "Board not found" });
+    }
+
+    const postedList = req.body;
+    const newList = new List(postedList);
+    await newList.save();
+
+    board.lists.push({
+      _id: newList._id,
+      title: newList.title,
+    });
+
+    await board.save();
+    res.status(201).send(newList);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "error" });
+  }
+});
+
 const usernames = ["Ben", "Joseph", "Nicholas", "John", "Pat", "Will", "Aaron", "Peter"];
 const passwords = ["get"];
 
@@ -125,7 +146,7 @@ router.get("/generate-users", (req,res) => {
     console.log(userResult);
     res.end();
   }
-})
+});
 
 
 module.exports = router;
