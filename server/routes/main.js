@@ -98,8 +98,18 @@ router.delete("/boards/:board", async (req,res, next) => {
       console.log(err);
       res.status(500).send({error: "Server Error"});
     }
-})
+});
 
+//Get lists
+router.get("/board/:board/lists", async (req, res) => {
+  try {
+    const board = await Board.findById(req.params.board).populate("lists");
+    res.json(board.lists);
+  } catch (error) {
+    console.error("Error fetching lists data", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
 
 const usernames = ["Ben", "Joseph", "Nicholas", "John", "Pat", "Will", "Aaron", "Peter"];
 const passwords = ["get"];
