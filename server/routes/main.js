@@ -132,6 +132,36 @@ router.post("/board/:boardId/lists", async (req, res, next) => {
   }
 });
 
+//Get Cards
+router.get("/board/:boardId/lists/:listId", async (req, res) => {
+  try {
+    const { boardId, listId } = req.params;
+    const board = await Board.findById(boardId);
+
+    if (!board) {
+      return res.status(404).send({ error: "Board not found" });
+    }
+
+    const listInBoard = board.lists.find(list => list._id.toString() === listId);
+
+    if (!listInBoard) {
+      return res.status(404).send({ error: "List not found in the board" });
+    }
+
+    const list = await List.findById(listId).populate("cards");
+
+    if (!list) {
+      return res.status(404).send({ error: "List not found" });
+    }
+
+    res.status(200).send(list);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "error" });
+  }
+});
+
+
 const usernames = ["Ben", "Joseph", "Nicholas", "John", "Pat", "Will", "Aaron", "Peter"];
 const passwords = ["get"];
 
