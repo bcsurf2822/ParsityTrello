@@ -1,9 +1,12 @@
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchBoards } from "../actions/boards";
 
 Modal.setAppElement("#root");
 
@@ -12,6 +15,9 @@ const Home = () => {
 
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
+
+  const dispatch = useDispatch();
+  const boards = useSelector((state) => state.boards.boards);
 
   const addBoardModal = () => {
     openModal();
@@ -22,6 +28,10 @@ const Home = () => {
     // TODO: dispatch to addBoard
     console.log("dispatch sent!");
   };
+
+  useEffect(() => {
+    dispatch(fetchBoards());
+  }, [dispatch]);
   
 
   return (
@@ -44,11 +54,13 @@ const Home = () => {
             />
             <p className="ml-2 font-bold">Add Board</p>
           </div>
-          <Link to="/board">
-            <div className="bg-gray-100 hover:bg-gray-200 rounded-lg h-28 flex items-center cursor-pointer">
-              <p className="ml-4 font-bold">Title</p>
-            </div>
-          </Link>
+          {boards.map((board) => (
+            <Link to="/board" key={board._id}>
+              <div className="bg-gray-100 hover:bg-gray-200 rounded-lg h-28 flex items-center cursor-pointer">
+                <h2>{board.title}</h2>
+              </div>
+            </Link>
+          ))}
 
           <div className="">
             <Modal

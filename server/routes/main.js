@@ -12,7 +12,7 @@ const boardTitles = ["Frontend", "Backend", "Project"];
 
 
 //to generate labels
-router.get("/generate-boards", (req, res, next) => {
+router.get("/generate-boards", async (req, res, next) => {
   for (i=0; i < 10; i++) {
     let board = new Board();
 
@@ -24,17 +24,15 @@ router.get("/generate-boards", (req, res, next) => {
   }
 });
 
-router.get("/boards", async (req,res, next) => {
+router.get("/boards", async (req, res, next) => {
   try {
     const boards = await Board.find({}).exec();
 
     const response = {
       results: boards,
     };
-    console.log(response);
-    console.log(response.results)
-    console.log(response)
 
+    res.json(response);
   } catch (err) {
     console.log(err)
     res.status(500).send({error: "Error Occured fetching data"});
