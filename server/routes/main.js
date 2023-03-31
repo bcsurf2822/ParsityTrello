@@ -75,25 +75,6 @@ router.post("/boards", async (req, res, next) => {
   try {
     console.log("body", req.body)
     const postedBoard = req.body;
-
-    const newBoard = new Board(postedBoard);
-
-    newBoard.save();
-    console.log("New Board", newBoard);
-    res.status(201).send(newBoard);
-
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({error: "error"});
-  }
-})
-
-
-//Post Boards
-router.post("/boards", async (req, res, next) => {
-  try {
-    console.log("body", req.body)
-    const postedBoard = req.body;
     const newBoard = new Board(postedBoard);
     newBoard.save();
     console.log("New Board", newBoard);
@@ -105,19 +86,6 @@ router.post("/boards", async (req, res, next) => {
 })
 
 
-// router.get("/generate-list", (req, res, next) => {
-//   for (i=0; i < 50; i++) {
-//     let list = new List();
-
-//     list.progress = faker.random.arrayElement(progress);
-
-//     const listSave = list.save();
-//     console.log(listSave);
-//     res.end();
-//   }
-// });
-
-//to generate Users
 const usernames = ["Ben", "Joseph", "Nicholas", "John", "Pat", "Will", "Aaron", "Peter"];
 const passwords = ["get"];
 
@@ -134,19 +102,6 @@ router.get("/generate-users", (req,res) => {
   }
 })
 
-//to generate fake data
-// router.get("/generate-cards", (req, res, next) => {
-//   for (let i = 0; i < 40; i++) {
-//     let card = new Card();
-
-//     card.title = faker.lorem.sentence();
-//     card.description = faker.lorem.paragraph();
-
-//     const result = card.save();
-//     console.log(result);
-//     res.end();
-//   }
-// });
 
 module.exports = router;
 

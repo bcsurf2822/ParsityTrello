@@ -4,7 +4,6 @@ import xSvg from "../public/x-mark.svg";
 import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchBoards, postBoards } from "../actions/boards";
 
