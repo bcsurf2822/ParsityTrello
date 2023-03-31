@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AUTH_USER, AUTH_ERROR } from "./types";
+import { AUTH_USER, AUTH_ERROR, FETCH_LIST } from "./types";
 
 const useProxy = function (route) {
   return `http://localhost:8000${route}`
@@ -41,3 +41,14 @@ export const fetchAuthorized = () => dispatch => {
       console.log(error)
     })
 }
+
+export const fetchList = (boardId) => async (dispatch) => {
+  try {
+    const response = await axios.get(useProxy(`/board/${boardId}/lists`));
+    const listData = response.data;
+
+    dispatch({ type: FETCH_LIST, payload: listData });
+  } catch (error) {
+    console.error("Error fetching lists data", error);
+  }
+};

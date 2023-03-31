@@ -1,8 +1,20 @@
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchList } from "../actions";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import ListComponent from "./listComponent";
 
 const Board = () => {
+  const { id } = useParams(); // Get the listId from URL params
+  const dispatch = useDispatch();
+  const lists = useSelector((state) => state.lists || []);
+
+  useEffect(() => {
+    dispatch(fetchList(id)); // Pass the listId to the fetchList action
+  }, [dispatch, id]);
+
   return (
     <div>
       <Nav />
@@ -12,9 +24,9 @@ const Board = () => {
         </div>
         <p className="mt-10 text-xl mb-4">Frontend Work</p>
         <div className="flex gap-4 overflow-x-auto">
-          <ListComponent />
-          <ListComponent />
-          <ListComponent />
+          {lists.map((list) => (
+            <ListComponent key={list._id} list={list} />
+          ))}
           <div>
             <div className="bg-gray-100 hover:bg-gray-200 rounded-md w-80 cursor-pointer">
               <div className="flex py-2 px-2">
