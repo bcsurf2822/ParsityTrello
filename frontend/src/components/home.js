@@ -55,7 +55,7 @@ const Home = () => {
             <p className="ml-2 font-bold">Add Board</p>
           </div>
           {boards.map((board) => (
-            <Link to="/board" key={board._id}>
+            <Link to={`/board/${board._id}`} key={board._id}>
               <div className="bg-gray-100 hover:bg-gray-200 rounded-lg h-28 flex items-center cursor-pointer">
                 <h2>{board.title}</h2>
               </div>
