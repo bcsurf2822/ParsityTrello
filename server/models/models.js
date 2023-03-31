@@ -29,7 +29,7 @@ const ListSchema = new Schema({
 
 const BoardsSchema = new Schema({
   title: String,
-  list: [ListSchema]
+  lists: [{ type: Schema.Types.ObjectId, ref: "List" }]
 });
 
 
