@@ -83,6 +83,21 @@ router.post("/boards", async (req, res, next) => {
     console.log(err);
     res.status(500).send({error: "error"});
   }
+});
+
+//delete board
+router.delete("/boards/:board", async (req,res, next) => {
+  try {
+    const boardById = await Board.findByIdAndRemove(req.params.board);
+    console.log(boardById)
+    if (!boardById) {
+      res.status(404).send({error: "Invalid ID"})
+    }
+    res.status(200).send({message: "Board Deleted"})
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({error: "Server Error"});
+    }
 })
 
 
