@@ -100,6 +100,33 @@ router.delete("/boards/:board", async (req,res, next) => {
     }
 });
 
+//Delete List
+router.delete("/boards/:board/lists/:list", async(req, res, next) => {
+  try {
+    const boardById = await Board.findById(req.params.board);
+    
+    if (!boardById) {
+      res.status(404).send({error: "No Board with that ID"})
+    }
+
+    const listIndex = boardById.lists.findIndex(list => list._id.toString() === req.params.list);
+    if (listIndex === -1) {
+      res.status(404).send({error: "List not found"});
+      return;
+    }
+
+    boardById.lists.splice(listIndex, 1);
+    await boardById.save();
+    
+    console.log("Board", boardById);
+    res.status(200).send({message: "List Deleted"});
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({error: "Server Error"});
+  }
+});
+
 //Get lists
 router.get("/board/:board/lists", async (req, res) => {
   try {
