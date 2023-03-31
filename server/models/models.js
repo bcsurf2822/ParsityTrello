@@ -27,8 +27,12 @@ const ListSchema = new Schema({
 
 const BoardsSchema = new Schema({
   title: String,
-  lists: [{ type: Schema.Types.ObjectId, ref: "List" }],
-
+  lists: [
+    {
+      _id: { type: Schema.Types.ObjectId, ref: "List" },
+      title: String,
+    },
+  ],
 });
 
 
