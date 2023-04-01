@@ -11,7 +11,6 @@ const useProxy = function (route) {
 export const fetchBoards = () => async (dispatch) => {
   try {
     const response = await axios.get(useProxy("/boards"));
-    console.log(response);
     dispatch({ type: FETCH_BOARDS, payload: response.data.results });
   } catch (error) {
     console.error("Error fetching boards:", error);
