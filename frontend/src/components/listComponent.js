@@ -12,10 +12,9 @@ const ListComponent = ({ list }) => {
   let listId = list._id;
 
   const dispatch = useDispatch();
-  const cards = useSelector((state) => state.cards || []);
-  let cardArray = cards.cards || [];
+  const cards = useSelector((state) => state.cards || {});
+  let cardArray = cards[listId] || [];
 
-  console.log(cardArray);
   //fetchCards action
   useEffect(() => {
     dispatch(fetchCards(boardId, listId));

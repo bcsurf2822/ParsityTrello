@@ -1,12 +1,11 @@
-import { FETCH_CARD } from "../actions/types";
+import { FETCH_CARDS } from "../actions/types";
 
-const initialState = [];
+const initialState = {};
 
 const cardsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case FETCH_CARD:
-      //console.log(action.payload);
-      return action.payload;
+    case FETCH_CARDS:
+      return { ...state, [action.payload.listId]: action.payload.cards };
     default:
       return state;
   }
