@@ -42,22 +42,22 @@ export const fetchAuthorized = () => dispatch => {
     })
 }
 
-export const fetchList = (id) => async (dispatch) => {
+export const fetchList = (boardId) => async (dispatch) => {
   try {
-    const response = await axios.get(useProxy(`/board/${id}/lists`));
-    const lists = response.data;
-    console.log("Fetched lists:", lists);
+    const response = await axios.get(useProxy(`/board/${boardId}/lists`));
+    const listData = response.data;
+    console.log("Fetched lists:", listData);
     dispatch({
       type: FETCH_LIST,
-      payload: lists,
+      payload: listData,
     });
 
     // Fetch the cards for each list
-    lists.forEach((list) => {
-      dispatch(fetchCards(id, list._id));
+    listData.forEach((list) => {
+      dispatch(fetchCards(boardId, list._id));
     });
   } catch (error) {
-    console.log("Error fetching lists:", error);
+    console.error("Error fetching lists data", error);
   }
 };
 
@@ -70,6 +70,6 @@ export const fetchCards = (boardId, listId) => async (dispatch) => {
       payload: { listId, cards: response.data.cards },
     });
   } catch (error) {
-    console.log("Error fetching cards:", error);
+    console.error("Error fetching cards", error);
   }
 };
