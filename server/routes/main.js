@@ -80,7 +80,7 @@ router.post("/boards", async (req, res, next) => {
 });
 
 //delete board
-router.delete("/boards/:board", async (req,res, next) => {
+router.delete("/boards/:board", async (req, res, next) => {
   try {
     const boardById = await Board.findByIdAndRemove(req.params.board);
     console.log(boardById)
@@ -132,6 +132,33 @@ router.post("/board/:boardId/lists", async (req, res, next) => {
   }
 });
 
+//Delete Lists
+router.delete("/boards/:boardId/lists/:listId", async (req, res, next) => {
+  try {
+    const { boardId, listId } = req.params;
+    const boardById = await Board.findById(boardId);
+
+    if (!boardById) {
+      res.status(404).send({error: "Invalid Board ID"});
+    }
+
+    const listIndex = boardById.lists.findIndex(list => list._id.toString() === listId);
+
+    if (listIndex === -1) {
+      return res.status(404).send({ error: "List not found in the board" });
+    }
+
+    boardById.lists.splice(listIndex, 1);
+
+    await boardById.save();
+
+    res.status(200).send({message: "List Deleted"});
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({error: "Server Error"});
+  }
+});
+
 //Get Cards
 router.get("/board/:boardId/lists/:listId", async (req, res) => {
   try {
@@ -155,6 +182,42 @@ router.get("/board/:boardId/lists/:listId", async (req, res) => {
     }
 
     res.status(200).send(list);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "error" });
+  }
+});
+
+//Post Cards
+router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
+  try {
+    const { boardId, listId } = req.params;
+    const board = await Board.findById(boardId);
+
+    if (!board) {
+      return res.status(404).send({ error: "Board not found" });
+    }
+
+    const listInBoard = board.lists.find(list => list._id.toString() === listId);
+
+    if (!listInBoard) {
+      return res.status(404).send({ error: "List not found in the board" });
+    }
+
+    const list = await List.findById(listId);
+
+     if (!list) {
+      return res.status(404).send({ error: "List not found" });
+    }
+
+    const postedCard = req.body;
+    const newCard = new Card(postedCard);
+    await newCard.save();
+
+    list.cards.push(newCard);
+
+    await list.save();
+    res.status(201).send(newCard);
   } catch (err) {
     console.log(err);
     res.status(500).send({ error: "error" });
