@@ -15,8 +15,6 @@ const Board = () => {
     dispatch(fetchList(id)); // Pass the listId to the fetchList action
   }, [dispatch, id]);
 
-  //console.log(lists);
-
   return (
     <div>
       <Nav />
