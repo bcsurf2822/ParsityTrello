@@ -7,6 +7,10 @@ const bcrypt = require("bcryptjs")
 //This is the schema when you first enter the page on ours its Backend Agile, Front end and design
 const CommentSchema = new Schema({
   comment: String,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
 });
 
 const LabelSchema = new Schema({
@@ -18,7 +22,7 @@ const CardSchema = new Schema({
   title: String,
   label: [LabelSchema],
   description: String,
-  comment: [CommentSchema],
+  comments: [CommentSchema],
 });
 
 //This Is the List view of the cards
@@ -39,15 +43,20 @@ const BoardsSchema = new Schema({
 });
 
 //This is for the user information
-// const UserSchema = new Schema({
-//   username: String,
-//   password: String,
-// });
+//const UserSchema = new Schema({
+//  username: String,
+//  password: String,
+//  comments: [
+//    {
+//      type: Schema.Types.ObjectId,
+//      ref: 'Comment',
+//    },
+//  ],
+//});
 
 // UserSchema.methods.isValidPassword = async function (password) {
 //   return await bcrypt.compare(password, this.password)
 // }
-
 
 module.exports = {
   // User: mongoose.model("User", UserSchema),
