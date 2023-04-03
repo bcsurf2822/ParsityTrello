@@ -2,11 +2,6 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors")
-// const passport = require("passport");
-
-// const ExtractJwt = require("passport-jwt").ExtractJwt;
-// const LocalStrategy = require("passport-local").Strategy;
-// const JwtStrategy = require('passport-jwt').Strategy;
 
 mongoose.connect("mongodb://127.0.0.1/trello2", {
   useNewUrlParser: true,
@@ -14,8 +9,10 @@ mongoose.connect("mongodb://127.0.0.1/trello2", {
 });
 
 const app = express();
+
 //Cors for all endpoints
 app.use(cors());
+
 //Body parser middleware
 app.use(bodyParser.json());
 app.use(

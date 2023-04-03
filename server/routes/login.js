@@ -2,7 +2,7 @@ const router = require("express").Router();
 const jwt = require("jwt-simple");
 const passport = require("passport");
 const faker = require("faker")
-const {User} = require("../models/models")
+const User = require("../models/userModel")
 
 const userToken = function (user) {
   return jwt.encode({ sub: user.myID,
@@ -15,6 +15,7 @@ const requireLogin = passport.authenticate("login", {session: false});
 
 
 router.post("/login", requireLogin, function(req, res, next) {
+  console.log("request", req)
   const token = userToken(req.user);
   console.log("JWT", token);
   res.send({
@@ -35,11 +36,11 @@ console.log(authUser);
 res.send(authUser);
 });
 
-const usernames = ["team", "myTrello", "mySite"];
-const passwords = ["trello2"];
+const usernames = ["ben", "ben2", "benjamin"];
+const passwords = ["let"];
 
 router.get("/generate-users", (req,res) => {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 1; i++) {
     let user = new User();
 
     user.username = faker.random.arrayElement(usernames);

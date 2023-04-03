@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-const jwt = require("jwt-simple");
+const bcrypt = require("bcryptjs")
 
 
 
@@ -40,32 +40,18 @@ const BoardsSchema = new Schema({
 
 
 //This is for the user information
-const UserSchema = new Schema({
-  username: String,
-  password: String,
-  token: String
-});
+// const UserSchema = new Schema({
+//   username: String,
+//   password: String,
+// });
 
-// UserSchema.methods.generateAuthToken = async function () {
-//   const user = this;
-//   const tokens = jwt.encode(
-//     {
-//       sub: user.myID,
-//       iat: Math.round(Date.now() / 1000),
-//       exp: Math.round(Date.now() / 1000 + 5 * 60 * 60),
-//     },
-//     "trello"
-//   );
-
-//   user.userToken = user.userToken.concat({tokens});
-//   await user.save();
-
-//   return this.token;
+// UserSchema.methods.isValidPassword = async function (password) {
+//   return await bcrypt.compare(password, this.password)
 // }
 
 
 module.exports = {
-  User: mongoose.model("User", UserSchema),
+  // User: mongoose.model("User", UserSchema),
   Board: mongoose.model("Board", BoardsSchema),
   List: mongoose.model("List", ListSchema),
   Comment: mongoose.model("Comment", CommentSchema),
