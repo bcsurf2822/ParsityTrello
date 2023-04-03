@@ -11,7 +11,7 @@ const Protected = () => {
     if (authorized) {
       navigate("/home")
     }
-  }, [authorized, navigate]);
+  }, []);
 
   if (!authorized) {
     return ( 
