@@ -1,9 +1,17 @@
-import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { Outlet, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useEffect } from "react";
 
 const Protected = () => {
   const authorized = useSelector(state => state.authentication.authorized);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authorized) {
+      navigate("/home")
+    }
+  }, [authorized, navigate]);
 
   if (!authorized) {
     return ( 
@@ -11,7 +19,7 @@ const Protected = () => {
       replace
       state = {{from: location.pathname}} />
     );
-  }
+  } 
   return <Outlet />;
 };
  
