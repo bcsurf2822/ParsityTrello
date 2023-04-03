@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const jwt = require("jwt-simple");
 const passport = require("passport");
-// const User = require('../models/User');
+const faker = require("faker")
+const User = require("../models/userModel")
 
 const userToken = function (user) {
   return jwt.encode({ sub: user.myID,
@@ -14,6 +15,7 @@ const requireLogin = passport.authenticate("login", {session: false});
 
 
 router.post("/login", requireLogin, function(req, res, next) {
+  console.log("request", req)
   const token = userToken(req.user);
   console.log("JWT", token);
   res.send({
@@ -33,5 +35,24 @@ router.get("/authorized", requireAuth, function (req, res, next) {
 console.log(authUser);
 res.send(authUser);
 });
+
+const usernames = ["ben", "nick", "joseph"];
+const passwords = ["let", "tan", "trello", "eagles", "cat", "dog"];
+
+router.get("/generate-users", (req,res) => {
+  for (let i = 0; i < 4; i++) {
+    let user = new User();
+
+    user.username = faker.random.arrayElement(usernames);
+    user.password = faker.random.arrayElement(passwords);
+
+
+    const userResult = user.save();
+    console.log(userResult);
+    res.end();
+  }
+});
+
+
 
 module.exports = router;

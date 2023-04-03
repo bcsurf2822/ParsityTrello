@@ -348,21 +348,4 @@ router.post("/boards/:boardId/lists/:listId/cards/:cardId/comments", async (req,
   }
 });
 
-const usernames = ["Ben", "Joseph", "Nicholas", "John", "Pat", "Will", "Aaron", "Peter"];
-const passwords = ["get"];
-
-router.get("/generate-users", (req,res) => {
-  for (let i = 0; i < 8; i++) {
-    let user = new User();
-
-    user.username = faker.random.arrayElement(usernames);
-    user.password = faker.random.arrayElement(passwords);
-
-    const userResult = user.save();
-    console.log(userResult);
-    res.end();
-  }
-});
-
-
 module.exports = router;

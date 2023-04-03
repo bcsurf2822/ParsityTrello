@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const bcrypt = require("bcryptjs")
+
 
 
 //This is the schema when you first enter the page on ours its Backend Agile, Front end and design
@@ -41,20 +43,23 @@ const BoardsSchema = new Schema({
 });
 
 //This is for the user information
-const UserSchema = new Schema({
-  username: String,
-  password: String,
-  comments: [
-    {
-      type: Schema.Types.ObjectId,
-      ref: 'Comment',
-    },
-  ],
-});
+//const UserSchema = new Schema({
+//  username: String,
+//  password: String,
+//  comments: [
+//    {
+//      type: Schema.Types.ObjectId,
+//      ref: 'Comment',
+//    },
+//  ],
+//});
 
+// UserSchema.methods.isValidPassword = async function (password) {
+//   return await bcrypt.compare(password, this.password)
+// }
 
 module.exports = {
-  User: mongoose.model("User", UserSchema),
+  // User: mongoose.model("User", UserSchema),
   Board: mongoose.model("Board", BoardsSchema),
   List: mongoose.model("List", ListSchema),
   Comment: mongoose.model("Comment", CommentSchema),
