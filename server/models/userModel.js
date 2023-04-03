@@ -8,9 +8,6 @@ const UserSchema = new Schema({
   password: String,
 });
 
-UserSchema.methods.isValidPassword =  function (password) {
-  return  bcrypt.compare(password, this.password)
-}
 
 const User = mongoose.model("User", UserSchema);
 module.exports = User;

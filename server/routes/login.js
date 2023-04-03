@@ -36,11 +36,11 @@ console.log(authUser);
 res.send(authUser);
 });
 
-const usernames = ["ben", "ben2", "benjamin"];
-const passwords = ["let"];
+const usernames = ["ben", "nick", "joseph"];
+const passwords = ["let", "tan", "trello", "eagles", "cat", "dog"];
 
 router.get("/generate-users", (req,res) => {
-  for (let i = 0; i < 1; i++) {
+  for (let i = 0; i < 4; i++) {
     let user = new User();
 
     user.username = faker.random.arrayElement(usernames);
