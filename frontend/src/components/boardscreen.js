@@ -10,7 +10,7 @@ const Board = () => {
   const { id } = useParams(); // Get the listId from URL params
   const dispatch = useDispatch();
   const lists = useSelector((state) => state.lists || []);
-
+  
   useEffect(() => {
     dispatch(fetchList(id)); // Pass the listId to the fetchList action
   }, [dispatch, id]);

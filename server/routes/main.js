@@ -8,7 +8,7 @@ const progress = ["To Do", "Doing", "Done", "RoadBlocks"];
 //to generate boards with lists
 router.get("/generate-boards", async (req, res, next) => {
   try {
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 1; i++) {
       let board = new Board();
       board.title = faker.random.arrayElement(boardTitles);
 

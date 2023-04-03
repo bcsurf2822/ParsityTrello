@@ -31,6 +31,7 @@ const BoardsSchema = new Schema({
     {
       _id: { type: Schema.Types.ObjectId, ref: "List" },
       title: String,
+      cards: [CardSchema],
     },
   ],
 });
