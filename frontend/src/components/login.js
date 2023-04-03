@@ -18,6 +18,8 @@ const Login = () => {
     dispatch(logIn({username, password}, () => {
       navigate("/home")
     }))
+    setUsername("");
+    setPassword("");
   } 
 
   return (

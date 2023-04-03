@@ -1,20 +1,21 @@
 import logo from "../public/logo.png";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 
 const Nav = () => {
+  const navigate = useNavigate();
 
-  //TODO: get state of authenticated
-  //TODO: check if authenticated, show "sign out" instead if authenticated
   const logOut = function () {
     localStorage.removeItem("token");
+    navigate('/Login')
 
   }
 
   return (
     <header className="flex justify-between mt-6 mx-8">
       <img src={logo} alt="logo" className="object-contain w-32" />
-      <button className="text-white bg-red-700 hover:bg-red-800 rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 cursor-pointer font-semibold">
+      <button onClick={logOut} className="text-white bg-red-700 hover:bg-red-800 rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 cursor-pointer font-semibold">
           Log Out
         </button>
       <Link to="/login">
