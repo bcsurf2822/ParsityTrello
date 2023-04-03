@@ -5,6 +5,10 @@ const Schema = mongoose.Schema;
 //This is the schema when you first enter the page on ours its Backend Agile, Front end and design
 const CommentSchema = new Schema({
   comment: String,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
 });
 
 const LabelSchema = new Schema({
@@ -16,7 +20,7 @@ const CardSchema = new Schema({
   title: String,
   label: [LabelSchema],
   description: String,
-  comment: [CommentSchema],
+  comments: [CommentSchema],
 });
 
 //This Is the List view of the cards
@@ -40,7 +44,12 @@ const BoardsSchema = new Schema({
 const UserSchema = new Schema({
   username: String,
   password: String,
-  comments: [CommentSchema]
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
 });
 
 
