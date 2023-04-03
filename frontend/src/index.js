@@ -8,6 +8,7 @@ import Home from "./components/home";
 import store from "./reducers";
 import Board from "./components/boardscreen";
 import Protected from "./components/ProtectedRoutes";
+import Nothing from "./components/NotFound";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -20,6 +21,7 @@ root.render(
               <Route  path="/home" Component={Home} />
               <Route path="/board/:id" Component={Board}/>
             </Route>
+            <Route path="*" Component={Nothing} />
           </Routes>
       </BrowserRouter>
     </Provider>
