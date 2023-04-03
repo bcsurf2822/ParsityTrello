@@ -36,7 +36,6 @@ const BoardsSchema = new Schema({
   ],
 });
 
-
 //This is for the user information
 const UserSchema = new Schema({
   username: String,
