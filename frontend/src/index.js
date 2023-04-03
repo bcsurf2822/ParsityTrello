@@ -17,7 +17,7 @@ root.render(
           <Routes>
             <Route exact path="/login" index Component={Login} />
             <Route path="/" element={<Protected />}>
-              <Route path="/home" Component={Home} />
+              <Route  path="/home" Component={Home} />
               <Route path="/board/:id" Component={Board}/>
             </Route>
           </Routes>
