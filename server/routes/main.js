@@ -1,9 +1,10 @@
 const router = require("express").Router();
-const faker = require('faker');
+const faker = require("faker");
 
-const {Label, Card, Board, User, List, Comment} = require("../models/models")
+const { Card, Board, List, Comment, User } = require("../models/models");
 const boardTitles = ["Frontend", "Backend", "Project"];
 const progress = ["To Do", "Doing", "Done", "RoadBlocks"];
+// const User = require("../models/userModel")
 
 //to generate boards with lists
 router.get("/generate-boards", async (req, res, next) => {
@@ -22,10 +23,10 @@ router.get("/generate-boards", async (req, res, next) => {
           let card = new Card();
           card.title = faker.lorem.sentence();
           card.description = faker.lorem.paragraph();
-          
+
           // Save the card
           await card.save();
-  
+
           // Add the card to the list's cards array
           list.cards.push(card);
         }
@@ -40,7 +41,9 @@ router.get("/generate-boards", async (req, res, next) => {
       // Save the board with the lists
       await board.save();
     }
-    res.status(200).send({ message: "Boards, lists and cards generated successfully" });
+    res
+      .status(200)
+      .send({ message: "Boards, lists and cards generated successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "Error occurred generating" });
@@ -59,15 +62,15 @@ router.get("/boards", async (req, res, next) => {
     console.log(response);
     res.json(response);
   } catch (err) {
-    console.log(err)
-    res.status(500).send({error: "Error Occured fetching data"});
+    console.log(err);
+    res.status(500).send({ error: "Error Occured fetching data" });
   }
 });
 
 //Post Boards
 router.post("/boards", async (req, res, next) => {
   try {
-    console.log("body", req.body)
+    console.log("body", req.body);
     const postedBoard = req.body;
     const newBoard = new Board(postedBoard);
     newBoard.save();
@@ -75,7 +78,7 @@ router.post("/boards", async (req, res, next) => {
     res.status(201).send(newBoard);
   } catch (err) {
     console.log(err);
-    res.status(500).send({error: "error"});
+    res.status(500).send({ error: "error" });
   }
 });
 
@@ -83,15 +86,15 @@ router.post("/boards", async (req, res, next) => {
 router.delete("/boards/:board", async (req, res, next) => {
   try {
     const boardById = await Board.findByIdAndRemove(req.params.board);
-    console.log(boardById)
+    console.log(boardById);
     if (!boardById) {
-      res.status(404).send({error: "Invalid ID"})
+      res.status(404).send({ error: "Invalid ID" });
     }
-    res.status(200).send({message: "Board Deleted"})
-    } catch (err) {
-      console.log(err);
-      res.status(500).send({error: "Server Error"});
-    }
+    res.status(200).send({ message: "Board Deleted" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "Server Error" });
+  }
 });
 
 //Get lists
@@ -139,10 +142,12 @@ router.delete("/boards/:boardId/lists/:listId", async (req, res, next) => {
     const boardById = await Board.findById(boardId);
 
     if (!boardById) {
-      res.status(404).send({error: "Invalid Board ID"});
+      res.status(404).send({ error: "Invalid Board ID" });
     }
 
-    const listIndex = boardById.lists.findIndex(list => list._id.toString() === listId);
+    const listIndex = boardById.lists.findIndex(
+      (list) => list._id.toString() === listId
+    );
 
     if (listIndex === -1) {
       return res.status(404).send({ error: "List not found in the board" });
@@ -152,10 +157,10 @@ router.delete("/boards/:boardId/lists/:listId", async (req, res, next) => {
 
     await boardById.save();
 
-    res.status(200).send({message: "List Deleted"});
+    res.status(200).send({ message: "List Deleted" });
   } catch (err) {
     console.log(err);
-    res.status(500).send({error: "Server Error"});
+    res.status(500).send({ error: "Server Error" });
   }
 });
 
@@ -169,7 +174,9 @@ router.get("/board/:boardId/lists/:listId", async (req, res) => {
       return res.status(404).send({ error: "Board not found" });
     }
 
-    const listInBoard = boardById.lists.find(list => list._id.toString() === listId);
+    const listInBoard = boardById.lists.find(
+      (list) => list._id.toString() === listId
+    );
 
     if (!listInBoard) {
       return res.status(404).send({ error: "List not found in the board" });
@@ -198,7 +205,9 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
       return res.status(404).send({ error: "Board not found" });
     }
 
-    const listInBoard = boardById.lists.find(list => list._id.toString() === listId);
+    const listInBoard = boardById.lists.find(
+      (list) => list._id.toString() === listId
+    );
 
     if (!listInBoard) {
       return res.status(404).send({ error: "List not found in the board" });
@@ -206,7 +215,7 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
 
     const list = await List.findById(listId);
 
-     if (!list) {
+    if (!list) {
       return res.status(404).send({ error: "List not found" });
     }
 
@@ -225,127 +234,146 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
 });
 
 // Update cards
-router.patch("/boards/:boardId/lists/:listId/cards/:cardId", async (req, res, next) => {
-  try {
-    const { boardId, listId, cardId } = req.params;
-    const updateData = req.body;
+router.patch(
+  "/boards/:boardId/lists/:listId/cards/:cardId",
+  async (req, res, next) => {
+    try {
+      const { boardId, listId, cardId } = req.params;
+      const updateData = req.body;
 
-    const board = await Board.findById(boardId);
+      const board = await Board.findById(boardId);
 
-    if (!board) {
-      return res.status(404).send({ error: "Board not found" });
+      if (!board) {
+        return res.status(404).send({ error: "Board not found" });
+      }
+
+      const list = await List.findOne({ _id: listId, "cards._id": cardId });
+
+      if (!list) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      const cardIndex = list.cards.findIndex(
+        (card) => card._id.toString() === cardId
+      );
+
+      if (cardIndex === -1) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      Object.assign(list.cards[cardIndex], updateData);
+
+      await list.save();
+      res
+        .status(200)
+        .send({ message: "Card updated", card: list.cards[cardIndex] });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ error: "Server Error" });
     }
-
-    const list = await List.findOne({ _id: listId, "cards._id": cardId });
-
-    if (!list) {
-      return res.status(404).send({ error: "Card not found in the list" });
-    }
-
-    const cardIndex = list.cards.findIndex(card => card._id.toString() === cardId);
-
-    if (cardIndex === -1) {
-      return res.status(404).send({ error: "Card not found in the list" });
-    }
-
-    Object.assign(list.cards[cardIndex], updateData);
-
-    await list.save();
-    res.status(200).send({ message: "Card updated", card: list.cards[cardIndex] });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ error: "Server Error" });
   }
-});
+);
 
 // Delete cards
-router.delete("/boards/:boardId/lists/:listId/cards/:cardId/delete", async (req, res, next) => {
-  try {
-    const { boardId, listId, cardId } = req.params;
-    const board = await Board.findById(boardId);
+router.delete(
+  "/boards/:boardId/lists/:listId/cards/:cardId/delete",
+  async (req, res, next) => {
+    try {
+      const { boardId, listId, cardId } = req.params;
+      const board = await Board.findById(boardId);
 
-    if (!board) {
-      return res.status(404).send({ error: "Invalid Board ID" });
+      if (!board) {
+        return res.status(404).send({ error: "Invalid Board ID" });
+      }
+
+      const listInBoard = board.lists.find(
+        (list) => list._id.toString() === listId
+      );
+
+      if (!listInBoard) {
+        return res.status(404).send({ error: "List not found in the board" });
+      }
+
+      const list = await List.findById(listId);
+
+      if (!list) {
+        return res.status(404).send({ error: "List not found" });
+      }
+
+      const cardIndex = list.cards.findIndex(
+        (card) => card._id.toString() === cardId
+      );
+
+      if (cardIndex === -1) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      list.cards.splice(cardIndex, 1);
+
+      await list.save();
+
+      res.status(200).send({ message: "Card Deleted" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ error: "Server Error" });
     }
-
-    const listInBoard = board.lists.find(list => list._id.toString() === listId);
-
-    if (!listInBoard) {
-      return res.status(404).send({ error: "List not found in the board" });
-    }
-
-    const list = await List.findById(listId);
-
-    if (!list) {
-      return res.status(404).send({ error: "List not found" });
-    }
-
-    const cardIndex = list.cards.findIndex(card => card._id.toString() === cardId);
-
-    if (cardIndex === -1) {
-      return res.status(404).send({ error: "Card not found in the list" });
-    }
-
-    list.cards.splice(cardIndex, 1);
-
-    await list.save();
-
-    res.status(200).send({ message: "Card Deleted" });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ error: "Server Error" });
   }
-});
+);
 
 // Post Comment
-router.post("/boards/:boardId/lists/:listId/cards/:cardId/comments", async (req, res, next) => {
-  try {
-    const { boardId, listId, cardId } = req.params;
-    const { commentText, userId } = req.body;
+router.post(
+  "/boards/:boardId/lists/:listId/cards/:cardId/comments",
+  async (req, res, next) => {
+    try {
+      const { boardId, listId, cardId } = req.params;
+      const { commentText, userId } = req.body;
 
-    const board = await Board.findById(boardId);
+      const board = await Board.findById(boardId);
 
-    if (!board) {
-      return res.status(404).send({ error: "Board not found" });
+      if (!board) {
+        return res.status(404).send({ error: "Board not found" });
+      }
+
+      const list = await List.findOne({ _id: listId, "cards._id": cardId });
+
+      if (!list) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      const cardIndex = list.cards.findIndex(
+        (card) => card._id.toString() === cardId
+      );
+
+      if (cardIndex === -1) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      const user = await User.findById(userId);
+
+      if (!user) {
+        return res.status(404).send({ error: "User not found" });
+      }
+
+      // Create a new comment
+      const newComment = {
+        comment: commentText,
+        user: user._id,
+      };
+
+      // Add the comment to the card
+      list.cards[cardIndex].comments.push(newComment);
+      await list.save();
+
+      // Add the comment reference to the user's comments
+      user.comments.push(list.cards[cardIndex].comments.slice(-1)[0]._id);
+      await user.save();
+
+      res.status(201).send({ message: "Comment added", comment: newComment });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ error: "Server Error" });
     }
-
-    const list = await List.findOne({ _id: listId, "cards._id": cardId });
-
-    if (!list) {
-      return res.status(404).send({ error: "Card not found in the list" });
-    }
-
-    const cardIndex = list.cards.findIndex(card => card._id.toString() === cardId);
-
-    if (cardIndex === -1) {
-      return res.status(404).send({ error: "Card not found in the list" });
-    }
-
-    const user = await User.findById(userId);
-
-    if (!user) {
-      return res.status(404).send({ error: "User not found" });
-    }
-
-    // Create a new comment
-    const newComment = {
-      comment: commentText,
-      user: user._id,
-    };
-
-    // Add the comment to the card
-    list.cards[cardIndex].comments.push(newComment);
-    await list.save();
-
-    // Add the comment reference to the user's comments
-    user.comments.push(list.cards[cardIndex].comments.slice(-1)[0]._id);
-    await user.save();
-
-    res.status(201).send({ message: "Comment added", comment: newComment });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ error: "Server Error" });
   }
-});
+);
 
 module.exports = router;

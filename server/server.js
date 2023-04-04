@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cors = require("cors")
+const cors = require("cors");
 
 mongoose.connect("mongodb://127.0.0.1/trello2", {
   useNewUrlParser: true,
@@ -21,16 +21,14 @@ app.use(
   })
 );
 
-
-const passportRoutes = require ("./services/passport");
-app.use(passportRoutes)
+const passportRoutes = require("./services/passport");
+app.use(passportRoutes);
 
 const mainRoutes = require("./routes/main");
 app.use(mainRoutes);
 
 const authorizedRoutes = require("./routes/login");
 app.use(authorizedRoutes);
-
 
 app.listen(8000, () => {
   console.log("Node.js listening on port " + 8000);
