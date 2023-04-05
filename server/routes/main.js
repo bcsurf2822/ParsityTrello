@@ -1,7 +1,8 @@
 const router = require("express").Router();
 const faker = require("faker");
 
-const { Card, Board, List, Comment, User } = require("../models/models");
+const { Label, Card, Board, User, List, Comment } = require("../models/models");
+
 const boardTitles = ["Frontend", "Backend", "Project"];
 const progress = ["To Do", "Doing", "Done", "RoadBlocks"];
 // const User = require("../models/userModel")
@@ -14,12 +15,12 @@ router.get("/generate-boards", async (req, res, next) => {
       board.title = faker.random.arrayElement(boardTitles);
 
       // Create lists and add them to the board
-      for (let j = 0; j < 3; j++) {
+      for (let j = 0; j < 4; j++) {
         let list = new List();
         list.title = faker.random.arrayElement(progress);
 
         // Create cards and add them to the list
-        for (let k = 0; k < 3; k++) {
+        for (let k = 0; k < 5; k++) {
           let card = new Card();
           card.title = faker.lorem.sentence();
           card.description = faker.lorem.paragraph();
@@ -59,7 +60,7 @@ router.get("/boards", async (req, res, next) => {
       results: boards,
     };
 
-    console.log(response);
+    //console.log(response);
     res.json(response);
   } catch (err) {
     console.log(err);
@@ -175,6 +176,7 @@ router.get("/board/:boardId/lists/:listId", async (req, res) => {
     }
 
     const listInBoard = boardById.lists.find(
+    
       (list) => list._id.toString() === listId
     );
 
@@ -206,6 +208,7 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
     }
 
     const listInBoard = boardById.lists.find(
+
       (list) => list._id.toString() === listId
     );
 
@@ -230,6 +233,58 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
   } catch (err) {
     console.log(err);
     res.status(500).send({ error: "error" });
+  }
+});
+
+// update list array in board schema
+router.patch("/boards/:boardId/lists", async (req, res, next) => {
+  try {
+    const { boardId } = req.params;
+    const updateData = req.body.lists;
+
+    // find board
+    const board = await Board.findById(boardId);
+
+    if (!board) {
+      return res.status(404).send({ error: "Board not found" });
+    }
+
+    Object.assign(board.lists, updateData);
+
+    await board.save();
+
+    res
+      .status(200)
+      .send({ message: "List order updated", list: board.lists });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "Server Error" });
+  }
+});
+
+// update card order in ListSchema
+router.patch("/lists/:listId/cards", async (req, res, next) => {
+  try {
+    const { listId } = req.params;
+    const updateData = req.body.cards;
+
+    // find list
+    const list = await List.findById(listId);
+
+    if (!list) {
+      return res.status(404).send({ error: "List not found" });
+    }
+
+    Object.assign(list.cards, updateData);
+
+    await list.save();
+
+    res
+      .status(200)
+      .send({message: "Card order updated", cards: list.cards})
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "Server Error" });
   }
 });
 
