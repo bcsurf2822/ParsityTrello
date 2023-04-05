@@ -6,7 +6,7 @@ const useProxy = function (route) {
 };
 
 
-export const postBoards = (title) => async (dispatch) => {
+export const postList = (title) => async (dispatch) => {
   try {
     const response = await axios.post(useProxy("/board/:boardId/lists"), {title});
     console.log(response);
@@ -15,3 +15,4 @@ export const postBoards = (title) => async (dispatch) => {
     console.error("Unable to Post", error);
   }
 };
+
