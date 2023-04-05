@@ -111,11 +111,11 @@ export const updateCards = (listId, cards) => async (dispatch) => {
 export const postList = (lists, boardId) => async (dispatch) => {
   try {
     const response = await axios.post(useProxy(`/board/${boardId}/lists`), {title: lists, boardId})
-    console.log("Post Response", response)
+    console.log("Post Response", response.data)
 
     dispatch({
       type: POST_LIST,
-      payload: response.data.list
+      payload: response.data
     });
   } catch (error) {
     console.error("Error Posting lists", error)

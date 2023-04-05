@@ -143,7 +143,7 @@ const Board = () => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {stateLists.map((list, index) => (
+                {lists.map((list, index) => (
                   <Draggable draggableId={list._id} index={index} key={list._id}>
                     {(provided) => (
                       <div
