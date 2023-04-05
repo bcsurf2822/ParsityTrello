@@ -10,7 +10,7 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 const Board = () => {
   const { id } = useParams(); // Get the boardId from URL params
   const dispatch = useDispatch();
-  const lists = useSelector((state) => state.lists || []);
+  const lists = useSelector((state) => state.lists.list || []);
   const cards = useSelector((state) => state.cards || []);
 
   useEffect(() => {
