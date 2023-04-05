@@ -12,14 +12,14 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 
 const Board = () => {
-//MODAL Stuff
+  //MODAL Stuff
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
 
   const addListModal = () => {
     openModal();
-  }
+  };
 
   const { id } = useParams(); // Get the boardId from URL params
   const dispatch = useDispatch();
@@ -30,12 +30,11 @@ const Board = () => {
 
   useEffect(() => {
     if (!fetch) {
-      dispatch(fetchList(id)); 
+      dispatch(fetchList(id));
       setFetch(true);
     }
     setLists(lists);
   }, [dispatch, id, lists, fetch]);
-
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
@@ -56,13 +55,12 @@ const Board = () => {
       const newLists = Array.from(lists);
       const [removed] = newLists.splice(source.index, 1);
       newLists.splice(destination.index, 0, removed);
-  
+
       // update the state of the lists
       setLists(newLists);
 
       // dispatch action to update the lists state
       dispatch(updateLists(newLists, id));
-
     } else {
       // update the order of the cards within a list
       const listId = source.droppableId;
@@ -72,57 +70,57 @@ const Board = () => {
 
       //update the state of card order
       //setCards(newCards);
-  
+
       // dispatch action to update the cards state
       dispatch(updateCards(listId, newCards));
     }
-  };  
+  };
   const ListModal = () => {
-    const [newList, setNewList] = useState("")
+    const [newList, setNewList] = useState("");
     const addList = () => {
       dispatch(postList(newList, id));
       setNewList("");
       closeModal();
-      console.log("Dispatch Sent")
+      console.log("Dispatch Sent");
     };
     return (
       <div className="addList">
-      <Modal
-            isOpen={modal}
-            onRequestClose={closeModal}
-            className="modal w-60 bg-white border-black border rounded mx-auto mt-60"
-          >
-            <div className="mx-4">
-              <div className="flex justify-between">
-                <p className="mt-4 font-semibold">Create List</p>
-                <img
-                  src={xSvg}
-                  alt="xsvg"
-                  className="object-contain w-6 mt-4 cursor-pointer hover:bg-gray-100 hover: rounded-md"
-                  onClick={closeModal}
-                />
-              </div>
-              <label className="block mt-4">
-                <span className="text-sm">List Title</span>
-                <input
-                  value={newList}
-                  onChange={(e) => setNewList(e.target.value)}
-                  className="border-black border rounded mt-1 w-full"
-                ></input>
-              </label>
-              <div className="flex items-center justify-center">
-                <button
-                  className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer font-semibold mt-6 mb-4"
-                  onClick={addList}
-                >
-                  Submit
-                </button>
-              </div>
+        <Modal
+          isOpen={modal}
+          onRequestClose={closeModal}
+          className="modal w-60 bg-white border-black border rounded mx-auto mt-60"
+        >
+          <div className="mx-4">
+            <div className="flex justify-between">
+              <p className="mt-4 font-semibold">Create List</p>
+              <img
+                src={xSvg}
+                alt="xsvg"
+                className="object-contain w-6 mt-4 cursor-pointer hover:bg-gray-100 hover: rounded-md"
+                onClick={closeModal}
+              />
             </div>
-          </Modal>
+            <label className="block mt-4">
+              <span className="text-sm">List Title</span>
+              <input
+                value={newList}
+                onChange={(e) => setNewList(e.target.value)}
+                className="border-black border rounded mt-1 w-full"
+              ></input>
+            </label>
+            <div className="flex items-center justify-center">
+              <button
+                className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer font-semibold mt-6 mb-4"
+                onClick={addList}
+              >
+                Submit
+              </button>
+            </div>
+          </div>
+        </Modal>
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div>
@@ -146,25 +144,34 @@ const Board = () => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {stateLists.map((list, index) => (
-                  <Draggable draggableId={list._id} index={index} key={list._id}>
-                    {(provided) => (
-                      <div
-                        ref={provided.innerRef}
-                        {...provided.draggableProps}
-                        {...provided.dragHandleProps}
-                      >
-                        <ListComponent list={list} index={index} 
-                        //stateCards={stateCards}
-                        />
-                      </div>
-                    )}
-                  </Draggable>
-                ))}
+                {stateLists.map((list, index) => {
+                  if (!list) {
+                    return null;
+                  }
+                  return (
+                    <Draggable
+                      draggableId={list._id}
+                      index={index}
+                      key={list._id}
+                    >
+                      {(provided) => (
+                        <div
+                          ref={provided.innerRef}
+                          {...provided.draggableProps}
+                          {...provided.dragHandleProps}
+                        >
+                          <ListComponent list={list} index={index} />
+                        </div>
+                      )}
+                    </Draggable>
+                  );
+                })}
                 {provided.placeholder}
                 <div>
-                  <div className="bg-gray-100 hover:bg-gray-200 rounded-md w-80 cursor-pointer"
-                  onClick={addListModal}>
+                  <div
+                    className="bg-gray-100 hover:bg-gray-200 rounded-md w-80 cursor-pointer"
+                    onClick={addListModal}
+                  >
                     <div className="flex py-2 px-2">
                       <img
                         src={PlusSvg}
