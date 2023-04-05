@@ -14,7 +14,7 @@ import Modal from "react-modal";
 const Board = () => {
 //MODAL Stuff
   const [modal, toggleModal] = useState(false);
-  const [newList, setNewList] = useState("");
+  // const [newList, setNewList] = useState("");
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
 
@@ -24,12 +24,12 @@ const Board = () => {
   const lists = useSelector((state) => state.lists.list || []);
   const cards = useSelector((state) => state.cards || []);
 
-  const addList = () => {
-    dispatch(postList(newList, id));
-    setNewList("");
-    closeModal();
-    console.log("Dispatch Sent")
-  };
+  // const addList = () => {
+  //   dispatch(postList(newList, id));
+  //   setNewList("");
+  //   closeModal();
+  //   console.log("Dispatch Sent")
+  // };
 
   const addListModal = () => {
     openModal();
@@ -82,6 +82,13 @@ const Board = () => {
     }
   };  
   const ListModal = () => {
+    const [newList, setNewList] = useState("")
+    const addList = () => {
+      dispatch(postList(newList, id));
+      setNewList("");
+      closeModal();
+      console.log("Dispatch Sent")
+    };
     return (
       <div className="addList">
       <Modal
