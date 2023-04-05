@@ -2,17 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchList, updateLists, updateCards, postList } from "../actions";
-// import { postList } from "../actions/list";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
-import TrashSvg from "../public/trash.svg";
 import ListComponent from "./listComponent";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 
 const Board = () => {
-  //MODAL Stuff
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
