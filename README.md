@@ -7,4 +7,4 @@ The Trello 2.0 project features a Login Page using a Local JWT Strategy, using u
 
 React was used to design and implement features on our componenets while Tailwind was used for our CSS. Using Redux we created a store to manage our state and Mongo and Mongoose as our Database.
 
-TBC...
+
