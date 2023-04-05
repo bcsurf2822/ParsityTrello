@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchList, updateLists, updateCards } from "../actions";
-import { postList } from "../actions/list";
+import { fetchList, updateLists, updateCards, postList } from "../actions";
+// import { postList } from "../actions/list";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
@@ -25,7 +25,7 @@ const Board = () => {
   const cards = useSelector((state) => state.cards || []);
 
   const addList = () => {
-    dispatch(postList(newList));
+    dispatch(postList(newList, id));
     setNewList("");
     closeModal();
     console.log("Dispatch Sent")
