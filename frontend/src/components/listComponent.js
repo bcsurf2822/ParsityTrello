@@ -5,11 +5,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { fetchCards } from "../actions";
 import { Droppable } from "react-beautiful-dnd";
+import Modal from "react-modal";
+import xSvg from "../public/x-mark.svg";
 
 const ListComponent = ({ list, handleListId }) => {
   const { id } = useParams();
   let boardId = id;
   let listId = list._id;
+
+  const [modal, toggleModal] = useState(false);
+  const openModal = () => toggleModal(true);
+  const closeModal = () => toggleModal(false);
+
+  const [newCard, setNewCard] = useState("");
 
   const dispatch = useDispatch();
   const cards = useSelector((state) => state.cards || {});
@@ -19,6 +27,18 @@ const ListComponent = ({ list, handleListId }) => {
   useEffect(() => {
     dispatch(fetchCards(boardId, listId));
   }, [dispatch, boardId, listId]);
+
+  const addCardModal = () => {
+    openModal();
+  };
+
+  const addCard = () => {
+    // TODO: send dispatch and call action creator w/ card title (newCard)
+    // dispatch();
+    setNewCard("");
+    closeModal();
+    //console.log(`value: ${newCard}`);
+  };
 
   return (
     <div>
@@ -34,11 +54,14 @@ const ListComponent = ({ list, handleListId }) => {
                   cardArray.map((card, index) => (
                     <CardComponent key={card._id} card={card} index={index} />
                   ))}
-                  {provided.placeholder}
+                {provided.placeholder}
               </div>
             )}
           </Droppable>
-          <div className="flex justify-center mb-4 flex-grow mx-4 rounded-md hover:bg-gray-200 cursor-pointer">
+          <div
+            className="flex justify-center mb-4 flex-grow mx-4 rounded-md hover:bg-gray-200 cursor-pointer"
+            onClick={addCardModal}
+          >
             <div className="my-2 flex">
               <img
                 src={PlusSvg}
@@ -47,6 +70,41 @@ const ListComponent = ({ list, handleListId }) => {
               />
               <p>Add a card</p>
             </div>
+          </div>
+          <div className="">
+            <Modal
+              isOpen={modal}
+              onRequestClose={closeModal}
+              className="modal w-60 bg-white border-black border rounded mx-auto mt-60"
+            >
+              <div className="mx-4">
+                <div className="flex justify-between">
+                  <p className="mt-4 font-semibold">Create Card</p>
+                  <img
+                    src={xSvg}
+                    alt="xsvg"
+                    className="object-contain w-6 mt-4 cursor-pointer hover:bg-gray-100 hover: rounded-md"
+                    onClick={closeModal}
+                  />
+                </div>
+                <label className="block mt-4">
+                  <span className="text-sm">Card Title</span>
+                  <input
+                    value={newCard}
+                    onChange={(e) => setNewCard(e.target.value)}
+                    className="border-black border rounded mt-1 w-full"
+                  ></input>
+                </label>
+                <div className="flex items-center justify-center">
+                  <button
+                    className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer font-semibold mt-6 mb-4"
+                    onClick={addCard}
+                  >
+                    Submit
+                  </button>
+                </div>
+              </div>
+            </Modal>
           </div>
         </div>
       </div>
