@@ -45,7 +45,7 @@ export const fetchAuthorized = () => dispatch => {
 export const fetchList = (boardId) => async (dispatch) => {
   try {
     const response = await axios.get(useProxy(`/board/${boardId}/lists`));
-    const listData = response.data.filter((list) => list !== null); // <-- Add this line to filter out null values
+    const listData = response.data.filter((list) => list !== null);
     //console.log("Fetched lists:", listData);
     dispatch({
       type: FETCH_LIST,
@@ -100,7 +100,7 @@ export const updateCards = (listId, cards) => async (dispatch) => {
 
     dispatch({
       type: UPDATE_CARDS,
-      payload: { listId, cards: response.data.cards }, // added listId here
+      payload: { listId, cards: response.data.cards },
     });
   } catch (error) {
     console.error("Error updating cards", error)
