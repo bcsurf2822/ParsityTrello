@@ -16,8 +16,8 @@ export const logIn = (formProps, callback) => dispatch => {
     console.log("API RES", response.data.token)
     callback();
   })
-  .catch(function (error) {
-    dispatch({type: AUTH_ERROR, payload: error})
+  .catch(function () {
+    dispatch({type: AUTH_ERROR, payload: alert("Unauthorized Username or Password")})
   })
 };
 

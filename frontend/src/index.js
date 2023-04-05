@@ -8,6 +8,7 @@ import Home from "./components/home";
 import store from "./reducers";
 import Board from "./components/boardscreen";
 import Protected from "./components/ProtectedRoutes";
+import Nothing from "./components/NotFound";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
