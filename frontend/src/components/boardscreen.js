@@ -14,32 +14,28 @@ import Modal from "react-modal";
 const Board = () => {
 //MODAL Stuff
   const [modal, toggleModal] = useState(false);
-  // const [newList, setNewList] = useState("");
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
-
-
-  const { id } = useParams(); // Get the boardId from URL params
-  const dispatch = useDispatch();
-  const lists = useSelector((state) => state.lists.list || []);
-  const cards = useSelector((state) => state.cards || []);
-
-  // const addList = () => {
-  //   dispatch(postList(newList, id));
-  //   setNewList("");
-  //   closeModal();
-  //   console.log("Dispatch Sent")
-  // };
 
   const addListModal = () => {
     openModal();
   }
 
-  useEffect(() => {
-    dispatch(fetchList(id)); // Pass the boardId to the fetchList action
-  }, [dispatch, id]);
+  const { id } = useParams(); // Get the boardId from URL params
+  const dispatch = useDispatch();
+  const lists = useSelector((state) => state.lists.list || []);
+  const cards = useSelector((state) => state.cards || []);
+  const [stateLists, setLists] = useState([]);
+  const [fetch, setFetch] = useState(false);
 
-  const [stateLists, setLists] = useState(lists);
+  useEffect(() => {
+    if (!fetch) {
+      dispatch(fetchList(id)); 
+      setFetch(true);
+    }
+    setLists(lists);
+  }, [dispatch, id, lists, fetch]);
+
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
@@ -150,7 +146,7 @@ const Board = () => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {lists.map((list, index) => (
+                {stateLists.map((list, index) => (
                   <Draggable draggableId={list._id} index={index} key={list._id}>
                     {(provided) => (
                       <div
