@@ -26,7 +26,7 @@ const ListComponent = ({ list, handleListId }) => {
   //fetchCards action
   useEffect(() => {
     dispatch(fetchCards(boardId, listId));
-  }, [dispatch, boardId, listId]);
+  }, []);
 
   const addCardModal = () => {
     openModal();

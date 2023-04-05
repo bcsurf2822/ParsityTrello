@@ -45,7 +45,7 @@ export const fetchAuthorized = () => dispatch => {
 export const fetchList = (boardId) => async (dispatch) => {
   try {
     const response = await axios.get(useProxy(`/board/${boardId}/lists`));
-    const listData = response.data;
+    const listData = response.data.filter((list) => list !== null); // <-- Add this line to filter out null values
     //console.log("Fetched lists:", listData);
     dispatch({
       type: FETCH_LIST,
@@ -80,16 +80,16 @@ export const fetchCards = (boardId, listId) => async (dispatch) => {
 // update lists
 export const updateLists = (lists, boardId) => async (dispatch) => {
   try {
-    const response = await axios.patch(useProxy(`/boards/${boardId}/lists`), {lists, boardId})
+    const response = await axios.patch(useProxy(`/boards/${boardId}/lists`), {lists, boardId});
 
     dispatch({
       type: UPDATE_LISTS,
-      payload: { lists: response.data.list },
+      payload: { lists: response.data.lists },
     });
   } catch (error) {
-    console.error("Error updating lists", error)
+    console.error("Error updating lists", error);
   }
-} 
+};
 
 // TODO: update cards
 export const updateCards = (listId, cards) => async (dispatch) => {
@@ -100,12 +100,12 @@ export const updateCards = (listId, cards) => async (dispatch) => {
 
     dispatch({
       type: UPDATE_CARDS,
-      payload: { cards: response.data.cards },
+      payload: { listId, cards: response.data.cards }, // added listId here
     });
   } catch (error) {
     console.error("Error updating cards", error)
   }
-} ;
+};
 
 //POST LIST
 export const postList = (lists, boardId) => async (dispatch) => {
