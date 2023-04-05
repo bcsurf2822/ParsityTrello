@@ -1,7 +1,7 @@
 const router = require("express").Router();
-const faker = require('faker');
+const faker = require("faker");
 
-const {Label, Card, Board, User, List, Comment} = require("../models/models")
+const { Label, Card, Board, User, List, Comment } = require("../models/models");
 const boardTitles = ["Frontend", "Backend", "Project"];
 const progress = ["To Do", "Doing", "Done", "RoadBlocks"];
 
@@ -13,19 +13,19 @@ router.get("/generate-boards", async (req, res, next) => {
       board.title = faker.random.arrayElement(boardTitles);
 
       // Create lists and add them to the board
-      for (let j = 0; j < 3; j++) {
+      for (let j = 0; j < 4; j++) {
         let list = new List();
         list.title = faker.random.arrayElement(progress);
 
         // Create cards and add them to the list
-        for (let k = 0; k < 3; k++) {
+        for (let k = 0; k < 5; k++) {
           let card = new Card();
           card.title = faker.lorem.sentence();
           card.description = faker.lorem.paragraph();
-          
+
           // Save the card
           await card.save();
-  
+
           // Add the card to the list's cards array
           list.cards.push(card);
         }
@@ -40,7 +40,9 @@ router.get("/generate-boards", async (req, res, next) => {
       // Save the board with the lists
       await board.save();
     }
-    res.status(200).send({ message: "Boards, lists and cards generated successfully" });
+    res
+      .status(200)
+      .send({ message: "Boards, lists and cards generated successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "Error occurred generating" });
@@ -56,18 +58,18 @@ router.get("/boards", async (req, res, next) => {
       results: boards,
     };
 
-    console.log(response);
+    //console.log(response);
     res.json(response);
   } catch (err) {
-    console.log(err)
-    res.status(500).send({error: "Error Occured fetching data"});
+    console.log(err);
+    res.status(500).send({ error: "Error Occured fetching data" });
   }
 });
 
 //Post Boards
 router.post("/boards", async (req, res, next) => {
   try {
-    console.log("body", req.body)
+    console.log("body", req.body);
     const postedBoard = req.body;
     const newBoard = new Board(postedBoard);
     newBoard.save();
@@ -75,7 +77,7 @@ router.post("/boards", async (req, res, next) => {
     res.status(201).send(newBoard);
   } catch (err) {
     console.log(err);
-    res.status(500).send({error: "error"});
+    res.status(500).send({ error: "error" });
   }
 });
 
@@ -83,15 +85,15 @@ router.post("/boards", async (req, res, next) => {
 router.delete("/boards/:board", async (req, res, next) => {
   try {
     const boardById = await Board.findByIdAndRemove(req.params.board);
-    console.log(boardById)
+    console.log(boardById);
     if (!boardById) {
-      res.status(404).send({error: "Invalid ID"})
+      res.status(404).send({ error: "Invalid ID" });
     }
-    res.status(200).send({message: "Board Deleted"})
-    } catch (err) {
-      console.log(err);
-      res.status(500).send({error: "Server Error"});
-    }
+    res.status(200).send({ message: "Board Deleted" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "Server Error" });
+  }
 });
 
 //Get lists
@@ -139,10 +141,12 @@ router.delete("/boards/:boardId/lists/:listId", async (req, res, next) => {
     const boardById = await Board.findById(boardId);
 
     if (!boardById) {
-      res.status(404).send({error: "Invalid Board ID"});
+      res.status(404).send({ error: "Invalid Board ID" });
     }
 
-    const listIndex = boardById.lists.findIndex(list => list._id.toString() === listId);
+    const listIndex = boardById.lists.findIndex(
+      (list) => list._id.toString() === listId
+    );
 
     if (listIndex === -1) {
       return res.status(404).send({ error: "List not found in the board" });
@@ -152,10 +156,10 @@ router.delete("/boards/:boardId/lists/:listId", async (req, res, next) => {
 
     await boardById.save();
 
-    res.status(200).send({message: "List Deleted"});
+    res.status(200).send({ message: "List Deleted" });
   } catch (err) {
     console.log(err);
-    res.status(500).send({error: "Server Error"});
+    res.status(500).send({ error: "Server Error" });
   }
 });
 
@@ -169,7 +173,9 @@ router.get("/board/:boardId/lists/:listId", async (req, res) => {
       return res.status(404).send({ error: "Board not found" });
     }
 
-    const listInBoard = board.lists.find(list => list._id.toString() === listId);
+    const listInBoard = board.lists.find(
+      (list) => list._id.toString() === listId
+    );
 
     if (!listInBoard) {
       return res.status(404).send({ error: "List not found in the board" });
@@ -198,7 +204,9 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
       return res.status(404).send({ error: "Board not found" });
     }
 
-    const listInBoard = board.lists.find(list => list._id.toString() === listId);
+    const listInBoard = board.lists.find(
+      (list) => list._id.toString() === listId
+    );
 
     if (!listInBoard) {
       return res.status(404).send({ error: "List not found in the board" });
@@ -206,7 +214,7 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
 
     const list = await List.findById(listId);
 
-     if (!list) {
+    if (!list) {
       return res.status(404).send({ error: "List not found" });
     }
 
@@ -224,11 +232,71 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
   }
 });
 
+// update list array in board schema
+router.patch("/boards/:boardId/lists", async (req, res, next) => {
+  try {
+    const { boardId } = req.params;
+    const updateData = req.body.lists;
 
-const usernames = ["Ben", "Joseph", "Nicholas", "John", "Pat", "Will", "Aaron", "Peter"];
+    // find board
+    const board = await Board.findById(boardId);
+
+    if (!board) {
+      return res.status(404).send({ error: "Board not found" });
+    }
+
+    Object.assign(board.lists, updateData);
+
+    await board.save();
+
+    res
+      .status(200)
+      .send({ message: "List order updated", list: board.lists });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "Server Error" });
+  }
+});
+
+// update card order in ListSchema
+router.patch("/lists/:listId/cards", async (req, res, next) => {
+  try {
+    const { listId } = req.params;
+    const updateData = req.body.cards;
+
+    // find list
+    const list = await List.findById(listId);
+
+    if (!list) {
+      return res.status(404).send({ error: "List not found" });
+    }
+
+    Object.assign(list.cards, updateData);
+
+    await list.save();
+
+    res
+      .status(200)
+      .send({message: "Card order updated", cards: list.cards})
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "Server Error" });
+  }
+});
+
+const usernames = [
+  "Ben",
+  "Joseph",
+  "Nicholas",
+  "John",
+  "Pat",
+  "Will",
+  "Aaron",
+  "Peter",
+];
 const passwords = ["get"];
 
-router.get("/generate-users", (req,res) => {
+router.get("/generate-users", (req, res) => {
   for (let i = 0; i < 8; i++) {
     let user = new User();
 
@@ -236,11 +304,9 @@ router.get("/generate-users", (req,res) => {
     user.password = faker.random.arrayElement(passwords);
 
     const userResult = user.save();
-    console.log(userResult);
+    //console.log(userResult);
     res.end();
   }
 });
 
-
 module.exports = router;
-

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AUTH_USER, AUTH_ERROR, FETCH_LIST, FETCH_CARDS } from "./types";
+import { AUTH_USER, AUTH_ERROR, FETCH_LIST, FETCH_CARDS, UPDATE_LISTS, UPDATE_CARDS } from "./types";
 
 const useProxy = function (route) {
   return `http://localhost:8000${route}`
@@ -46,7 +46,7 @@ export const fetchList = (boardId) => async (dispatch) => {
   try {
     const response = await axios.get(useProxy(`/board/${boardId}/lists`));
     const listData = response.data;
-    console.log("Fetched lists:", listData);
+    //console.log("Fetched lists:", listData);
     dispatch({
       type: FETCH_LIST,
       payload: listData,
@@ -73,3 +73,33 @@ export const fetchCards = (boardId, listId) => async (dispatch) => {
     console.error("Error fetching cards", error);
   }
 };
+
+// update lists
+export const updateLists = (lists, boardId) => async (dispatch) => {
+  try {
+    const response = await axios.patch(useProxy(`/boards/${boardId}/lists`), {lists, boardId})
+
+    dispatch({
+      type: UPDATE_LISTS,
+      payload: { lists: response.data.list },
+    });
+  } catch (error) {
+    console.error("Error updating lists", error)
+  }
+} 
+
+// TODO: update cards
+export const updateCards = (listId, cards) => async (dispatch) => {
+  try {
+    const response = await axios.patch(useProxy(`/lists/${listId}/cards`), {cards})
+
+    console.log(response);
+
+    dispatch({
+      type: UPDATE_CARDS,
+      payload: { cards: response.data.cards },
+    });
+  } catch (error) {
+    console.error("Error updating cards", error)
+  }
+} 
