@@ -127,6 +127,9 @@ router.post("/board/:boardId/lists", async (req, res, next) => {
       _id: newList._id,
       title: newList.title,
     });
+    console.log("request", req.body);
+    console.log("new List", newList);
+    console.log("board", boardId);
 
     await boardById.save();
     res.status(201).send(newList);
