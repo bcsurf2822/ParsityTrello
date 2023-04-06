@@ -140,7 +140,7 @@ router.post("/board/:boardId/lists", async (req, res, next) => {
 });
 
 //Delete Lists
-router.delete("/boards/:boardId/lists/:listId", async (req, res, next) => {
+router.delete("/board/:boardId/lists/:listId", async (req, res, next) => {
   try {
     const { boardId, listId } = req.params;
     console.log("boardId", boardId, "listId", listId)
@@ -174,22 +174,25 @@ router.delete("/boards/:boardId/lists/:listId", async (req, res, next) => {
 router.get("/board/:boardId/lists/:listId", async (req, res) => {
   try {
     const { boardId, listId } = req.params;
+    console.log("boardId:", boardId, "listId:", listId);
+
     const boardById = await Board.findById(boardId);
+    console.log("boardById:", boardById);
 
     if (!boardById) {
       return res.status(404).send({ error: "Board not found" });
     }
 
-    const listInBoard = boardById.lists.find(
-    
-      (list) => list._id.toString() === listId
+    const listInBoard = boardById.lists.filter((list) => list !== null).find((list) => list._id.toString() === listId
     );
+    console.log("listInBoard:", listInBoard);
 
     if (!listInBoard) {
       return res.status(404).send({ error: "List not found in the board" });
     }
 
     const list = await List.findById(listId).populate("cards");
+    console.log("list:", list);
 
     if (!list) {
       return res.status(404).send({ error: "List not found" });
@@ -242,7 +245,7 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
 });
 
 // update list array in board schema
-router.patch("/boards/:boardId/lists", async (req, res, next) => {
+router.patch("/board/:boardId/lists", async (req, res, next) => {
   try {
     const { boardId } = req.params;
     const updateData = req.body.lists;

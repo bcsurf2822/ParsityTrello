@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchList, updateLists, updateCards, postList, clearList } from "../actions";
+import {
+  fetchList,
+  updateLists,
+  updateCards,
+  postList,
+  clearList,
+} from "../actions";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
@@ -22,13 +28,23 @@ const Board = () => {
   const dispatch = useDispatch();
   const lists = useSelector((state) => state.lists?.list || []);
   const cards = useSelector((state) => state.cards || []);
-  const [stateLists, setLists] = useState([]);
+  const stateLists = lists;
+
+  // const [stateLists, setLists] = useState([]);
   const [fetch, setFetch] = useState(false);
 
-  const handleList = (list) => {
-    dispatch(postList(list, id));
-    setLists([...stateLists, {title: list, boardId: id}])
-  }
+  //new
+  useEffect(() => {
+    const fetchData = async () => {
+      await dispatch(fetchList(id));
+    };
+
+    fetchData();
+
+    return () => {
+      dispatch(clearList());
+    };
+  }, [dispatch, id])
 
   //Before Attemptin to mess again
   // useEffect(() => {
@@ -42,6 +58,19 @@ const Board = () => {
   //     dispatch(clearList());
   //   }
   // }, [dispatch, id, fetch]);
+
+
+  useEffect(() => {
+    const fetchData = async () => {
+      await dispatch(fetchList(id));
+    };
+
+    fetchData();
+
+    return () => {
+      dispatch(clearList());
+    };
+  }, [dispatch, id]);
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
@@ -64,7 +93,7 @@ const Board = () => {
       newLists.splice(destination.index, 0, removed);
 
       // update the state of the lists
-      setLists(newLists);
+      // setLists(newLists);
 
       // dispatch action to update the lists state
       dispatch(updateLists(newLists, id));
@@ -85,11 +114,14 @@ const Board = () => {
 
   const ListModal = () => {
     const [newList, setNewList] = useState("");
-    const addList = () => {
-      handleList(newList);
-      setNewList("");
-      closeModal();
-      console.log("Dispatch Sent");
+
+    const addList = async () => {
+      if (newList.trip() !== "") {
+        await dispatch(postList(newList, id));
+        setNewList("");
+        closeModal();
+        console.log("Dispatch Sent");
+      }
     };
     return (
       <div className="addList">

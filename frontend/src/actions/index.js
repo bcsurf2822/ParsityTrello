@@ -93,7 +93,7 @@ export const fetchCards = (boardId, listId) => async (dispatch) => {
   }
 };
 
-// update lists
+//  update list array in board schema
 export const updateLists = (lists, boardId) => async (dispatch) => {
   try {
     const response = await axios.patch(useProxy(`/boards/${boardId}/lists`), {
@@ -131,7 +131,7 @@ export const updateCards = (listId, cards) => async (dispatch) => {
 //POST LIST
 export const postList = (lists, boardId) => async (dispatch) => {
   try {
-    const response = await axios.post(useProxy(`/board/${boardId}/lists`), {
+    const {response} = await axios.post(useProxy(`/board/${boardId}/lists`), {
       title: lists,
       boardId,
     });
@@ -141,6 +141,8 @@ export const postList = (lists, boardId) => async (dispatch) => {
       type: POST_LIST,
       payload: response.data,
     });
+
+    return response.data
   } catch (error) {
     console.error("Error Posting lists", error);
   }
