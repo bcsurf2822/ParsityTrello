@@ -3,7 +3,7 @@ import PlusSvg from "../public/plus.svg";
 import CardComponent from "./cardComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchCards, postCard } from "../actions";
+import { fetchCards, postCard, deleteList } from "../actions";
 import { Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
@@ -21,12 +21,13 @@ const ListComponent = ({ list, handleListId }) => {
 
   const dispatch = useDispatch();
   const cards = useSelector((state) => state.cards || {});
+  const lists = useSelector((state) => state.lists.list || []);
   let cardArray = cards[listId] || [];
 
   //fetchCards action
   useEffect(() => {
     dispatch(fetchCards(boardId, listId));
-  }, []);
+  }, [boardId, listId, dispatch]);
 
   const addCardModal = () => {
     openModal();
@@ -38,19 +39,26 @@ const ListComponent = ({ list, handleListId }) => {
     closeModal();
   };
 
+  // const listDelete = () => {
+  //   dispatch(deleteList(listId, id));
+  //   console.log("deleteLIst");
+
+  // }
+  // <button onClick={listDelete}>Delete</button>
+
   return (
     <div>
       <div className="flex flex-row">
         <div className="bg-gray-100 rounded-lg w-80 flex flex-col">
           <div className="flex justify-between items-center mx-4 mb-4 mt-4">
-            <p className="font-semibold">{list.title}</p>
+            <p className="font-semibold">{list.title}                 </p>
           </div>
           <Droppable droppableId={listId} key={listId} type="card">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {cardArray &&
                   cardArray.map((card, index) => (
-                    <CardComponent key={card._id} card={card} index={index} />
+                    <CardComponent key={`${card._id}-${index}`} card={card} index={index} />
                   ))}
                 {provided.placeholder}
               </div>
