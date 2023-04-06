@@ -245,7 +245,7 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
 });
 
 // update list array in board schema
-router.patch("/board/:boardId/lists", async (req, res, next) => {
+router.patch("/boards/:boardId/lists", async (req, res, next) => {
   try {
     const { boardId } = req.params;
     const updateData = req.body.lists;
