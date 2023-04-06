@@ -135,7 +135,7 @@ export const postList = (lists, boardId) => async (dispatch) => {
       title: lists,
       boardId,
     });
-    console.log("Post Response", response.data);
+    console.log("Post Response", response);
 
     dispatch({
       type: POST_LIST,

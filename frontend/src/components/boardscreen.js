@@ -116,7 +116,7 @@ const Board = () => {
     const [newList, setNewList] = useState("");
 
     const addList = async () => {
-      if (newList.trip() !== "") {
+      if (newList.trim() !== "") {
         await dispatch(postList(newList, id));
         setNewList("");
         closeModal();
