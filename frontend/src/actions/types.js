@@ -6,3 +6,5 @@ export const UPDATE_LISTS = "update_lists";
 export const UPDATE_CARDS = "update_cards";
 export const POST_LIST = "post_list";
 export const POST_CARD = "POST_CARD";
+export const DELETE_LIST = "delete_LIST";
+export const DELETE_CARD = "delete_card"

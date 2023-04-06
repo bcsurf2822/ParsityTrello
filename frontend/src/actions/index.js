@@ -1,46 +1,58 @@
 import axios from "axios";
-import { AUTH_USER, AUTH_ERROR, FETCH_LIST, FETCH_CARDS, UPDATE_LISTS, UPDATE_CARDS, POST_LIST, POST_CARD } from "./types";
+import {
+  AUTH_USER,
+  AUTH_ERROR,
+  FETCH_LIST,
+  FETCH_CARDS,
+  UPDATE_LISTS,
+  UPDATE_CARDS,
+  POST_LIST,
+  POST_CARD,
+  DELETE_CARD,
+  DELETE_LIST,
+} from "./types";
 
 const useProxy = function (route) {
-  return `http://localhost:8000${route}`
-}
-
-//Logs in User in coordination with our post Login Route
-export const logIn = (formProps, callback) => dispatch => {
-  axios.post(
-    useProxy("/login"),
-    formProps
-  ).then(function (response) {
-    dispatch({type: AUTH_USER, payload: response.data});
-    localStorage.setItem("token", response.data.token);
-    console.log("API RES", response.data.token)
-    callback();
-  })
-  .catch(function () {
-    dispatch({type: AUTH_ERROR, payload: alert("Unauthorized Username or Password")})
-  })
+  return `http://localhost:8000${route}`;
 };
 
-export const fetchAuthorized = () => dispatch => {
+//Logs in User in coordination with our post Login Route
+export const logIn = (formProps, callback) => (dispatch) => {
+  axios
+    .post(useProxy("/login"), formProps)
+    .then(function (response) {
+      dispatch({ type: AUTH_USER, payload: response.data });
+      localStorage.setItem("token", response.data.token);
+      console.log("API RES", response.data.token);
+      callback();
+    })
+    .catch(function () {
+      dispatch({
+        type: AUTH_ERROR,
+        payload: alert("Unauthorized Username or Password"),
+      });
+    });
+};
+
+export const fetchAuthorized = () => (dispatch) => {
   const config = {
     headers: {
-      Authorization: "Bearer" + localStorage.getItem("token")
-    }
+      Authorization: "Bearer" + localStorage.getItem("token"),
+    },
   };
 
   //Protected Endpoint use
-  axios.get(
-    useProxy("/authorized"),
-    config
-    ).then(function (response) {
-      dispatch({type: AUTH_USER, payload: response.data});
-      localStorage.setItem("token", response.data.token)
-      console.log("Get Auth User", response)
+  axios
+    .get(useProxy("/authorized"), config)
+    .then(function (response) {
+      dispatch({ type: AUTH_USER, payload: response.data });
+      localStorage.setItem("token", response.data.token);
+      console.log("Get Auth User", response);
     })
     .catch(function (error) {
-      console.log(error)
-    })
-}
+      console.log(error);
+    });
+};
 
 export const fetchList = (boardId) => async (dispatch) => {
   try {
@@ -51,13 +63,13 @@ export const fetchList = (boardId) => async (dispatch) => {
       type: FETCH_LIST,
       payload: listData,
     });
-    console.log("listRes", response)
-    console.log("LIst Data", listData)
+    console.log("listRes", response);
+    console.log("LIst Data", listData);
 
     // Fetch the cards for each list
     listData.forEach((list) => {
       dispatch(fetchCards(boardId, list._id));
-      console.log("List after id", list._id)
+      console.log("List after id", list._id);
     });
   } catch (error) {
     console.error("Error fetching lists data", error);
@@ -67,7 +79,9 @@ export const fetchList = (boardId) => async (dispatch) => {
 // fetch cards
 export const fetchCards = (boardId, listId) => async (dispatch) => {
   try {
-    const response = await axios.get(useProxy(`/board/${boardId}/lists/${listId}`));
+    const response = await axios.get(
+      useProxy(`/board/${boardId}/lists/${listId}`)
+    );
     dispatch({
       type: FETCH_CARDS,
       payload: { listId, cards: response.data.cards },
@@ -80,7 +94,10 @@ export const fetchCards = (boardId, listId) => async (dispatch) => {
 // update lists
 export const updateLists = (lists, boardId) => async (dispatch) => {
   try {
-    const response = await axios.patch(useProxy(`/boards/${boardId}/lists`), {lists, boardId});
+    const response = await axios.patch(useProxy(`/boards/${boardId}/lists`), {
+      lists,
+      boardId,
+    });
 
     dispatch({
       type: UPDATE_LISTS,
@@ -94,7 +111,9 @@ export const updateLists = (lists, boardId) => async (dispatch) => {
 // TODO: update cards
 export const updateCards = (listId, cards) => async (dispatch) => {
   try {
-    const response = await axios.patch(useProxy(`/lists/${listId}/cards`), {cards})
+    const response = await axios.patch(useProxy(`/lists/${listId}/cards`), {
+      cards,
+    });
 
     console.log(response);
 
@@ -103,30 +122,33 @@ export const updateCards = (listId, cards) => async (dispatch) => {
       payload: { listId, cards: response.data.cards },
     });
   } catch (error) {
-    console.error("Error updating cards", error)
+    console.error("Error updating cards", error);
   }
 };
 
 //POST LIST
 export const postList = (lists, boardId) => async (dispatch) => {
   try {
-    const response = await axios.post(useProxy(`/board/${boardId}/lists`), {title: lists, boardId})
-    console.log("Post Response", response.data)
+    const response = await axios.post(useProxy(`/board/${boardId}/lists`), {
+      title: lists,
+      boardId,
+    });
+    console.log("Post Response", response.data);
 
     dispatch({
       type: POST_LIST,
-      payload: response.data
+      payload: response.data,
     });
   } catch (error) {
-    console.error("Error Posting lists", error)
+    console.error("Error Posting lists", error);
   }
 };
 
 //POST CARD
 export const postCard = (cardTitle, listId, boardId) => async (dispatch) => {
   try {
-    const response = await axios.post(useProxy(
-      `/board/${boardId}/lists/${listId}`),
+    const response = await axios.post(
+      useProxy(`/board/${boardId}/lists/${listId}`),
       { title: cardTitle }
     );
     const card = response.data;
@@ -135,3 +157,17 @@ export const postCard = (cardTitle, listId, boardId) => async (dispatch) => {
     console.error(error);
   }
 };
+
+//DELETE LIST
+export const deleteList = (listId, boardId) => async (dispatch) => {
+  try {
+    const response = await axios.delete(
+      useProxy(`/board/${boardId}/lists/${listId}`)
+    );
+    dispatch({ type: DELETE_LIST, payload: listId });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+//Delete Card
