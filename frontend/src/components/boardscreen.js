@@ -38,6 +38,10 @@ const Board = () => {
     }
   }, [dispatch, id, fetch]);
 
+  useEffect(() => {
+    setLists(lists);
+  }, [lists])
+
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
 
