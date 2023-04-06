@@ -200,7 +200,7 @@ const Board = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <ListComponent list={list} index={index} />
+                          <ListComponent key={list._id} list={list} index={index} />
                         </div>
                       )}
                     </Draggable>

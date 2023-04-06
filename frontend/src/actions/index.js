@@ -153,7 +153,7 @@ export const postCard = (cardTitle, listId, boardId) => async (dispatch) => {
   try {
     const response = await axios.post(
       useProxy(`/board/${boardId}/lists/${listId}`),
-      { title: cardTitle }
+      { title: cardTitle, listId, boardId }
     );
     const card = response.data;
     dispatch({ type: POST_CARD, payload: { card, listId } });

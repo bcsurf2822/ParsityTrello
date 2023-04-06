@@ -215,29 +215,19 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
       return res.status(404).send({ error: "Board not found" });
     }
 
+    console.log("boardById:", boardById); // Log boardById object
+    console.log("boardByIdlists:", boardById.lists);
     const listInBoard = boardById.lists.find(
-
-      (list) => list._id.toString() === listId
+      (list) => {
+        return list._id.toString() === listId;
+      }
     );
 
     if (!listInBoard) {
       return res.status(404).send({ error: "List not found in the board" });
     }
 
-    const list = await List.findById(listId);
 
-    if (!list) {
-      return res.status(404).send({ error: "List not found" });
-    }
-
-    const postedCard = req.body;
-    const newCard = new Card(postedCard);
-    await newCard.save();
-
-    list.cards.push(newCard);
-
-    await list.save();
-    res.status(201).send(newCard);
   } catch (err) {
     console.log(err);
     res.status(500).send({ error: "error" });
@@ -246,6 +236,7 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
 
 // update list array in board schema
 router.patch("/boards/:boardId/lists", async (req, res, next) => {
+  console.log("PATCH LIST RECEIVED")
   try {
     const { boardId } = req.params;
     const updateData = req.body.lists;
