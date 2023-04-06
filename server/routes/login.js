@@ -2,7 +2,7 @@ const router = require("express").Router();
 const jwt = require("jwt-simple");
 const passport = require("passport");
 const faker = require("faker");
-const User = require("../models/models");
+const { User } = require("../models/models");
 
 const userToken = function (user) {
   return jwt.encode(

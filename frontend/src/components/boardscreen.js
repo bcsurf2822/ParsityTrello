@@ -49,7 +49,7 @@ const Board = () => {
 
     if (type === "list") {
       // update the order of the lists
-      const newLists = Array.from(lists);
+      const newLists = Array.from(stateLists);
       const [removed] = newLists.splice(source.index, 1);
       newLists.splice(destination.index, 0, removed);
 
@@ -61,12 +61,12 @@ const Board = () => {
     } else {
       // update the order of the cards within a list
       const listId = source.droppableId;
-      const newCards = cards[listId].slice();
+      const newCards = Array.from(cards[listId] || []);
       const [removed] = newCards.splice(source.index, 1);
       newCards.splice(destination.index, 0, removed);
 
       //update the state of card order
-      //setCards(newCards);
+      // setCards(newCards);
 
       // dispatch action to update the cards state
       dispatch(updateCards(listId, newCards));

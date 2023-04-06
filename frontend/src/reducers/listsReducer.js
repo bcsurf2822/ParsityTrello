@@ -9,7 +9,7 @@ const listsReducer = (state = initialState, action) => {
     case FETCH_LIST:
       return {...state, list: action.payload};
     case UPDATE_LISTS:
-      return {...state, list: [...state.list, action.payload.list]};
+      return action.payload.lists;
     case POST_LIST:
       return {...state, list: [...state.list, action.payload]}
     default:
