@@ -39,19 +39,26 @@ const ListComponent = ({ list, handleListId }) => {
     closeModal();
   };
 
-  // const listDelete = () => {
-  //   dispatch(deleteList(listId, id));
-  //   console.log("deleteLIst");
+  const listDelete = () => {
+    dispatch(deleteList(listId, id));
+    console.log("deleteLIst");
 
-  // }
-  // <button onClick={listDelete}>Delete</button>
+  }
 
   return (
     <div>
       <div className="flex flex-row">
         <div className="bg-gray-100 rounded-lg w-80 flex flex-col">
           <div className="flex justify-between items-center mx-4 mb-4 mt-4">
-            <p className="font-semibold">{list.title}                 </p>
+            <p className="font-semibold">{list.title} </p>
+          </div>
+          <div>
+          <button
+        onClick={listDelete}
+        className="text-white bg-red-700 hover:bg-red-800 rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 focus:outline-none dark:focus:ring-red-800 cursor-pointer font-semibold"
+      >
+      DELETE
+      </button>
           </div>
           <Droppable droppableId={listId} key={listId} type="card">
             {(provided) => (
