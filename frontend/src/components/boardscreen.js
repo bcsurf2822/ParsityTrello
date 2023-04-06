@@ -25,18 +25,23 @@ const Board = () => {
   const [stateLists, setLists] = useState([]);
   const [fetch, setFetch] = useState(false);
 
+  const handleList = (list) => {
+    dispatch(postList(list, id));
+    setLists([...stateLists, {title: list, boardId: id}])
+  }
 
-  useEffect(() => {
-    if (!fetch) {
-      dispatch(fetchList(id));
-      setFetch(true);
-    } else {
-      setLists(lists)
-    }
-    return () => {
-      dispatch(clearList());
-    }
-  }, [dispatch, id, fetch]);
+  //Before Attemptin to mess again
+  // useEffect(() => {
+  //   if (!fetch) {
+  //     dispatch(fetchList(id));
+  //     setFetch(true);
+  //   } else {
+  //     setLists(lists)
+  //   }
+  //   return () => {
+  //     dispatch(clearList());
+  //   }
+  // }, [dispatch, id, fetch]);
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
@@ -81,7 +86,7 @@ const Board = () => {
   const ListModal = () => {
     const [newList, setNewList] = useState("");
     const addList = () => {
-      dispatch(postList(newList, id));
+      handleList(newList);
       setNewList("");
       closeModal();
       console.log("Dispatch Sent");

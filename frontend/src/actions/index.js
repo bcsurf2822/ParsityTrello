@@ -12,6 +12,7 @@ import {
   DELETE_LIST,
   CLEAR_LIST
 } from "./types";
+import { useEffect } from "react";
 
 const useProxy = function (route) {
   return `http://localhost:8000${route}`;
