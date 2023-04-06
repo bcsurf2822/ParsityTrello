@@ -13,7 +13,7 @@ const listsReducer = (state = initialState, action) => {
     case POST_LIST:
       return {...state, list: [...state.list, action.payload]}
     case DELETE_LIST:
-      return {...state, lists: state.list.filter((list) => list._id !== action.payload)}
+      return {...state, list: state.list.filter((list) => list._id !== action.payload)}
     default:
       return state;
   }

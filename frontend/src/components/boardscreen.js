@@ -25,6 +25,7 @@ const Board = () => {
   const [stateLists, setLists] = useState([]);
   const [fetch, setFetch] = useState(false);
 
+
   useEffect(() => {
     if (!fetch) {
       dispatch(fetchList(id));
@@ -72,6 +73,7 @@ const Board = () => {
       dispatch(updateCards(listId, newCards));
     }
   };
+
   const ListModal = () => {
     const [newList, setNewList] = useState("");
     const addList = () => {

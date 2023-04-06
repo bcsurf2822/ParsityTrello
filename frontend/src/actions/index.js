@@ -161,10 +161,13 @@ export const postCard = (cardTitle, listId, boardId) => async (dispatch) => {
 //DELETE LIST
 export const deleteList = (listId, boardId) => async (dispatch) => {
   try {
+    console.log("called with", listId, boardId)
     const response = await axios.delete(
       useProxy(`/board/${boardId}/lists/${listId}`)
     );
-    dispatch({ type: DELETE_LIST, payload: listId });
+    const list = response.data
+    console.log("Delete REs", response.data);
+    dispatch({ type: DELETE_LIST, payload: list });
   } catch (error) {
     console.error(error);
   }

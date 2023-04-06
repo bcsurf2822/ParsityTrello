@@ -3,7 +3,7 @@ import PlusSvg from "../public/plus.svg";
 import CardComponent from "./cardComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchCards, postCard } from "../actions";
+import { fetchCards, postCard, deleteList } from "../actions";
 import { Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
@@ -21,6 +21,7 @@ const ListComponent = ({ list, handleListId }) => {
 
   const dispatch = useDispatch();
   const cards = useSelector((state) => state.cards || {});
+  const lists = useSelector((state) => state.lists.list || []);
   let cardArray = cards[listId] || [];
 
   //fetchCards action
@@ -38,12 +39,19 @@ const ListComponent = ({ list, handleListId }) => {
     closeModal();
   };
 
+  const listDelete = () => {
+    dispatch(deleteList(listId, id));
+    console.log("deleteLIst");
+
+  }
+
+
   return (
     <div>
       <div className="flex flex-row">
         <div className="bg-gray-100 rounded-lg w-80 flex flex-col">
           <div className="flex justify-between items-center mx-4 mb-4 mt-4">
-            <p className="font-semibold">{list.title}</p>
+            <p className="font-semibold">{list.title}                   <button onClick={listDelete}>Delete</button></p>
           </div>
           <Droppable droppableId={listId} key={listId} type="card">
             {(provided) => (
