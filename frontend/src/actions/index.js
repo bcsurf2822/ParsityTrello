@@ -160,7 +160,7 @@ export const postCard = (cardTitle, listId, boardId) => async (dispatch) => {
 };
 
 export const clearList = () => ({
-  type: "CLEAR_LIST",
+  type: CLEAR_LIST,
 })
 
 //DELETE LIST
