@@ -10,6 +10,7 @@ import {
   POST_CARD,
   DELETE_CARD,
   DELETE_LIST,
+  CLEAR_LIST
 } from "./types";
 
 const useProxy = function (route) {
@@ -157,6 +158,10 @@ export const postCard = (cardTitle, listId, boardId) => async (dispatch) => {
     console.error(error);
   }
 };
+
+export const clearList = () => ({
+  type: "CLEAR_LIST",
+})
 
 //DELETE LIST
 export const deleteList = (listId, boardId) => async (dispatch) => {

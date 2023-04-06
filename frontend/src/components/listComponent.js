@@ -27,7 +27,7 @@ const ListComponent = ({ list, handleListId }) => {
   //fetchCards action
   useEffect(() => {
     dispatch(fetchCards(boardId, listId));
-  }, []);
+  }, [boardId, listId, dispatch]);
 
   const addCardModal = () => {
     openModal();
@@ -39,26 +39,26 @@ const ListComponent = ({ list, handleListId }) => {
     closeModal();
   };
 
-  const listDelete = () => {
-    dispatch(deleteList(listId, id));
-    console.log("deleteLIst");
+  // const listDelete = () => {
+  //   dispatch(deleteList(listId, id));
+  //   console.log("deleteLIst");
 
-  }
-
+  // }
+  // <button onClick={listDelete}>Delete</button>
 
   return (
     <div>
       <div className="flex flex-row">
         <div className="bg-gray-100 rounded-lg w-80 flex flex-col">
           <div className="flex justify-between items-center mx-4 mb-4 mt-4">
-            <p className="font-semibold">{list.title}                   <button onClick={listDelete}>Delete</button></p>
+            <p className="font-semibold">{list.title}                 </p>
           </div>
           <Droppable droppableId={listId} key={listId} type="card">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {cardArray &&
                   cardArray.map((card, index) => (
-                    <CardComponent key={card._id} card={card} index={index} />
+                    <CardComponent key={`${card._id}-${index}`} card={card} index={index} />
                   ))}
                 {provided.placeholder}
               </div>

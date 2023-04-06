@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchList, updateLists, updateCards, postList } from "../actions";
+import { fetchList, updateLists, updateCards, postList, clearList } from "../actions";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
@@ -20,7 +20,7 @@ const Board = () => {
 
   const { id } = useParams(); // Get the boardId from URL params
   const dispatch = useDispatch();
-  const lists = useSelector((state) => state.lists.list || []);
+  const lists = useSelector((state) => state.lists?.list || []);
   const cards = useSelector((state) => state.cards || []);
   const [stateLists, setLists] = useState([]);
   const [fetch, setFetch] = useState(false);
@@ -30,9 +30,13 @@ const Board = () => {
     if (!fetch) {
       dispatch(fetchList(id));
       setFetch(true);
+    } else {
+      setLists(lists)
     }
-    setLists(lists);
-  }, [dispatch, id, lists, fetch]);
+    return () => {
+      dispatch(clearList());
+    }
+  }, [dispatch, id, fetch]);
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
