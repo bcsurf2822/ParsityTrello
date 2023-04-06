@@ -3,7 +3,7 @@ import PlusSvg from "../public/plus.svg";
 import CardComponent from "./cardComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchCards } from "../actions";
+import { fetchCards, postCard } from "../actions";
 import { Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
@@ -33,11 +33,9 @@ const ListComponent = ({ list, handleListId }) => {
   };
 
   const addCard = () => {
-    // TODO: send dispatch and call action creator w/ card title (newCard)
-    // dispatch();
+    dispatch(postCard(newCard, listId, boardId));
     setNewCard("");
     closeModal();
-    //console.log(`value: ${newCard}`);
   };
 
   return (

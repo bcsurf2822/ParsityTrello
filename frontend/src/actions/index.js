@@ -1,5 +1,5 @@
 import axios from "axios";
-import { AUTH_USER, AUTH_ERROR, FETCH_LIST, FETCH_CARDS, UPDATE_LISTS, UPDATE_CARDS, POST_LIST } from "./types";
+import { AUTH_USER, AUTH_ERROR, FETCH_LIST, FETCH_CARDS, UPDATE_LISTS, UPDATE_CARDS, POST_LIST, POST_CARD } from "./types";
 
 const useProxy = function (route) {
   return `http://localhost:8000${route}`
@@ -120,4 +120,18 @@ export const postList = (lists, boardId) => async (dispatch) => {
   } catch (error) {
     console.error("Error Posting lists", error)
   }
-} 
+};
+
+//POST CARD
+export const postCard = (cardTitle, listId, boardId) => async (dispatch) => {
+  try {
+    const response = await axios.post(useProxy(
+      `/board/${boardId}/lists/${listId}`),
+      { title: cardTitle }
+    );
+    const card = response.data;
+    dispatch({ type: POST_CARD, payload: { card, listId } });
+  } catch (error) {
+    console.error(error);
+  }
+};
