@@ -1,5 +1,5 @@
 import { createStore, applyMiddleware, combineReducers } from "redux";
-import thunk from "redux-thunk";
+import { composeWithDevTools } from "@redux-devtools/extension";import thunk from "redux-thunk";
 import authenticationReducer from "./authenticationReducer";
 import boardsReducer from "./boardsReducer";
 import listsReducer from "./listsReducer";
@@ -12,6 +12,6 @@ const rootReducer = combineReducers({
   cards: cardsReducer,
 });
 
-const store = createStore(rootReducer, applyMiddleware(thunk));
+const store = createStore(rootReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 export default store;
