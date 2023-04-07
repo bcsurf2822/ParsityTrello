@@ -19,10 +19,13 @@ const userToken = function (user) {
 const requireLogin = passport.authenticate("login", { session: false });
 
 router.post("/login", requireLogin, function (req, res, next) {
-  console.log("request", req);
+  //console.log("request", req);
+  console.log(req.user);
   const token = userToken(req.user);
-  console.log("JWT", token);
+  //console.log("JWT", token);
   res.send({
+    username: req.user,
+    id: req._id,
     token: token,
   });
 });
@@ -36,8 +39,8 @@ router.get("/authorized", requireAuth, function (req, res, next) {
     username: req.user.username,
     token: token,
   };
-  console.log(authUser);
-  res.send(authUser);
+  //console.log(authUser);
+  //res.send(authUser);
 });
 
 const usernames = ["ben", "nick", "joseph"];

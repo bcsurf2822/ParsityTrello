@@ -28,7 +28,7 @@ passport.use(
       const user = await User.findOne({ username, password });
       console.log("user", user);
       if (user.username === username && user.password === password) {
-        return done(null, { myUser: "user", myID: 1234 });
+        return done(null, { user: user.username , _id: user._id });
       } else {
         return done(null, false);
       }
