@@ -23,7 +23,7 @@ const Board = () => {
   const dispatch = useDispatch();
   const boards = useSelector((state) => state.boards.boards.find((board) => board._id === id) || {})
   const lists = useSelector((state) => state.lists?.list || []);
-  const cards = useSelector((state) => state.cards || []);
+  const cards = useSelector((state) => state.cards.cards || []);
   const [stateLists, setLists] = useState([]);
   const [fetch, setFetch] = useState(false);
 
