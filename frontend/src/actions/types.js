@@ -9,3 +9,4 @@ export const POST_CARD = "POST_CARD";
 export const DELETE_LIST = "delete_LIST";
 export const DELETE_CARD = "delete_card"
 export const CLEAR_LIST = "clear_list";
+export const FETCH_BOARDID = "fetch_boardid"

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchBoardId } from "../actions/boards";
 import { fetchList, updateLists, updateCards, postList, clearList } from "../actions";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
@@ -29,6 +30,7 @@ const Board = () => {
 
   useEffect(() => {
     if (!fetch) {
+      dispatch(fetchBoardId(id))
       dispatch(fetchList(id));
       setFetch(true);
     } else {

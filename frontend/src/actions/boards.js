@@ -1,5 +1,5 @@
 import axios from "axios";
-
+import { FETCH_BOARDID } from "./types";
 export const FETCH_BOARDS = "fetch_boards";
 export const POST_BOARDS = "post_boards";
 export const DELETE_BOARDS = "delete_boards";
@@ -34,5 +34,15 @@ export const deleteBoard = (id) => async (dispatch) => {
     dispatch({type: DELETE_BOARDS, payload: id})
   } catch (error) {
     console.error("Unable to delete board");
+  }
+};
+
+export const fetchBoardId = (id) => async (dispatch) => {
+  try {
+    const response = await axios.get(useProxy(`/boards/${id}`))
+    console.log("boardID Client", response)
+    dispatch({type: FETCH_BOARDID, payload: response.data})
+  } catch (error) {
+    console.error("Unable to Fetch Board By ID!")
   }
 }
