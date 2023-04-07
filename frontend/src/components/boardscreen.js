@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchBoardId } from "../actions/boards";
-import { fetchList, updateLists, updateCards, postList, clearList } from "../actions";
+import { fetchList, updateLists, updateCards, postList, clearList, fetchCards } from "../actions";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
@@ -23,7 +23,7 @@ const Board = () => {
   const dispatch = useDispatch();
   const boards = useSelector((state) => state.boards.boards.find((board) => board._id === id) || {})
   const lists = useSelector((state) => state.lists?.list || []);
-  const cards = useSelector((state) => state.cards || []);
+  const cards = useSelector((state) => state.cards.cards || []);
   const [stateLists, setLists] = useState([]);
   const [fetch, setFetch] = useState(false);
 
@@ -168,7 +168,7 @@ const Board = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <ListComponent list={list} index={index} />
+                          <ListComponent list={list} cards={cards} index={index} />
                         </div>
                       )}
                     </Draggable>

@@ -56,6 +56,37 @@ export const fetchAuthorized = () => (dispatch) => {
     });
 };
 
+//OG FETCH LIST
+// export const fetchList = (boardId) => async (dispatch) => {
+//   try {
+//     const response = await axios.get(useProxy(`/board/${boardId}/lists`));
+//     const listData = response.data.filter((list) => list !== null);
+//     //console.log("Fetched lists:", listData);
+//     dispatch({
+//       type: FETCH_LIST,
+//       payload: listData,
+//     });
+//     console.log("listRes", response);
+//     console.log("LIst Data", listData);
+//     console.log("ListData Cards", listData.cards)
+
+//     // Fetch the cards for each list
+//     // listData.forEach((list) => {
+//     //   dispatch(fetchCards(boardId, list._id));
+//     //   console.log("List after id", list.cards);
+//     //   dispatch({type: FETCH_CARDS,
+//     //     payload: list.cards})
+//     // });
+//     listData.forEach((list) => {
+//       dispatch(fetchCards(boardId, list._id));
+//       console.log("List after id", list.cards);
+//     });
+//   } catch (error) {
+//     console.error("Error fetching lists data", error);
+//   }
+// };
+
+//New Fetch LIST FOR TEST
 export const fetchList = (boardId) => async (dispatch) => {
   try {
     const response = await axios.get(useProxy(`/board/${boardId}/lists`));
@@ -65,33 +96,64 @@ export const fetchList = (boardId) => async (dispatch) => {
       type: FETCH_LIST,
       payload: listData,
     });
-    console.log("listRes", response);
+    console.log("listResponse:", response);
     console.log("LIst Data", listData);
 
-    // Fetch the cards for each list
-    listData.forEach((list) => {
-      dispatch(fetchCards(boardId, list._id));
-      console.log("List after id", list._id);
-    });
+
+    const cardsPromise = listData.map((list) => dispatch(fetchCards(boardId, list._id)));
+    const newCards = await Promise.all(cardsPromise)
+    console.log("New Cards", newCards)
+
   } catch (error) {
     console.error("Error fetching lists data", error);
   }
 };
 
-// fetch cards
+
+// fetch cards -OG
+// export const fetchCards = (boardId, listId) => async (dispatch) => {
+//   try {
+//     const response = await axios.get(
+//       useProxy(`/board/${boardId}/lists/${listId}`)
+//     );
+//     dispatch({
+//       type: FETCH_CARDS,
+//       payload: { listId, cards: response.data.cards },
+//     });
+//   } catch (error) {
+//     console.error("Error fetching cards", error);
+//   }
+// };
+
+//FETCH TEST FOR LOOP ISSUE
 export const fetchCards = (boardId, listId) => async (dispatch) => {
   try {
     const response = await axios.get(
       useProxy(`/board/${boardId}/lists/${listId}`)
     );
+    if (Array.isArray(response.data)) {
+      const cardData = response.data.filter((card) => card !== null)
     dispatch({
       type: FETCH_CARDS,
-      payload: { listId, cards: response.data.cards },
+      payload: { [listId]: cardData },
     });
+    return cardData
+    } else if (response.data.cards && Array.isArray(response.data.cards)) {
+      const cardData = response.data.cards.filter((card) => card !== null );
+      dispatch({
+        type: FETCH_CARDS,
+        payload: {[listId]: cardData}
+      });
+      return cardData
+    } else {
+      throw new Error("Unexpected Response Structure")
+    }
+    
   } catch (error) {
     console.error("Error fetching cards", error);
   }
 };
+
 
 // update lists
 export const updateLists = (lists, boardId) => async (dispatch) => {
