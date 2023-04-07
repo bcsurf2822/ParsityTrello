@@ -21,6 +21,18 @@ app.use(
   })
 );
 
+const boardRoutes = require("./routes/boards");
+app.use(boardRoutes);
+
+const cardRoutes = require("./routes/cards");
+app.use(cardRoutes);
+
+const commentRoutes = require("./routes/comments");
+app.use(commentRoutes);
+
+const listRoutes = require("./routes/lists")
+app.use(listRoutes);
+
 const passportRoutes = require("./services/passport");
 app.use(passportRoutes);
 
