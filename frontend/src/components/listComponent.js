@@ -3,7 +3,7 @@ import PlusSvg from "../public/plus.svg";
 import CardComponent from "./cardComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchCards, postCard, deleteList } from "../actions";
+import { fetchCards, postCard } from "../actions/cards";
 import { Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";

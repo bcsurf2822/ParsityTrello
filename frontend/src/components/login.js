@@ -1,6 +1,6 @@
 import Logo from "../public/logo.png";
-import {useState} from "react";
-import {useDispatch} from "react-redux";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { logIn } from "../actions";
 import { useNavigate } from "react-router-dom";
 
