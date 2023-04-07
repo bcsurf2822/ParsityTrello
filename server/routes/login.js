@@ -43,20 +43,4 @@ router.get("/authorized", requireAuth, function (req, res, next) {
   //res.send(authUser);
 });
 
-const usernames = ["ben", "nick", "joseph"];
-const passwords = ["let", "tan", "trello", "eagles", "cat", "dog"];
-
-router.get("/generate-users", (req, res) => {
-  for (let i = 0; i < 4; i++) {
-    let user = new User();
-
-    user.username = faker.random.arrayElement(usernames);
-    user.password = faker.random.arrayElement(passwords);
-
-    const userResult = user.save();
-    console.log(userResult);
-    res.end();
-  }
-});
-
 module.exports = router;
