@@ -95,21 +95,14 @@ export const fetchList = (boardId) => async (dispatch) => {
       type: FETCH_LIST,
       payload: listData,
     });
-    console.log("listRes", response);
+    console.log("listResponse:", response);
     console.log("LIst Data", listData);
-    console.log("ListData Cards", listData.cards)
 
-    // Fetch the cards for each list
-    // listData.forEach((list) => {
-    //   dispatch(fetchCards(boardId, list._id));
-    //   console.log("List after id", list.cards);
-    //   dispatch({type: FETCH_CARDS,
-    //     payload: list.cards})
-    // });
-    listData.forEach((list) => {
-      dispatch(fetchCards(boardId, list._id));
-      console.log("List after id", list.cards);
-    });
+
+    const cardsPromise = listData.map((list) => dispatch(fetchCards(boardId, list._id)));
+    const newCards = await Promise.all(cardsPromise)
+    console.log("New Cards", newCards)
+
   } catch (error) {
     console.error("Error fetching lists data", error);
   }
