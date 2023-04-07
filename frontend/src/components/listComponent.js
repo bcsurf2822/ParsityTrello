@@ -8,11 +8,11 @@ import { Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
 
-const ListComponent = ({ list }) => {
+const ListComponent = ({ list, handleListId }) => {
   const { id } = useParams();
   let boardId = id;
   let listId = list._id;
-  console.log("List From Boards", list)
+
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
@@ -20,8 +20,8 @@ const ListComponent = ({ list }) => {
   const [newCard, setNewCard] = useState("");
 
   const dispatch = useDispatch();
-  const cards = useSelector((state) => state.cards.cards || {});
-  // const lists = useSelector((state) => state.lists.list || []);
+  const cards = useSelector((state) => state.cards || {});
+  const lists = useSelector((state) => state.lists.list || []);
   let cardArray = cards[listId] || [];
 
   //fetchCards action
@@ -51,18 +51,14 @@ const ListComponent = ({ list }) => {
       <div className="flex flex-row">
         <div className="bg-gray-100 rounded-lg w-80 flex flex-col">
           <div className="flex justify-between items-center mx-4 mb-4 mt-4">
-            <p className="font-semibold">{list.title} </p>
+            <p className="font-semibold">{list.title}                 </p>
           </div>
           <Droppable droppableId={listId} key={listId} type="card">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {cardArray &&
                   cardArray.map((card, index) => (
-                    <CardComponent
-                      key={`${card._id}-${index}`}
-                      card={card}
-                      index={index}
-                    />
+                    <CardComponent key={`${card._id}-${index}`} card={card} index={index} />
                   ))}
                 {provided.placeholder}
               </div>
