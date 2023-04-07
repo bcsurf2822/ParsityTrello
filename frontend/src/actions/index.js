@@ -131,7 +131,7 @@ export const updateCards = (listId, cards) => async (dispatch) => {
 //POST LIST
 export const postList = (lists, boardId) => async (dispatch) => {
   try {
-    const {response} = await axios.post(useProxy(`/board/${boardId}/lists`), {
+    const response = await axios.post(useProxy(`/board/${boardId}/lists`), {
       title: lists,
       boardId,
     });
