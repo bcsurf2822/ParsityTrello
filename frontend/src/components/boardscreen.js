@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  fetchList,
-  updateLists,
-  updateCards,
-  postList,
-  clearList,
-} from "../actions";
+import { fetchList, updateLists, updateCards, postList, clearList } from "../actions";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
@@ -27,51 +21,24 @@ const Board = () => {
   const { id } = useParams(); // Get the boardId from URL params
   const dispatch = useDispatch();
   const lists = useSelector((state) => state.lists?.list || []);
-  const boards = useSelector((state) => state.boards.boards.find((board) => board._id === id) || {})
   const cards = useSelector((state) => state.cards || []);
-  const stateLists = lists;
+  const boards = useSelector((state) => state.boards.boards.find((board) => board._id === id) || {})
 
-  // const [stateLists, setLists] = useState([]);
+  const [stateLists, setLists] = useState([]);
   const [fetch, setFetch] = useState(false);
 
-  //new
-  useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(fetchList(id));
-    };
-
-    fetchData();
-
-    return () => {
-      dispatch(clearList());
-    };
-  }, [dispatch, id])
-
-  //Before Attemptin to mess again
-  // useEffect(() => {
-  //   if (!fetch) {
-  //     dispatch(fetchList(id));
-  //     setFetch(true);
-  //   } else {
-  //     setLists(lists)
-  //   }
-  //   return () => {
-  //     dispatch(clearList());
-  //   }
-  // }, [dispatch, id, fetch]);
-
 
   useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(fetchList(id));
-    };
-
-    fetchData();
-
+    if (!fetch) {
+      dispatch(fetchList(id));
+      setFetch(true);
+    } else {
+      setLists(lists)
+    }
     return () => {
       dispatch(clearList());
-    };
-  }, [dispatch, id]);
+    }
+  }, [dispatch, id, fetch]);
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
@@ -94,7 +61,7 @@ const Board = () => {
       newLists.splice(destination.index, 0, removed);
 
       // update the state of the lists
-      // setLists(newLists);
+      setLists(newLists);
 
       // dispatch action to update the lists state
       dispatch(updateLists(newLists, id));
@@ -115,14 +82,11 @@ const Board = () => {
 
   const ListModal = () => {
     const [newList, setNewList] = useState("");
-
-    const addList = async () => {
-      if (newList.trim() !== "") {
-        await dispatch(postList(newList, id));
-        setNewList("");
-        closeModal();
-        console.log("Dispatch Sent");
-      }
+    const addList = () => {
+      dispatch(postList(newList, id));
+      setNewList("");
+      closeModal();
+      console.log("Dispatch Sent");
     };
     return (
       <div className="addList">
@@ -201,7 +165,7 @@ const Board = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <ListComponent key={list._id} list={list} index={index} />
+                          <ListComponent list={list} index={index} />
                         </div>
                       )}
                     </Draggable>
