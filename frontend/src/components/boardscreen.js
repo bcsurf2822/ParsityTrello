@@ -27,6 +27,7 @@ const Board = () => {
   const { id } = useParams(); // Get the boardId from URL params
   const dispatch = useDispatch();
   const lists = useSelector((state) => state.lists?.list || []);
+  const boards = useSelector((state) => state.boards.boards.find((board) => board._id === id) || {})
   const cards = useSelector((state) => state.cards || []);
   const stateLists = lists;
 
@@ -170,7 +171,7 @@ const Board = () => {
           <h1 className="text-2xl font-bold mb-2">Organization</h1>
         </div>
         <div>
-          <p className="mt-10 text-xl mb-4">Frontend Work</p>
+          <p className="mt-10 text-xl mb-4">{boards.title}</p>
         </div>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable
