@@ -130,12 +130,24 @@ export const fetchCards = (boardId, listId) => async (dispatch) => {
     const response = await axios.get(
       useProxy(`/board/${boardId}/lists/${listId}`)
     );
-    const cardData = response.data.filter((card) => card !== null)
+    if (Array.isArray(response.data)) {
+      const cardData = response.data.filter((card) => card !== null)
     dispatch({
       type: FETCH_CARDS,
       payload: { [listId]: cardData },
     });
     return cardData
+    } else if (response.data.cards && Array.isArray(response.data.cards)) {
+      const cardData = response.data.cards.filter((card) => card !== null );
+      dispatch({
+        type: FETCH_CARDS,
+        payload: {[listId]: cardData}
+      });
+      return cardData
+    } else {
+      throw new Error("Unexpected Response Structure")
+    }
+    
   } catch (error) {
     console.error("Error fetching cards", error);
   }
