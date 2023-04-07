@@ -68,6 +68,26 @@ router.get("/boards", async (req, res, next) => {
   }
 });
 
+//fetch Board by ID
+router.get("/board/:boardId", async  (req, res, next) => {
+  try {
+  
+    const boardToGet = req.params.boardId;
+    const fetchedBoard = await Board.findById(boardToGet).exec();
+
+    if (!fetchedBoard) {
+      res.status(404).send({error: "No Board with That ID"});
+    } else {
+      console.log("Request", req)
+      console.log("Response", res)
+      res.send(fetchedBoard);
+    }
+  } catch (err) {
+    console.log(err)
+    res.status(500).send({error: "Server Error"});
+  }
+})
+
 //Post Boards
 router.post("/boards", async (req, res, next) => {
   try {
