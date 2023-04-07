@@ -39,7 +39,7 @@ export const deleteBoard = (id) => async (dispatch) => {
 
 export const fetchBoardId = (id) => async (dispatch) => {
   try {
-    const response = await axios.get(useProxy(`/boards/${id}`))
+    const response = await axios.get(useProxy(`/board/${id}`))
     console.log("boardID Client", response)
     dispatch({type: FETCH_BOARDID, payload: response.data})
   } catch (error) {

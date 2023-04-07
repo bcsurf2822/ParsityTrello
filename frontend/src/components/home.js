@@ -18,7 +18,7 @@ const Home = () => {
   const closeModal = () => toggleModal(false);
 
   const dispatch = useDispatch();
-  const boards = useSelector((state) => state.boards.boards);
+  const boards = useSelector((state) => state.boards.boards) || [];
 
   const addBoardModal = () => {
     openModal();

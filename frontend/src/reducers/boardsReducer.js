@@ -10,8 +10,11 @@ const boardsReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_BOARDS:
       return { ...state, boards: action.payload };
-    case FETCH_BOARDID:
-      return {...state, boards: {...state.boards, [action.payload._id]: action.payload}}
+    case FETCH_BOARDID: {
+      const newBoards = state.boards.map((board) => 
+      board._id === action.payload._id ? action.payload : board);
+      return {...state, boards: newBoards}
+    }
     case POST_BOARDS:
       return {...state, boards: [...state.boards, action.payload]}
     case DELETE_BOARDS:
