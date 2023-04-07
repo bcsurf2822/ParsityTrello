@@ -21,7 +21,7 @@ const Board = () => {
 
   const { id } = useParams(); // Get the boardId from URL params
   const dispatch = useDispatch();
-  const boards = useSelector((state) => state.boards?.[id] || {})
+  const boards = useSelector((state) => state.boards.boards.find((board) => board._id === id) || {})
   const lists = useSelector((state) => state.lists?.list || []);
   const cards = useSelector((state) => state.cards || []);
   const [stateLists, setLists] = useState([]);
