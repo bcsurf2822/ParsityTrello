@@ -27,6 +27,8 @@ const Board = () => {
   const [stateLists, setLists] = useState([]);
   const [fetch, setFetch] = useState(false);
 
+  console.log(lists)
+
 
   useEffect(() => {
     if (!fetch) {

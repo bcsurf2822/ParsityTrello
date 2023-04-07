@@ -22,9 +22,10 @@ export const logIn = (formProps, callback) => (dispatch) => {
   axios
     .post(useProxy("/login"), formProps)
     .then(function (response) {
+      console.log(response)
       dispatch({ type: AUTH_USER, payload: response.data });
       localStorage.setItem("token", response.data.token);
-      console.log("API RES", response.data.token);
+      //console.log("API RES", response.data.token);
       callback();
     })
     .catch(function () {
@@ -179,3 +180,27 @@ export const deleteList = (listId, boardId) => async (dispatch) => {
 };
 
 //Delete Card
+
+// Post comment
+export const postComment = (boardId, listId, cardId, comment, user) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      useProxy(`"/boards/${boardId}/lists/${listId}/cards/${cardId}/comments"`),
+      { commentText: comment, userId: user }
+    );
+    const card = response.data;
+    dispatch({ type: POST_CARD, payload: { card, listId } });
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+/*
+const CommentSchema = new Schema({
+  comment: String,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
+});
+*/

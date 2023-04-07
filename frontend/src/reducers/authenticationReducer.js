@@ -1,16 +1,19 @@
 import { AUTH_ERROR, AUTH_USER } from "../actions/types";
 
 const initialState = {
-  username: null,
+  username: "",
   authorized: localStorage.getItem("token") || "", 
-  token: null,
-  error: '',
+  id: "",
 }
+
+// Having issues with trying updating initial state, console.log is working so not sure what's up...
 
 const authenticationReducer = (state = initialState, action) => {
   switch (action.type) {
     case AUTH_USER:
-      return {...state, authorized: action.payload.token, username: action.payload.username || null, error: "" };
+      console.log(action.payload)
+      console.log(action.payload.username.user)
+      return {...state, username: action.payload.username.user, authorized: action.payload.token, id: action.payload.username._id};
     case AUTH_ERROR:
       return {...state, error: action.payload};
     default:
@@ -19,3 +22,12 @@ const authenticationReducer = (state = initialState, action) => {
 }
 
 export default authenticationReducer;
+
+/*
+const initialState = {
+  username: null,
+  authorized: localStorage.getItem("token") || "", 
+  id: null,
+  error: '',
+}
+*/

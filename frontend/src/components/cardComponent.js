@@ -4,34 +4,43 @@ import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
 import Avatar from "../public/Avatar.png";
 import CommentComponent from "./commentComponent";
+import { useSelector } from "react-redux";
 
 const CardComponent = ({ card, index }) => {
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
 
+  // TODO: get userId and use that to postComment
+  const user = useSelector((state) => state.authentication);
+  console.log(user)
+
+  // TODO: set up event listener for postComment
+
+
+
   const cardDetail = () => {
     openModal();
   };
+  //console.log(card);
 
   return (
     <div>
       <Draggable key={card._id} draggableId={card._id} index={index}>
         {(provided) => (
-          <div
-            className="bg-white hover:bg-gray-100 rounded-md flex-grow mx-2 mb-4 drop-shadow cursor-pointer"
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            onClick={cardDetail}
-          >
-            <div className="py-2 pl-2">
-              <p>{card.title}</p>
+          <div>
+            <div
+              className="bg-white hover:bg-gray-100 rounded-md flex-grow mx-2 mb-4 drop-shadow cursor-pointer"
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              onClick={cardDetail}
+            >
+              <div className="py-2 pl-2">
+                <p>{card.title}</p>
+              </div>
             </div>
-          </div>
-        )}
-      </Draggable>
-      <div className="">
+            <div className="">
         <Modal
           isOpen={modal}
           onRequestClose={closeModal}
@@ -39,7 +48,7 @@ const CardComponent = ({ card, index }) => {
         >
           <div className="mx-4 my-2">
             <div className="flex justify-between">
-              <p className="mt-4 font-semibold">Sample Title</p>
+              <p className="mt-4 font-semibold">{card.title}</p>
               <img
                 src={xSvg}
                 alt="xsvg"
@@ -126,6 +135,9 @@ const CardComponent = ({ card, index }) => {
           </div>
         </Modal>
       </div>
+          </div>
+        )}
+      </Draggable>
     </div>
   );
 };
