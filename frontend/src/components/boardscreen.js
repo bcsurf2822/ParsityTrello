@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
+import { fetchBoardId } from "../actions/boards";
 import { fetchList, updateLists, updateCards, postList, clearList } from "../actions";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
@@ -20,6 +21,7 @@ const Board = () => {
 
   const { id } = useParams(); // Get the boardId from URL params
   const dispatch = useDispatch();
+  const boards = useSelector((state) => state.boards.boards.find((board) => board._id === id) || {})
   const lists = useSelector((state) => state.lists?.list || []);
   const cards = useSelector((state) => state.cards || []);
   const [stateLists, setLists] = useState([]);
@@ -28,6 +30,7 @@ const Board = () => {
 
   useEffect(() => {
     if (!fetch) {
+      dispatch(fetchBoardId(id))
       dispatch(fetchList(id));
       setFetch(true);
     } else {
@@ -133,7 +136,7 @@ const Board = () => {
           <h1 className="text-2xl font-bold mb-2">Organization</h1>
         </div>
         <div>
-          <p className="mt-10 text-xl mb-4">Frontend Work</p>
+          <p className="mt-10 text-xl mb-4">{boards.title}</p>
         </div>
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable

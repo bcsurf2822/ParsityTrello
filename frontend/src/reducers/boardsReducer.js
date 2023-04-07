@@ -1,4 +1,5 @@
 import { FETCH_BOARDS, POST_BOARDS, DELETE_BOARDS } from "../actions/boards";
+import { FETCH_BOARDID } from "../actions/types";
 
 
 const initialState = {
@@ -9,6 +10,11 @@ const boardsReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_BOARDS:
       return { ...state, boards: action.payload };
+    case FETCH_BOARDID: {
+      const newBoards = state.boards.map((board) => 
+      board._id === action.payload._id ? action.payload : board);
+      return {...state, boards: newBoards}
+    }
     case POST_BOARDS:
       return {...state, boards: [...state.boards, action.payload]}
     case DELETE_BOARDS:
