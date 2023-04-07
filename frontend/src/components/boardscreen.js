@@ -27,21 +27,36 @@ const Board = () => {
   const [stateLists, setLists] = useState([]);
   const [fetch, setFetch] = useState(false);
 
-  console.log(lists)
+  console.log("SELECTOR LISTS:",  lists)
 
+//OG USE EFFECT
+  // useEffect(() => {
+  //   if (!fetch) {
+  //     dispatch(fetchBoardId(id))
+  //     dispatch(fetchList(id));
+  //     setFetch(true);
+  //   } else {
+  //     setLists(lists)
+  //   }
+  //   return () => {
+  //     dispatch(clearList());
+  //   }
+  // }, [dispatch, id, fetch]);
 
   useEffect(() => {
-    if (!fetch) {
-      dispatch(fetchBoardId(id))
-      dispatch(fetchList(id));
-      setFetch(true);
-    } else {
-      setLists(lists)
-    }
+    dispatch(fetchBoardId(id));
+    dispatch(fetchList(id));
+    // dispatch(true);
+
     return () => {
-      dispatch(clearList());
+      dispatch(clearList())
     }
-  }, [dispatch, id, fetch]);
+
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    setLists(lists);
+  }, [lists])
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
