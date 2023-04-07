@@ -166,7 +166,7 @@ const Board = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <ListComponent list={list} cards={cards[list._id] || []} index={index} />
+                          <ListComponent list={list} cards={cards} index={index} />
                         </div>
                       )}
                     </Draggable>

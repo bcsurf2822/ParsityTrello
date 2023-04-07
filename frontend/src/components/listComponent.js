@@ -8,11 +8,10 @@ import { Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
 
-const ListComponent = ({ list, cards }) => {
+const ListComponent = ({ list }) => {
   const { id } = useParams();
   let boardId = id;
   let listId = list._id;
-  console.log("Cards From board", cards)
   console.log("List From Boards", list)
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
@@ -21,7 +20,7 @@ const ListComponent = ({ list, cards }) => {
   const [newCard, setNewCard] = useState("");
 
   const dispatch = useDispatch();
-  // const cards = useSelector((state) => state.cards.cards || {});
+  const cards = useSelector((state) => state.cards.cards || {});
   // const lists = useSelector((state) => state.lists.list || []);
   let cardArray = cards[listId] || [];
 
