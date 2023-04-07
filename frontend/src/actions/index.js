@@ -96,7 +96,7 @@ export const fetchList = (boardId) => async (dispatch) => {
       type: FETCH_LIST,
       payload: listData,
     });
-    console.log("listResponse:", response);
+
     console.log("LIst Data", listData);
 
 
