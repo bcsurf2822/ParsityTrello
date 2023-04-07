@@ -5,7 +5,7 @@ import xSvg from "../public/x-mark.svg";
 import Avatar from "../public/Avatar.png";
 import CommentComponent from "./commentComponent";
 
-const CardComponent = ({ card, index }) => {
+const CardComponent = ({ card, index, comments }) => {
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
@@ -93,8 +93,13 @@ const CardComponent = ({ card, index }) => {
                     </div>
 
                     <div>
-                      <CommentComponent />
-                      <CommentComponent />
+                      {
+                        Array.isArray(comments) &&
+                      comments.map((comment) => (
+                        <CommentComponent key={comment.id} comment={comment} />
+                      ))}
+                      
+                      {/* <CommentComponent /> */}
                     </div>
                   </label>
                 </div>
