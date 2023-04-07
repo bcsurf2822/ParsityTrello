@@ -42,19 +42,22 @@ router.get("/generate-boards", async (req, res, next) => {
           for (let l = 0; l < 3; l++) {
             let comment = new Comment();
             comment.comment = faker.lorem.sentence();
-
+          
             // Set comment.user to a random user from the generated users
             const randomUser = faker.random.arrayElement(users);
-            comment.user = randomUser;
-
+            comment.user = {
+              _id: randomUser._id,
+              username: randomUser.username,
+            };
+          
             // Save the comment
             await comment.save();
-
+          
             // Add the comment to the card's comments array
             card.comments.push(comment);
-
+          
             // Add the comment to the user's comments array
-            randomUser.comments.push(comment);
+            randomUser.comments.push(comment._id);
             await randomUser.save();
           }
 
