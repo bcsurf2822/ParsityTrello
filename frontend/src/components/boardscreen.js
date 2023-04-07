@@ -61,17 +61,7 @@ const Board = () => {
   // }, [dispatch, id, fetch]);
 
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(fetchList(id));
-    };
 
-    fetchData();
-
-    return () => {
-      dispatch(clearList());
-    };
-  }, [dispatch, id]);
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;

@@ -7,7 +7,7 @@ const cardsReducer = (state = initialState, action) => {
     case FETCH_CARDS:
       return { ...state, [action.payload.listId]: action.payload.cards };
     case UPDATE_CARDS:
-      return { ...state, [action.payload.listId]: action.payload.cards };
+      return { ...state, [action.payload.listId]: action.payload.newCards };
     case POST_CARD:
       return {
         ...state,

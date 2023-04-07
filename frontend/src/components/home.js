@@ -62,7 +62,7 @@ const Home = () => {
           </div>
           {boards.map((board) => (
             <div key={board._id} className="group">
-              <Link to={`/board/${board._id}`} key={board._id}>
+              <Link to={`/board/${board._id}`}>
                 <div className="bg-gray-100 hover:bg-gray-200 rounded-lg h-28 flex items-center cursor-pointer justify-between">
                   <p className="ml-4">{board.title}</p>
                   <div className="opacity-0 group-hover:opacity-100">
