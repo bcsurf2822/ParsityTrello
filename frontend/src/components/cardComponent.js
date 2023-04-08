@@ -4,34 +4,49 @@ import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
 import Avatar from "../public/Avatar.png";
 import CommentComponent from "./commentComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { postComment } from "../actions";
 
-const CardComponent = ({ card, index, comments }) => {
+const CardComponent = ({ card, index, listId }) => {
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
+  const dispatch = useDispatch();
+  
+  // TODO: get userId and use that to postComment
+  const user = useSelector((state) => state.authentication);
+  
+  // state for adding new comments
+  const [comment, setComment] = useState();
+  const userId = user.id;
+  const cardId = card._id;
 
   const cardDetail = () => {
     openModal();
   };
+  
+  const addComment = () => {
+    dispatch(postComment(listId, cardId, comment, userId))
+    setComment("");
+  }
 
   return (
     <div>
       <Draggable key={card._id} draggableId={card._id} index={index}>
         {(provided) => (
-          <div
-            className="bg-white hover:bg-gray-100 rounded-md flex-grow mx-2 mb-4 drop-shadow cursor-pointer"
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-            onClick={cardDetail}
-          >
-            <div className="py-2 pl-2">
-              <p>{card.title}</p>
+          <div>
+            <div
+              className="bg-white hover:bg-gray-100 rounded-md flex-grow mx-2 mb-4 drop-shadow cursor-pointer"
+              ref={provided.innerRef}
+              {...provided.draggableProps}
+              {...provided.dragHandleProps}
+              onClick={cardDetail}
+            >
+              <div className="py-2 pl-2">
+                <p>{card.title}</p>
+              </div>
             </div>
-          </div>
-        )}
-      </Draggable>
-      <div className="">
+            <div className="">
         <Modal
           isOpen={modal}
           onRequestClose={closeModal}
@@ -39,7 +54,7 @@ const CardComponent = ({ card, index, comments }) => {
         >
           <div className="mx-4 my-2">
             <div className="flex justify-between">
-              <p className="mt-4 font-semibold">Sample Title</p>
+              <p className="mt-4 font-semibold">{card.title}</p>
               <img
                 src={xSvg}
                 alt="xsvg"
@@ -83,23 +98,26 @@ const CardComponent = ({ card, index, comments }) => {
                         rows="1"
                         className="block p-2.5 w-full text-sm text-gray-900 bg-white rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-800 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
                         placeholder="Your message..."
+                        value={comment}
+                        onChange={(e) => setComment(e.target.value)}
                       ></textarea>
                       <button
                         type="submit"
                         className="inline-flex bg-blue-700 justify-center p-2 ml-2 text-white rounded-md cursor-pointer hover:bg-blue-800"
+                        onClick={addComment}
                       >
                         Save
                       </button>
                     </div>
 
                     <div>
-                      {
-                        Array.isArray(comments) &&
-                      comments.map((comment) => (
-                        <CommentComponent key={comment.id} comment={comment} />
-                      ))}
                       
-                      {/* <CommentComponent /> */}
+                      {card.comments.map((comment) => (
+                          <CommentComponent
+                            key={comment.id}
+                            comment={comment}
+                          />
+                      ))}
                     </div>
                   </label>
                 </div>
@@ -131,6 +149,9 @@ const CardComponent = ({ card, index, comments }) => {
           </div>
         </Modal>
       </div>
+          </div>
+        )}
+      </Draggable>
     </div>
   );
 };
