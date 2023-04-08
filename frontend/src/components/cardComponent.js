@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
@@ -14,6 +14,7 @@ const CardComponent = ({ card, index, listId, boardId }) => {
   const closeModal = () => toggleModal(false);
   const dispatch = useDispatch();
 
+  const cards = useSelector((state) => state.cards || {});
 
   
   // TODO: get userId and use that to postComment
@@ -25,7 +26,7 @@ const CardComponent = ({ card, index, listId, boardId }) => {
   const cardId = card._id;
 
   //State For Adding Description
-  // const [description, setDescription] = useState();
+  const [description, setDescription] = useState("");
 
   const cardDetail = () => {
     openModal();
@@ -36,11 +37,12 @@ const CardComponent = ({ card, index, listId, boardId }) => {
     setComment("");
   }
 
-  // const addDescription = (e) => {
-  //   e.preventDefault();
-  //   dispatch(postDescription(description, listId, boardId))
-  //   setDescription("")
-  // }
+  const addDescription = (e) => {
+    e.preventDefault();
+    dispatch(postDescription(cardId, listId, boardId, description))
+    setDescription("")
+  }
+
 
   return (
     <div>
@@ -82,18 +84,19 @@ const CardComponent = ({ card, index, listId, boardId }) => {
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
                   </label>
-                  {/* <p>{card.description}HI</p> */}
+                  <p>{card.description}HI</p>
                   <form>
-                    <textarea
-                    
+                    <input
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
                     id="message"
                     rows="3"
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
                     placeholder="Write your thoughts here..."
-                  ></textarea>
+                  ></input>
                   <button
                     type="submit"
-                    // onClick={(e) => addDescription(e)}
+                    onClick={addDescription}
                     className="inline-flex bg-blue-700 justify-center py-1 px-2 text-white rounded-md cursor-pointer hover:bg-blue-800 mt-2"
                   >
                     Submit

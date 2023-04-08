@@ -36,6 +36,7 @@ const ListComponent = ({ list }) => {
     dispatch(postCard(newCard, listId, boardId));
     setNewCard("");
     closeModal();
+    console.log("ADDING")
   };
 
   // const listDelete = () => {

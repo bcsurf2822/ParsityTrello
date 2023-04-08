@@ -30,6 +30,7 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
     const postedCard = req.body;
     const newCard = new Card(postedCard);
     await newCard.save();
+    console.log("card create", newCard)
 
     list.cards.push(newCard);
 
@@ -78,6 +79,7 @@ router.patch(
   "/boards/:boardId/lists/:listId/cards/:cardId",
   async (req, res, next) => {
     try {
+
       const { boardId, listId, cardId } = req.params;
       const updateData = req.body;
 
