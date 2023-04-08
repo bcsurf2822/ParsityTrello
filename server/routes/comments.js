@@ -4,17 +4,11 @@ const { Label, Card, Board, User, List, Comment } = require("../models/models");
 
 // Create Comment
 router.post(
-  "/boards/:boardId/lists/:listId/cards/:cardId/comments",
+  "/lists/:listId/cards/:cardId/comments",
   async (req, res, next) => {
     try {
-      const { boardId, listId, cardId } = req.params;
-      const { commentText, userId } = req.body;
-
-      const board = await Board.findById(boardId);
-
-      if (!board) {
-        return res.status(404).send({ error: "Board not found" });
-      }
+      const { listId, cardId } = req.params;
+      const { comment, userId } = req.body;
 
       const list = await List.findOne({ _id: listId, "cards._id": cardId });
 
@@ -38,13 +32,17 @@ router.post(
 
       // Create a new comment
       const newComment = {
-        comment: commentText,
-        user: user._id,
+        comment: comment,
+        user: {
+          _id: userId,
+          username: user.username
+        }
       };
 
       // Add the comment to the card
-      list.cards[cardIndex].comments.push(newComment);
+      list.cards[cardIndex].comments.unshift(newComment);
       await list.save();
+      // TODO: ADD COMMENT TO COMMENT COLLECTION IN MONGODB
 
       // Add the comment reference to the user's comments
       user.comments.push(list.cards[cardIndex].comments.slice(-1)[0]._id);

@@ -26,7 +26,7 @@ passport.use(
   new LocalStrategy(async function (username, password, done) {
     try {
       const user = await User.findOne({ username, password });
-      console.log("user", user);
+      //console.log("user", user);
       if (user.username === username && user.password === password) {
         return done(null, { user: user.username , _id: user._id });
       } else {

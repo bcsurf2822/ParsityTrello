@@ -21,8 +21,6 @@ const ListComponent = ({ list }) => {
 
   const dispatch = useDispatch();
   const cards = useSelector((state) => state.cards || {});
-  const lists = useSelector((state) => state.lists.list || []);
-  const comments = useSelector((state) => state.comments || [])
   let cardArray = cards[listId] || [];
 
   //fetchCards action
@@ -59,7 +57,7 @@ const ListComponent = ({ list }) => {
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {cardArray &&
                   cardArray.map((card, index) => (
-                    <CardComponent key={`${card._id}-${index}`} card={card} index={index} comments={comments} />
+                    <CardComponent key={`${card._id}-${index}`} card={card} index={index} listId={listId} boardId={boardId}/>
                   ))}
                 {provided.placeholder}
               </div>
