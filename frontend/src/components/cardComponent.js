@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
 import Avatar from "../public/Avatar.png";
 import CommentComponent from "./commentComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { postComment } from "../actions/cards";
+import { fetchComments, postComment } from "../actions/cards";
+import { fetchBoards } from "../actions/boards";
 
 const CardComponent = ({ card, index, listId }) => {
   const [modal, toggleModal] = useState(false);
@@ -29,6 +30,11 @@ const CardComponent = ({ card, index, listId }) => {
     dispatch(postComment(listId, cardId, comment, userId))
     setComment("");
   }
+
+  useEffect(() => {
+    dispatch(fetchComments());
+  }, [dispatch]);
+
 
   return (
     <div>

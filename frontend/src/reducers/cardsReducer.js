@@ -16,6 +16,8 @@ const cardsReducer = (state = initialState, action) => {
           action.payload.card,
         ],
       };
+    case CLEAR_CARDS:
+      return initialState;
     default:
       return state;
   }
