@@ -5,7 +5,7 @@ import xSvg from "../public/x-mark.svg";
 import Avatar from "../public/Avatar.png";
 import CommentComponent from "./commentComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { postComment } from "../actions";
+import { postComment } from "../actions/cards";
 
 const CardComponent = ({ card, index, listId }) => {
   const [modal, toggleModal] = useState(false);
@@ -32,7 +32,7 @@ const CardComponent = ({ card, index, listId }) => {
 
   return (
     <div>
-      <Draggable key={card._id} draggableId={card._id} index={index}>
+      <Draggable draggableId={card._id} index={index}>
         {(provided) => (
           <div>
             <div
@@ -114,7 +114,7 @@ const CardComponent = ({ card, index, listId }) => {
                       
                       {card.comments.map((comment) => (
                           <CommentComponent
-                            key={comment.id}
+                            key={comment._id}
                             comment={comment}
                           />
                       ))}
