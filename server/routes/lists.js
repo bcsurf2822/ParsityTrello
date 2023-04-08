@@ -62,7 +62,7 @@ router.patch("/boards/:boardId/lists", async (req, res, next) => {
 
     res
       .status(200)
-      .send({ message: "List order updated", list: board.lists });
+      .send({ message: "List order updated", lists: board.lists });
   } catch (err) {
     console.log(err);
     res.status(500).send({ error: "Server Error" });

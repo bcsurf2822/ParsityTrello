@@ -12,7 +12,7 @@ router.get("/generate-boards", async (req, res, next) => {
   try {
     // Generate users
     const users = [];
-    for (let i = 0; i < 4; i++) {
+    for (let i = 0; i < 2; i++) {
       let user = new User();
 
       user.username = faker.random.arrayElement(usernames);
@@ -23,7 +23,7 @@ router.get("/generate-boards", async (req, res, next) => {
     }
 
     // Generate boards, lists, cards, and comments
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 2; i++) {
       let board = new Board();
       board.title = faker.random.arrayElement(boardTitles);
 

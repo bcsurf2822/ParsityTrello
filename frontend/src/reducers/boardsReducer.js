@@ -1,5 +1,4 @@
-import { FETCH_BOARDS, POST_BOARDS, DELETE_BOARDS } from "../actions/boards";
-import { FETCH_BOARDID } from "../actions/types";
+import { FETCH_BOARDID, FETCH_BOARDS, POST_BOARDS, DELETE_BOARDS } from "../actions/types";
 
 
 const initialState = {

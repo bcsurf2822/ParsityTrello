@@ -3,12 +3,12 @@ import PlusSvg from "../public/plus.svg";
 import CardComponent from "./cardComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { fetchCards, postCard, deleteList } from "../actions";
+import { fetchCards, postCard } from "../actions/cards";
 import { Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
 
-const ListComponent = ({ list, handleListId }) => {
+const ListComponent = ({ list }) => {
   const { id } = useParams();
   let boardId = id;
   let listId = list._id;

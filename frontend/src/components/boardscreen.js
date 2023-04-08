@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import { fetchList, updateLists, updateCards, postList, clearList } from "../actions";
+import { fetchList, updateLists, postList } from "../actions/lists";
+import { updateCards } from "../actions/cards";
 import Nav from "./nav";
 import PlusSvg from "../public/plus.svg";
 import xSvg from "../public/x-mark.svg";
@@ -24,21 +25,9 @@ const Board = () => {
   const cards = useSelector((state) => state.cards || []);
   const boards = useSelector((state) => state.boards.boards.find((board) => board._id === id) || {})
 
-  const [stateLists, setLists] = useState([]);
-  const [fetch, setFetch] = useState(false);
-
-
   useEffect(() => {
-    if (!fetch) {
-      dispatch(fetchList(id));
-      setFetch(true);
-    } else {
-      setLists(lists)
-    }
-    return () => {
-      dispatch(clearList());
-    }
-  }, [dispatch, id, fetch]);
+    dispatch(fetchList(id));
+  }, [dispatch, id]);
 
   const onDragEnd = (result) => {
     const { destination, source, type } = result;
@@ -56,12 +45,11 @@ const Board = () => {
 
     if (type === "list") {
       // update the order of the lists
-      const newLists = Array.from(stateLists);
+      const newLists = Array.from(lists);
       const [removed] = newLists.splice(source.index, 1);
       newLists.splice(destination.index, 0, removed);
 
-      // update the state of the lists
-      setLists(newLists);
+      console.log("New lists order:", newLists);
 
       // dispatch action to update the lists state
       dispatch(updateLists(newLists, id));
@@ -71,9 +59,6 @@ const Board = () => {
       const newCards = Array.from(cards[listId] || []);
       const [removed] = newCards.splice(source.index, 1);
       newCards.splice(destination.index, 0, removed);
-
-      //update the state of card order
-      // setCards(newCards);
 
       // dispatch action to update the cards state
       dispatch(updateCards(listId, newCards));
@@ -149,7 +134,7 @@ const Board = () => {
                 ref={provided.innerRef}
                 {...provided.droppableProps}
               >
-                {stateLists.map((list, index) => {
+                {lists.map((list, index) => {
                   if (!list) {
                     return null;
                   }
@@ -165,7 +150,7 @@ const Board = () => {
                           {...provided.draggableProps}
                           {...provided.dragHandleProps}
                         >
-                          <ListComponent list={list} index={index} />
+                          <ListComponent list={list} index={index} key={list._id} />
                         </div>
                       )}
                     </Draggable>
