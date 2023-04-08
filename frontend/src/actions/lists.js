@@ -53,10 +53,13 @@ export const fetchList = (boardId) => async (dispatch) => {
 // Update list array in board schema
 export const updateLists = (lists, boardId) => async (dispatch) => {
   try {
+    console.log("updateLists action called:", lists);
     const response = await axios.patch(useProxy(`/boards/${boardId}/lists`), {
       lists,
       boardId,
     });
+
+    console.log("API response:", response.data);
 
     dispatch({
       type: UPDATE_LISTS,

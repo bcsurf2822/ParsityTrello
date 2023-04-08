@@ -49,6 +49,8 @@ const Board = () => {
       const [removed] = newLists.splice(source.index, 1);
       newLists.splice(destination.index, 0, removed);
 
+      console.log("New lists order:", newLists);
+
       // dispatch action to update the lists state
       dispatch(updateLists(newLists, id));
     } else {

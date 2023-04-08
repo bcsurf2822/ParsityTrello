@@ -8,7 +8,7 @@ import { Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
 
-const ListComponent = ({ list, handleListId }) => {
+const ListComponent = ({ list }) => {
   const { id } = useParams();
   let boardId = id;
   let listId = list._id;
