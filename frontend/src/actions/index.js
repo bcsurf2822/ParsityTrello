@@ -23,9 +23,10 @@ export const logIn = (formProps, callback) => (dispatch) => {
   axios
     .post(useProxy("/login"), formProps)
     .then(function (response) {
+      console.log(response);
       dispatch({ type: AUTH_USER, payload: response.data });
       localStorage.setItem("token", response.data.token);
-      console.log("API RES", response.data.token);
+      localStorage.setItem("id", response.data.username._id);
       callback();
     })
     .catch(function () {
@@ -182,3 +183,22 @@ export const deleteList = (listId, boardId) => async (dispatch) => {
 };
 
 //Delete Card
+
+// Post comment
+ export const postComment = (listId, cardId, comment, user) => async (dispatch) => {
+   try {
+    console.log("dispatched recieved", listId, cardId, comment, user)
+    
+     const response = await axios.post(
+       useProxy(`/lists/${listId}/cards/${cardId}/comments`),
+       { comment: comment, userId: user }
+     );
+    console.log(response);
+    // TODO: figure how what the response from BE should be (comments or comments nested in card)
+
+    //const card = response.data;
+    //dispatch({ type: POST_CARD, payload: { card, listId } });
+   } catch (error) {
+     console.error(error);
+   }
+ };
