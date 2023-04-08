@@ -50,7 +50,7 @@ const CardComponent = ({ card, index, listId }) => {
         <Modal
           isOpen={modal}
           onRequestClose={closeModal}
-          className="modal w-4/6 h-4/6 bg-white border-black border rounded mx-auto mt-60"
+          className="detailModal modal w-4/6 h-4/6 bg-white border-black border rounded mx-auto mt-60 "
         >
           <div className="mx-4 my-2">
             <div className="flex justify-between">
