@@ -20,3 +20,5 @@ export const CLEAR_CARDS = "CLEAR_CARDS";
 
 export const POST_COMMENT = "POST_COMMENT";
 export const FETCH_COMMENTS = "fetch_comments";
+
+export const POST_DESCRIPTION = "post_description";

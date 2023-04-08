@@ -30,6 +30,9 @@ app.use(cardRoutes);
 const commentRoutes = require("./routes/comments");
 app.use(commentRoutes);
 
+const descriptionRoutes = require("./routes/descriptions");
+app.use(descriptionRoutes);
+
 const listRoutes = require("./routes/lists")
 app.use(listRoutes);
 

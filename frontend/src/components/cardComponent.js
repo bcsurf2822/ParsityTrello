@@ -6,12 +6,16 @@ import Avatar from "../public/Avatar.png";
 import CommentComponent from "./commentComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { postComment } from "../actions/cards";
+import { postDescription } from "../actions/cards";
+import { useParams } from "react-router-dom";
 
 const CardComponent = ({ card, index, listId }) => {
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
   const dispatch = useDispatch();
+
+  const boardId = useParams();
   
   // TODO: get userId and use that to postComment
   const user = useSelector((state) => state.authentication);
@@ -21,6 +25,9 @@ const CardComponent = ({ card, index, listId }) => {
   const userId = user.id;
   const cardId = card._id;
 
+  //State For Adding Description
+  const [description, setDescription] = useState();
+
   const cardDetail = () => {
     openModal();
   };
@@ -28,6 +35,11 @@ const CardComponent = ({ card, index, listId }) => {
   const addComment = () => {
     dispatch(postComment(listId, cardId, comment, userId))
     setComment("");
+  }
+
+  const addDescription = () => {
+    dispatch(postDescription(boardId, listId, cardId))
+    setDescription("")
   }
 
   return (
@@ -79,6 +91,7 @@ const CardComponent = ({ card, index, listId }) => {
                   ></textarea>
                   <button
                     type="submit"
+                    onClick={addDescription}
                     className="inline-flex bg-blue-700 justify-center py-1 px-2 text-white rounded-md cursor-pointer hover:bg-blue-800 mt-2"
                   >
                     Submit

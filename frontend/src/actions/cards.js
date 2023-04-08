@@ -6,6 +6,7 @@ import {
   FETCH_COMMENTS,
   POST_COMMENT,
   CLEAR_CARDS,
+  POST_DESCRIPTION,
 } from "./types";
 
 const useProxy = function (route) {
@@ -93,3 +94,17 @@ export const fetchComments = (boardId, listId, cardId) => async (dispatch) => {
     console.error("Error fetching comments:", error);
   }
 };
+
+//Post Description
+export const postDescription = (boardId, listId, cardId) => async (dispatch) => {
+  try {
+    const response = await axios.get(useProxy(`/board/${boardId}/lists/${listId}/cards/${cardId}/description`));
+    const newDescription = response.data;
+
+    dispatch({
+      type: POST_DESCRIPTION, payload: {listId, cardId, description: newDescription.description}
+    });
+  } catch (error) {
+    console.error("Error Posting Description")
+  }
+}
