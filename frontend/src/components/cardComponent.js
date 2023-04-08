@@ -7,15 +7,14 @@ import CommentComponent from "./commentComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { postComment } from "../actions/cards";
 import { postDescription } from "../actions/cards";
-import { useParams } from "react-router-dom";
 
-const CardComponent = ({ card, index, listId }) => {
+const CardComponent = ({ card, index, listId, boardId }) => {
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
   const dispatch = useDispatch();
 
-  const boardId = useParams();
+
   
   // TODO: get userId and use that to postComment
   const user = useSelector((state) => state.authentication);
@@ -26,7 +25,7 @@ const CardComponent = ({ card, index, listId }) => {
   const cardId = card._id;
 
   //State For Adding Description
-  const [description, setDescription] = useState();
+  // const [description, setDescription] = useState();
 
   const cardDetail = () => {
     openModal();
@@ -37,10 +36,11 @@ const CardComponent = ({ card, index, listId }) => {
     setComment("");
   }
 
-  const addDescription = () => {
-    dispatch(postDescription(boardId, listId, cardId))
-    setDescription("")
-  }
+  // const addDescription = (e) => {
+  //   e.preventDefault();
+  //   dispatch(postDescription(description, listId, boardId))
+  //   setDescription("")
+  // }
 
   return (
     <div>
@@ -81,9 +81,11 @@ const CardComponent = ({ card, index, listId }) => {
                     for="message"
                     class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                   >
-                    Description
                   </label>
-                  <textarea
+                  {/* <p>{card.description}HI</p> */}
+                  <form>
+                    <textarea
+                    
                     id="message"
                     rows="3"
                     className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 resize-none"
@@ -91,11 +93,13 @@ const CardComponent = ({ card, index, listId }) => {
                   ></textarea>
                   <button
                     type="submit"
-                    onClick={addDescription}
+                    // onClick={(e) => addDescription(e)}
                     className="inline-flex bg-blue-700 justify-center py-1 px-2 text-white rounded-md cursor-pointer hover:bg-blue-800 mt-2"
                   >
                     Submit
                   </button>
+                  </form>
+                  
                 </div>
                 <div className="overflow-y-auto h-96">
                   <label className="block mt-4">

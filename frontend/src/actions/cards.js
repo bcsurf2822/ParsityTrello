@@ -96,15 +96,45 @@ export const fetchComments = (boardId, listId, cardId) => async (dispatch) => {
 };
 
 //Post Description
-export const postDescription = (boardId, listId, cardId) => async (dispatch) => {
-  try {
-    const response = await axios.get(useProxy(`/board/${boardId}/lists/${listId}/cards/${cardId}/description`));
-    const newDescription = response.data;
+// export const postDescription = (boardId, listId, cardId) => async (dispatch) => {
+//   try {
+//     const response = await axios.get(useProxy(`/board/${boardId}/lists/${listId}/cards/${cardId}/description`));
+//     const newDescription = response.data;
 
-    dispatch({
-      type: POST_DESCRIPTION, payload: {listId, cardId, description: newDescription.description}
-    });
+//     dispatch({
+//       type: POST_DESCRIPTION, payload: {listId, cardId, description: newDescription.description}
+//     });
+//   } catch (error) {
+//     console.error("Error Posting Description")
+//   }
+// }
+
+// export const postDescription = (cardDescription, listId, boardId) => async (dispatch) => {
+//   try {
+//     const response = await axios.post(
+//       useProxy(`/board/${boardId}/lists/${listId}/description`),
+//       { description: cardDescription, listId, boardId }
+//     );
+
+//     const card = response.data;
+
+//     dispatch({ type: POST_DESCRIPTION, payload: { card, listId } });
+//   } catch (error) {
+//     console.error(error);
+//   }
+// };
+
+export const postDescription= (cardDescription, listId, boardId) => async (dispatch) => {
+  try {
+    const response = await axios.post(
+      useProxy(`/board/${boardId}/lists/${listId}`),
+      { description: cardDescription, listId, boardId }
+    );
+
+    const card = response.data;
+
+    dispatch({ type: POST_DESCRIPTION, payload: { card, listId } });
   } catch (error) {
-    console.error("Error Posting Description")
+    console.error(error);
   }
-}
+};

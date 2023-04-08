@@ -10,13 +10,14 @@ const descriptionReducer = (state = initialState, action) => {
     //     ...(state[action.payload.cardId] || [])
     //   ],
     // };
-    case POST_DESCRIPTION: {
-      const {listId, cardId, description} = action.payload;
-      const list = state.lists.findIndex((list) => list._id === listId);
-      const card = state.lists[list].cards.findIndex((card) => card._id === cardId);
-      state.lists[list].cards[card].description = description;
-      return {...state}
-    }
+    case POST_DESCRIPTION:
+      return {
+        ...state,
+        [action.payload.listId]: [
+          ...(state[action.payload.listId] || []),
+          action.payload.card,
+        ],
+      };
     default:
       return state;
   }
