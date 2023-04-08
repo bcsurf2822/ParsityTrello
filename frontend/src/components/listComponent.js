@@ -26,7 +26,7 @@ const ListComponent = ({ list }) => {
   //fetchCards action
   useEffect(() => {
     dispatch(fetchCards(boardId, listId));
-  }, [boardId, listId, dispatch]);
+  }, [dispatch, boardId, listId]);
 
   const addCardModal = () => {
     openModal();
@@ -57,7 +57,7 @@ const ListComponent = ({ list }) => {
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {cardArray &&
                   cardArray.map((card, index) => (
-                    <CardComponent key={`${card._id}-${index}`} card={card} index={index} listId={listId} boardId={boardId}/>
+                    <CardComponent key={card._id} card={card} index={index} listId={listId} boardId={boardId}/>
                   ))}
                 {provided.placeholder}
               </div>

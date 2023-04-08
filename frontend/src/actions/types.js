@@ -16,5 +16,7 @@ export const POST_CARD = "post_card";
 export const FETCH_CARDS = "fetch_card";
 export const UPDATE_CARDS = "update_cards";
 export const DELETE_CARD = "delete_card";
+export const CLEAR_CARDS = "CLEAR_CARDS";
 
+export const POST_COMMENT = "POST_COMMENT";
 export const FETCH_COMMENTS = "fetch_comments";
