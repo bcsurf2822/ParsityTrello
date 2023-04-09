@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
+import TrashSvg from "../public/trash.svg";
 import Avatar from "../public/Avatar.png";
 import { useParams } from "react-router-dom";
 import CommentComponent from "./commentComponent";
@@ -52,10 +53,12 @@ const CardComponent = ({ card, index, listId }) => {
               onClick={cardDetail}
             >
               <div className="py-2 pl-2">
-                <p>{card.title}</p>
-                <div className="container">
-                  <button onClick={handleDeleteCard}><strong>DELETE CARD</strong></button>
-                </div>
+                <p>{card.title}</p><img
+                      src={TrashSvg}
+                      alt="trashsvg"
+                      className="object-contain w-6 mr-2 cursor-pointer"
+                      onClick={handleDeleteCard}
+                    />
               </div>
             </div>
             <div className="">
