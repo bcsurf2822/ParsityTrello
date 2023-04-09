@@ -3,9 +3,11 @@ import { Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
 import Avatar from "../public/Avatar.png";
+import { useParams } from "react-router-dom";
 import CommentComponent from "./commentComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { postComment } from "../actions/cards";
+import { deleteCards } from "../actions/cards";
 
 const CardComponent = ({ card, index, listId }) => {
   const [modal, toggleModal] = useState(false);
@@ -21,6 +23,9 @@ const CardComponent = ({ card, index, listId }) => {
   const userId = user.id;
   const cardId = card._id;
 
+  const {id} = useParams();
+  const boardId = id;
+
   const cardDetail = () => {
     openModal();
   };
@@ -28,6 +33,10 @@ const CardComponent = ({ card, index, listId }) => {
   const addComment = () => {
     dispatch(postComment(listId, cardId, comment, userId))
     setComment("");
+  }
+
+  const handleDeleteCard = () => {
+    dispatch(deleteCards(cardId, listId, boardId));
   }
 
   return (
@@ -44,6 +53,9 @@ const CardComponent = ({ card, index, listId }) => {
             >
               <div className="py-2 pl-2">
                 <p>{card.title}</p>
+                <div className="container">
+                  <button onClick={handleDeleteCard}><strong>DELETE CARD</strong></button>
+                </div>
               </div>
             </div>
             <div className="">
