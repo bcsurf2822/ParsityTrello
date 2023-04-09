@@ -21,8 +21,8 @@ const LabelSchema = new Schema({
 
 const CardSchema = new Schema({
   title: String,
-  label: [LabelSchema],
   description: String,
+  label: [LabelSchema],
   comments: [CommentSchema],
 });
 
@@ -34,13 +34,14 @@ const ListSchema = new Schema({
 
 const BoardsSchema = new Schema({
   title: String,
-  lists: [
-    {
-      _id: { type: Schema.Types.ObjectId, ref: "List" },
-      title: String,
-      cards: [CardSchema],
-    },
-  ],
+  lists: [ListSchema],
+  // lists: [
+  //   {
+  //     _id: { type: Schema.Types.ObjectId, ref: "List" },
+  //     title: String,
+  //     cards: [CardSchema],
+  //   },
+  // ],
 });
 
 // This is for the user information
