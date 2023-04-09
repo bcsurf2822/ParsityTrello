@@ -22,14 +22,13 @@ export const postCard = (cardTitle, listId, boardId) => async (dispatch) => {
     );
 
     const card = response.data;
-
+      console.log("POST USED", card)
     dispatch({ type: POST_CARD, payload: { card, listId } });
 
     const cardsResponse = await axios.get(
       useProxy(`/board/${boardId}/lists/${listId}/cards`)
     );
     const cards = cardsResponse.data;
-
     dispatch({ type: FETCH_CARDS, payload: { cards, listId } });
   } catch (error) {
     console.error(error);
@@ -58,7 +57,6 @@ export const updateCards = (listId, cards) => async (dispatch) => {
     const response = await axios.patch(useProxy(`/lists/${listId}/cards`), {
       cards,
     });
-
     dispatch({
       type: UPDATE_CARDS,
       payload: { listId, cards: response.data.cards },
@@ -116,7 +114,7 @@ export const postDescription =
   (cardDescription, listId, boardId) => async (dispatch) => {
     try {
       const response = await axios.post(
-        useProxy(`/lists/${listId}/cards/${listId}/description`),
+        useProxy(`/board/${listId}/cards/${listId}/description`),
         { description: cardDescription, listId, boardId }
       );
 

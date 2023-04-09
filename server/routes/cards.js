@@ -194,4 +194,46 @@ router.delete(
   }
 );
 
+//Post Description
+router.post("/board/:boardId/lists/:listId/description", async (req, res, next) => {
+  try {
+    const { boardId, listId } = req.params;
+    const boardById = await Board.findById(boardId);
+
+    if (!boardById) {
+      return res.status(404).send({ error: "Board not found" });
+    }
+
+    const listInBoard = boardById.lists.find(
+
+      (list) => list._id.toString() === listId
+    );
+
+    if (!listInBoard) {
+      return res.status(404).send({ error: "List not found in the board" });
+    }
+
+    const list = await List.findById(listId);
+
+    if (!list) {
+      return res.status(404).send({ error: "List not found" });
+    }
+
+    const postedCard = req.body;
+    const newCard = new Card(postedCard);
+    await newCard.save();
+
+    list.cards.push({
+      _id: newCard._id,
+      description: newCard.description
+    });
+
+    await list.save();
+    res.status(201).send(newCard);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send({ error: "error" });
+  }
+});
+
 module.exports = router;
