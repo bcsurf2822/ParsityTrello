@@ -1,4 +1,4 @@
-import { FETCH_CARDS, UPDATE_CARDS, POST_CARD, CLEAR_CARDS } from "../actions/types";
+import { FETCH_CARDS, UPDATE_CARDS, POST_CARD, CLEAR_CARDS, POST_DESCRIPTION } from "../actions/types";
 
 const initialState = {};
 
@@ -16,6 +16,16 @@ const cardsReducer = (state = initialState, action) => {
           action.payload.card,
         ],
       };
+    case POST_DESCRIPTION:
+      return {
+        ...state,
+        [action.payload.listId]: [
+          ...(state[action.payload.listId] || []),
+          action.payload.card,
+        ],
+      }
+    case CLEAR_CARDS:
+      return initialState;
     default:
       return state;
   }

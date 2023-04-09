@@ -6,6 +6,7 @@ import {
   FETCH_COMMENTS,
   POST_COMMENT,
   CLEAR_CARDS,
+  POST_DESCRIPTION,
 } from "./types";
 
 const useProxy = function (route) {
@@ -23,6 +24,13 @@ export const postCard = (cardTitle, listId, boardId) => async (dispatch) => {
     const card = response.data;
 
     dispatch({ type: POST_CARD, payload: { card, listId } });
+
+    const cardsResponse = await axios.get(
+      useProxy(`/board/${boardId}/lists/${listId}/cards`)
+    );
+    const cards = cardsResponse.data;
+
+    dispatch({ type: FETCH_CARDS, payload: { cards, listId } });
   } catch (error) {
     console.error(error);
   }
@@ -61,31 +69,40 @@ export const updateCards = (listId, cards) => async (dispatch) => {
 };
 
 // Create Comments
-export const postComment = (listId, cardId, comment, userId) => async (dispatch) => {
-  try {
-    const response = await axios.post(
-      useProxy(`/lists/${listId}/cards/${cardId}/comments`),
-      { comment, userId }
-    );
+export const postComment =
+  (listId, cardId, comment, userId) => async (dispatch) => {
+    try {
+      const response = await axios.post(
+        useProxy(`/lists/${listId}/cards/${cardId}/comments`),
+        { comment, userId }
+      );
 
-    if (response.status === 201) {
-      const newComment = response.data.comment;
-      dispatch({ type: POST_COMMENT, payload: { cardId, comment: newComment } });
-    } else {
-      console.error("Error posting comment:", response);
+      if (response.status === 201) {
+        const newComment = response.data.comment;
+        dispatch({
+          type: POST_COMMENT,
+          payload: { cardId, comment: newComment },
+        });
+      } else {
+        console.error("Error posting comment:", response);
+      }
+    } catch (error) {
+      console.error("Error posting comment:", error);
     }
-  } catch (error) {
-    console.error("Error posting comment:", error);
-  }
-};
+  };
 
 // Fetch Comments
 export const fetchComments = (boardId, listId, cardId) => async (dispatch) => {
   try {
-    const response = await axios.get(useProxy(`/boards/${boardId}/lists/${listId}/cards/${cardId}/comments`));
+    const response = await axios.get(
+      useProxy(`/boards/${boardId}/lists/${listId}/cards/${cardId}/comments`)
+    );
 
     if (response.status === 200) {
-      dispatch({ type: FETCH_COMMENTS, payload: { cardId, comments: response.data } });
+      dispatch({
+        type: FETCH_COMMENTS,
+        payload: { cardId, comments: response.data },
+      });
     } else {
       console.error("Error fetching comments:", response);
     }
@@ -93,3 +110,26 @@ export const fetchComments = (boardId, listId, cardId) => async (dispatch) => {
     console.error("Error fetching comments:", error);
   }
 };
+
+//POST DESCRIPTION
+export const postDescription =
+  (cardDescription, listId, boardId) => async (dispatch) => {
+    try {
+      const response = await axios.post(
+        useProxy(`/lists/${listId}/cards/${listId}/description`),
+        { description: cardDescription, listId, boardId }
+      );
+
+        const card = response.data;
+
+        dispatch({ type: POST_DESCRIPTION, payload: { card, listId }});
+
+        const cardResponse = await axios.get(useProxy(`/board/${boardId}/lists/${listId}/cards`));
+
+        const cards = cardResponse.data;
+
+        dispatch({type: FETCH_CARDS, payload: {cards, listId}});
+    } catch (error) {
+      console.error("Error posting Description", error);
+    }
+  };

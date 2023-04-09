@@ -31,7 +31,10 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
     const newCard = new Card(postedCard);
     await newCard.save();
 
-    list.cards.push(newCard);
+    list.cards.push({
+      _id: newCard._id,
+      title: newCard.title
+    });
 
     await list.save();
     res.status(201).send(newCard);
@@ -45,14 +48,14 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
 router.get("/board/:boardId/lists/:listId", async (req, res) => {
   try {
     const { boardId, listId } = req.params;
-    const boardById = await Board.findById(boardId);
+    const board = await Board.findById(boardId);
+    console.log("Fetching cards for listId:", listId);
 
-    if (!boardById) {
+    if (!board) {
       return res.status(404).send({ error: "Board not found" });
     }
-
-    const listInBoard = boardById.lists.find(
-    
+    console.log("Received boardId:", boardId);
+    const listInBoard = board.lists.find(
       (list) => list._id.toString() === listId
     );
 
@@ -60,13 +63,16 @@ router.get("/board/:boardId/lists/:listId", async (req, res) => {
       return res.status(404).send({ error: "List not found in the board" });
     }
 
-    const list = await List.findById(listId).populate("cards");
+    //This is what I changed  just commented this out Ben-4/8
+    // const list = await List.findById(listId).populate("cards");
+    
 
-    if (!list) {
-      return res.status(404).send({ error: "List not found" });
-    }
+    // if (!list) {
+    //   return res.status(404).send({ error: "List not found" });
+    // }
 
-    res.status(200).send(list);
+
+    res.status(200).send({cards: listInBoard.cards});
   } catch (err) {
     console.log(err);
     res.status(500).send({ error: "error" });
@@ -75,7 +81,7 @@ router.get("/board/:boardId/lists/:listId", async (req, res) => {
 
 // Update cards
 router.patch(
-  "/boards/:boardId/lists/:listId/cards/:cardId",
+  "/board/:boardId/lists/:listId/cards/:cardId",
   async (req, res, next) => {
     try {
       const { boardId, listId, cardId } = req.params;
@@ -86,8 +92,10 @@ router.patch(
       if (!board) {
         return res.status(404).send({ error: "Board not found" });
       }
+//OLD BEFORE NEST FIX
+      // const list = await List.findOne({ _id: listId, "cards._id": cardId });
+      const list = await List.findById(listId)
 
-      const list = await List.findOne({ _id: listId, "cards._id": cardId });
 
       if (!list) {
         return res.status(404).send({ error: "Card not found in the list" });

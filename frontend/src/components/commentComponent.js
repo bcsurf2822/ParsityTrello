@@ -1,6 +1,18 @@
+import { useEffect } from "react";
 import Avatar from "../public/Avatar.png";
+import { fetchComments } from "../actions/cards";
+import { useDispatch } from "react-redux";
+import { fetchBoards } from "../actions/boards";
 
-const commentComponent = ({ comment }) => {
+const CommentComponent = ({ comment }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(fetchComments());
+    dispatch(fetchBoards)
+    
+  }, [dispatch]);
+
+
   return (
     <div className="w-full flex mt-2 mb-4">
       <img src={Avatar} alt="plussvg" className="object-contain w-12 mr-4" />
@@ -14,4 +26,4 @@ const commentComponent = ({ comment }) => {
   );
 };
 
-export default commentComponent;
+export default CommentComponent;
