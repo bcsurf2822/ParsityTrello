@@ -13,7 +13,6 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
     }
 
     const listInBoard = boardById.lists.find(
-
       (list) => list._id.toString() === listId
     );
 
@@ -33,7 +32,7 @@ router.post("/board/:boardId/lists/:listId", async (req, res, next) => {
 
     list.cards.push({
       _id: newCard._id,
-      title: newCard.title
+      title: newCard.title,
     });
 
     await list.save();
@@ -65,14 +64,12 @@ router.get("/board/:boardId/lists/:listId", async (req, res) => {
 
     //This is what I changed  just commented this out Ben-4/8
     // const list = await List.findById(listId).populate("cards");
-    
 
     // if (!list) {
     //   return res.status(404).send({ error: "List not found" });
     // }
 
-
-    res.status(200).send({cards: listInBoard.cards});
+    res.status(200).send({ cards: listInBoard.cards });
   } catch (err) {
     console.log(err);
     res.status(500).send({ error: "error" });
@@ -92,10 +89,9 @@ router.patch(
       if (!board) {
         return res.status(404).send({ error: "Board not found" });
       }
-//OLD BEFORE NEST FIX
+      //OLD BEFORE NEST FIX
       // const list = await List.findOne({ _id: listId, "cards._id": cardId });
-      const list = await List.findById(listId)
-
+      const list = await List.findById(listId);
 
       if (!list) {
         return res.status(404).send({ error: "Card not found in the list" });
@@ -139,9 +135,7 @@ router.patch("/lists/:listId/cards", async (req, res, next) => {
 
     await list.save();
 
-    res
-      .status(200)
-      .send({message: "Card order updated", cards: list.cards})
+    res.status(200).send({ message: "Card order updated", cards: list.cards });
   } catch (err) {
     console.log(err);
     res.status(500).send({ error: "Server Error" });
@@ -195,45 +189,34 @@ router.delete(
 );
 
 //Post Description
-router.post("/board/:boardId/lists/:listId/description", async (req, res, next) => {
-  try {
-    const { boardId, listId } = req.params;
-    const boardById = await Board.findById(boardId);
+router.patch("/board/:boardId/lists/:listId/cards/:cardId/description",
+  async (req, res, next) => {
+    try {
+      const { boardId, listId, cardId } = req.params;
+      const { description } = req.body;
 
-    if (!boardById) {
-      return res.status(404).send({ error: "Board not found" });
+      const board = await Board.findById(boardId);
+
+      if (!boardById) {
+        return res.status(404).send({ error: "Board not found" });
+      }
+
+      const list = board.lists.find((list) => list._id.toString() === listId);
+      if (!list)
+        return res.status(404).send({ error: "List not found in the board" });
+
+      const card = list.cards.find((card) => card._id.toString() === cardId);
+      if (!card)
+        return res.status(404).send({ error: "Card not found in the list" });
+
+      card.description = description;
+      await board.save();
+      res.status(200).send(card);
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ error: "error" });
     }
-
-    const listInBoard = boardById.lists.find(
-
-      (list) => list._id.toString() === listId
-    );
-
-    if (!listInBoard) {
-      return res.status(404).send({ error: "List not found in the board" });
-    }
-
-    const list = await List.findById(listId);
-
-    if (!list) {
-      return res.status(404).send({ error: "List not found" });
-    }
-
-    const postedCard = req.body;
-    const newCard = new Card(postedCard);
-    await newCard.save();
-
-    list.cards.push({
-      _id: newCard._id,
-      description: newCard.description
-    });
-
-    await list.save();
-    res.status(201).send(newCard);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send({ error: "error" });
   }
-});
+);
 
 module.exports = router;

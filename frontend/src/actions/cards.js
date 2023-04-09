@@ -111,22 +111,17 @@ export const fetchComments = (boardId, listId, cardId) => async (dispatch) => {
 
 //POST DESCRIPTION
 export const postDescription =
-  (cardDescription, listId, boardId) => async (dispatch) => {
+  (cardId, cardDescription, listId, boardId) => async (dispatch) => {
     try {
-      const response = await axios.post(
-        useProxy(`/board/${listId}/cards/${listId}/description`),
-        { description: cardDescription, listId, boardId }
+      const response = await axios.patch(
+        useProxy(`/board/${boardId}/lists/${listId}/cards/${cardId}/description`),
+        { description: cardDescription }
       );
 
         const card = response.data;
 
         dispatch({ type: POST_DESCRIPTION, payload: { card, listId }});
-
-        const cardResponse = await axios.get(useProxy(`/board/${boardId}/lists/${listId}/cards`));
-
-        const cards = cardResponse.data;
-
-        dispatch({type: FETCH_CARDS, payload: {cards, listId}});
+        
     } catch (error) {
       console.error("Error posting Description", error);
     }

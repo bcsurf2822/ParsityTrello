@@ -16,14 +16,15 @@ const cardsReducer = (state = initialState, action) => {
           action.payload.card,
         ],
       };
-    case POST_DESCRIPTION:
-      return {
-        ...state,
-        [action.payload.listId]: [
-          ...(state[action.payload.listId] || []),
-          action.payload.card,
-        ],
-      }
+      case POST_DESCRIPTION:
+        return {
+          ...state,
+          [action.payload.listId]: (state[action.payload.listId] || []).map((card) =>
+            card._id === action.payload.card._id
+              ? { ...card, description: action.payload.card.description }
+              : card
+          ),
+        };
     case CLEAR_CARDS:
       return initialState;
     default:
