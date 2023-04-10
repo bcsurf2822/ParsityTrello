@@ -2,16 +2,18 @@ import { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
-import TrashSvg from "../public/trash.svg";
 import Avatar from "../public/Avatar.png";
 import { useParams } from "react-router-dom";
 import CommentComponent from "./commentComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { postComment, postLabel } from "../actions/cards";
+import { postComment, postLabel, updateTitle } from "../actions/cards";
 import { postDescription } from "../actions/cards";
 import { deleteCards } from "../actions/cards";
 
 const CardComponent = ({ card, index, listId }) => {
+  const { id } = useParams();
+  const boardId = id;
+
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
@@ -25,18 +27,32 @@ const CardComponent = ({ card, index, listId }) => {
   const [labelModal, setLabelModal] = useState(false);
   const openLabelModal = () => setLabelModal(true);
   const closeLabelModal = () => setLabelModal(false);
+  const presetColors = [
+    "bg-green-400",
+    "bg-yellow-300",
+    "bg-pink-400",
+    "bg-red-400",
+    "bg-blue-400",
+  ];
 
+  // set color
+  const [selectedColor, setSelectedColor] = useState("");
+
+  const handleColorClick = (color) => {
+    setSelectedColor(color);
+  };
+
+  // set label
   const [label, setLabel] = useState();
 
   const submitLabel = () => {
-    dispatch(postLabel(listId, cardId, label))
+    dispatch(postLabel(listId, cardId, label, selectedColor));
     setLabel("");
-  }
+  };
 
-  // Get userId and use that to postComment
+  // handle COMMENTS
   const user = useSelector((state) => state.authentication);
 
-  // state for adding new comments
   const [comment, setComment] = useState();
   const userId = user.id;
   const cardId = card._id;
@@ -49,7 +65,7 @@ const CardComponent = ({ card, index, listId }) => {
     setComment("");
   };
 
-  // state for description, handling description change, submiting description
+  // handle DESCRIPTION
   const [description, setDescription] = useState({
     description: card.description || "Add a detailed description...",
   });
@@ -62,9 +78,19 @@ const CardComponent = ({ card, index, listId }) => {
     dispatch(postDescription(listId, cardId, description));
   };
 
+  // handle TITLE
+  const [title, setTitle] = useState(card.title);
+
+  const handleTitleChange = (e) => {
+    const newTitle = e.target.value;
+    setTitle(newTitle);
+    dispatch(updateTitle(listId, cardId, newTitle));
+  };
+
+  // DELETE card
   const handleDeleteCard = () => {
     dispatch(deleteCards(cardId, listId, boardId));
-  }
+  };
 
   return (
     <div>
@@ -79,12 +105,7 @@ const CardComponent = ({ card, index, listId }) => {
               onClick={cardDetail}
             >
               <div className="py-2 pl-2">
-                <p>{card.title}</p><img
-                      src={TrashSvg}
-                      alt="trashsvg"
-                      className="object-contain w-6 mr-2 cursor-pointer"
-                      onClick={handleDeleteCard}
-                    />
+                <p>{title}</p>
               </div>
             </div>
             <div className="">
@@ -95,7 +116,11 @@ const CardComponent = ({ card, index, listId }) => {
               >
                 <div className="mx-4 my-2">
                   <div className="flex justify-between">
-                    <p className="mt-4 font-semibold">{card.title}</p>
+                    <input
+                      value={title}
+                      onChange={handleTitleChange}
+                      className="mt-4 w-full"
+                    />
                     <img
                       src={xSvg}
                       alt="xsvg"
@@ -169,7 +194,7 @@ const CardComponent = ({ card, index, listId }) => {
                       <label className="block mt-4">
                         <span className="text-sm mb-2">Labels</span>
                         {card.label.map((label) => (
-                          <div className="bg-gray-200 ${} rounded-md px-2 py-2 text-sm my-2">
+                          <div className={`bg-gray-200 rounded-md px-2 py-2 text-sm my-2 ${label.color}`}>
                             {label.text}
                           </div>
                         ))}
@@ -205,6 +230,22 @@ const CardComponent = ({ card, index, listId }) => {
                                   onChange={(e) => setLabel(e.target.value)}
                                 ></input>
                               </label>
+                              <div className="mt-4">
+                                <span className="text-sm">Color</span>
+                                <div className="flex mt-2">
+                                  {presetColors.map((color) => (
+                                    <button
+                                      key={color}
+                                      className={`h-6 w-6 rounded-full mx-2 border-black border ${color} ${
+                                        selectedColor === color
+                                          ? "border-2"
+                                          : ""
+                                      }`}
+                                      onClick={() => handleColorClick(color)}
+                                    />
+                                  ))}
+                                </div>
+                              </div>
                               <div className="flex items-center justify-center">
                                 <button
                                   className="text-white bg-blue-700 hover:bg-blue-800 rounded-lg text-sm px-5 py-2.5 mr-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800 cursor-pointer font-semibold mt-6 mb-4"
@@ -219,11 +260,11 @@ const CardComponent = ({ card, index, listId }) => {
                       </label>
                       <label className="block mt-4">
                         <span className="text-sm">Actions</span>
-                        <div className="bg-gray-200 rounded-md px-2 py-2 text-sm my-2">
-                          Move
-                        </div>
-                        <div className="bg-gray-200 rounded-md px-2 py-2 text-sm my-2">
-                          Archive
+                        <div
+                          className="bg-gray-200 rounded-md px-2 py-2 text-sm my-2 cursor-pointer hover:bg-gray-300 font-semibold"
+                          onClick={handleDeleteCard}
+                        >
+                          Delete
                         </div>
                       </label>
                     </div>

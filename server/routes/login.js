@@ -19,7 +19,6 @@ const userToken = function (user) {
 const requireLogin = passport.authenticate("login", { session: false });
 
 router.post("/login", requireLogin, function (req, res, next) {
-  console.log(req.user);
   const token = userToken(req.user);
   res.send({
     username: req.user.user,
@@ -32,7 +31,7 @@ const requireAuth = passport.authenticate("jwt", { session: false });
 
 router.get("/authorized", requireAuth, function (req, res, next) {
   const token = userToken(req.user);
-  console.log("NewJWT", token);
+  //console.log("NewJWT", token);
   const authUser = {
     username: req.user.username,
     token: token,
