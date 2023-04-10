@@ -73,13 +73,10 @@ export const updateLists = (lists, boardId) => async (dispatch) => {
 //DELETE LIST
 export const deleteList = (listId, boardId) => async (dispatch) => {
   try {
-    const response = await axios.delete(
-      useProxy(`/board/${boardId}/lists/${listId}`)
+    await axios.delete(
+      useProxy(`/boards/${boardId}/lists/${listId}`)
     );
-
-    const list = response.data
-
-    dispatch({ type: DELETE_LIST, payload: list });
+    dispatch({ type: DELETE_LIST, payload: listId });
   } catch (error) {
     console.error(error);
   }

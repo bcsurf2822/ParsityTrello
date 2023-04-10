@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PlusSvg from "../public/plus.svg";
+import TrashSvg from "../public/trash.svg";
 import CardComponent from "./cardComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
@@ -7,6 +8,7 @@ import { fetchCards, postCard } from "../actions/cards";
 import { Droppable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
+import { deleteList } from "../actions/lists";
 
 const ListComponent = ({ list }) => {
   const { id } = useParams();
@@ -38,11 +40,10 @@ const ListComponent = ({ list }) => {
     closeModal();
   };
 
-  // const listDelete = () => {
-  //   dispatch(deleteList(listId, id));
-  //   console.log("deleteLIst");
-
-  // }
+  const listDelete = () => {
+    dispatch(deleteList(listId, boardId));
+    console.log("deleteLIst");
+  };
   // <button onClick={listDelete}>Delete</button>
 
   return (
@@ -50,14 +51,26 @@ const ListComponent = ({ list }) => {
       <div className="flex flex-row">
         <div className="bg-gray-100 rounded-lg w-80 flex flex-col">
           <div className="flex justify-between items-center mx-4 mb-4 mt-4">
-            <p className="font-semibold">{list.title}                 </p>
+            <p className="font-semibold">{list.title} </p>
+            <img
+              src={TrashSvg}
+              alt="trashsvg"
+              className="object-contain w-6 mr-2 cursor-pointer"
+              onClick={listDelete}
+            />
           </div>
           <Droppable droppableId={listId} key={listId} type="card">
             {(provided) => (
               <div ref={provided.innerRef} {...provided.droppableProps}>
                 {cardArray &&
                   cardArray.map((card, index) => (
-                    <CardComponent key={card._id} card={card} index={index} listId={listId} boardId={boardId}/>
+                    <CardComponent
+                      key={card._id}
+                      card={card}
+                      index={index}
+                      listId={listId}
+                      boardId={boardId}
+                    />
                   ))}
                 {provided.placeholder}
               </div>
