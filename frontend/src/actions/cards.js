@@ -140,3 +140,18 @@ export const postLabel = (listId, cardId, label, color) => async () =>
   }
 }
 
+// UPDATE title in card
+export const updateTitle = (listId, cardId, title) => async () => {
+  try {
+    const response = await axios.patch(
+      useProxy(`/lists/${listId}/cards/${cardId}/title`), {title}
+    )
+
+    if (response.status === 201) {
+    } else {
+      console.error("Error posting title:", response);
+    }
+  } catch (error) {
+    console.error("Error posting title:", error);
+  }
+}
