@@ -34,6 +34,10 @@ const ListSchema = new Schema({
 
 const BoardsSchema = new Schema({
   title: String,
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  },
   lists: [
     {
       _id: { type: Schema.Types.ObjectId, ref: "List" },
@@ -45,14 +49,20 @@ const BoardsSchema = new Schema({
 
 // This is for the user information
 const UserSchema = new Schema({
- username: String,
- password: String,
- comments: [
-   {
-     type: Schema.Types.ObjectId,
-     ref: 'Comment',
-   },
- ],
+  username: String,
+  password: String,
+  comments: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Comment',
+    },
+  ],
+  boards: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'Board',
+    },
+  ],
 });
 
 module.exports = {

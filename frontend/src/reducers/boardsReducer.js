@@ -6,6 +6,7 @@ const initialState = {
 };
 
 const boardsReducer = (state = initialState, action) => {
+  console.log("Boards Reducer Payload:", action.payload)
   switch (action.type) {
     case FETCH_BOARDS:
       return { ...state, boards: action.payload };

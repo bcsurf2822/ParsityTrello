@@ -34,6 +34,23 @@ router.get("/boards", async (req, res, next) => {
   }
 });
 
+// Get board by userId
+router.get("/user/:userId/boards", async (req, res, next) => {
+  try {
+    const userId = req.params.userId;
+    console.log("Backend userId:", userId);
+    const user = await User.findById(userId).populate('boards');
+    if (user) {
+      res.status(200).send({ boards: user.boards });
+    } else {
+      res.status(404).send({ message: "User not found" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Error occurred fetching boards for user" });
+  }
+});
+
 // Update Boards
 
 // Delete Boards

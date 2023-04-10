@@ -10,18 +10,19 @@ import Board from "./components/boardscreen";
 import Protected from "./components/ProtectedRoutes";
 import Nothing from "./components/NotFound";
 
+
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
     <BrowserRouter>
-    <Routes>
-            <Route exact path="/login" index Component={Login} />
-            <Route path="/" element={<Protected />}>
-              <Route  path="/home" Component={Home} />
-              <Route path="/board/:id" Component={Board}/>
-            </Route>
-            <Route path="*" Component={Nothing} />
-          </Routes>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Protected />}>
+          <Route path="/home" element={<Home />} />
+          <Route path="/board/:id" element={<Board />} />
+        </Route>
+        <Route path="*" element={<Nothing />} />
+      </Routes>
     </BrowserRouter>
   </Provider>
 );

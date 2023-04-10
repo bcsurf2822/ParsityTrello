@@ -57,6 +57,9 @@ const CardComponent = ({ card, index, listId }) => {
   const userId = user.id;
   const cardId = card._id;
 
+  const {id} = useParams();
+  const boardId = id;
+
   const addComment = () => {
     dispatch(postComment(listId, cardId, comment, userId));
     setComment("");

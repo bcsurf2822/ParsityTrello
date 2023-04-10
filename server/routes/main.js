@@ -23,9 +23,17 @@ router.get("/generate-boards", async (req, res, next) => {
     }
 
     // Generate boards, lists, cards, and comments
-    for (let i = 0; i < 1; i++) {
+    for (let i = 0; i < 4; i++) {
       let board = new Board();
       board.title = faker.random.arrayElement(boardTitles);
+    
+      // Set board.user to a random user from the generated users
+      const randomUser = faker.random.arrayElement(users);
+      board.user = randomUser._id;
+    
+      // Add the board to the user's boards array
+      randomUser.boards.push(board._id);
+      await randomUser.save();
 
       // Create lists and add them to the board
       for (let j = 0; j < 2; j++) {

@@ -20,11 +20,23 @@ export const postBoards = (title) => async (dispatch) => {
   }
 };
 
-export const fetchBoards = () => async (dispatch) => {
-  try {
-    const response = await axios.get(useProxy("/boards"));
+// export const fetchBoards = () => async (dispatch) => {
+//   try {
+//     const response = await axios.get(useProxy("/boards"));
 
-    dispatch({ type: FETCH_BOARDS, payload: response.data.results });
+//     dispatch({ type: FETCH_BOARDS, payload: response.data.results });
+//   } catch (error) {
+//     console.error("Error fetching boards:", error);
+//   }
+// };
+
+// New fetch boards by userId
+export const fetchBoards = (userId) => async (dispatch) => {
+  console.log("fetchBoards userId:", userId);
+  try {
+    const response = await axios.get(useProxy(`/user/${userId}/boards`));
+
+    dispatch({ type: FETCH_BOARDS, payload: response.data.boards });
   } catch (error) {
     console.error("Error fetching boards:", error);
   }
