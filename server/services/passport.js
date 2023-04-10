@@ -16,17 +16,26 @@ const jwtOptions = {
 
 passport.use(
   "jwt",
-  new JwtStrategy(jwtOptions, function (payload, done) {
-    return done(null, { user: user.username , _id: user._id });
+  new JwtStrategy(jwtOptions, async function (payload, done) {
+    try {
+      const user = await User.findById(payload.sub);
+      if (user) {
+        return done(null, { user: user.username, _id: user._id });
+      } else {
+        return done(null, false);
+      }
+    } catch (error) {
+      return done(error);
+    }
   })
 );
+
 //passport use local strategy with hardcoded username and password
 passport.use(
   "login",
   new LocalStrategy(async function (username, password, done) {
     try {
       const user = await User.findOne({ username, password });
-      //console.log("user", user);
       if (user.username === username && user.password === password) {
         return done(null, { user: user.username , _id: user._id });
       } else {

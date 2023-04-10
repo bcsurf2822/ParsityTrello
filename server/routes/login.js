@@ -7,7 +7,7 @@ const { User } = require("../models/models");
 const userToken = function (user) {
   return jwt.encode(
     {
-      sub: user.myID,
+      sub: user._id,
       iat: Math.round(Date.now() / 1000),
       exp: Math.round(Date.now() / 1000 + 5 * 60 * 60),
     },
@@ -19,13 +19,11 @@ const userToken = function (user) {
 const requireLogin = passport.authenticate("login", { session: false });
 
 router.post("/login", requireLogin, function (req, res, next) {
-  //console.log("request", req);
   console.log(req.user);
   const token = userToken(req.user);
-  //console.log("JWT", token);
   res.send({
-    username: req.user,
-    id: req._id,
+    username: req.user.user,
+    id: req.user._id,
     token: token,
   });
 });

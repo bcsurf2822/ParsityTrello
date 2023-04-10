@@ -11,6 +11,8 @@ import { fetchBoards, postBoards, deleteBoard } from "../actions/boards";
 Modal.setAppElement("#root");
 
 const Home = () => {
+  const userId = localStorage.getItem("id")
+  console.log("Home userId:", userId);
   const [modal, toggleModal] = useState(false);
   const [newBoard, setNewBoard] = useState("");
 
@@ -37,8 +39,8 @@ const Home = () => {
   };
 
   useEffect(() => {
-    dispatch(fetchBoards());
-  }, [dispatch]);
+    dispatch(fetchBoards(userId));
+  }, [dispatch, userId]);
 
   return (
     <div>

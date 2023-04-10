@@ -13,11 +13,12 @@ export const logIn = (formProps, callback) => (dispatch) => {
   axios
     .post(useProxy("/login"), formProps)
     .then(function (response) {
-      console.log(response);
+      // console.log("logIn:", response);
       dispatch({ type: AUTH_USER, payload: response.data });
       localStorage.setItem("token", response.data.token);
-      localStorage.setItem("id", response.data.username._id);
-      callback();
+      localStorage.setItem("id", response.data.id);
+      callback(response.data.id);
+      console.log("After logIn:", response.data.id);
     })
     .catch(function () {
       dispatch({
@@ -40,7 +41,6 @@ export const fetchAuthorized = () => (dispatch) => {
     .then(function (response) {
       dispatch({ type: AUTH_USER, payload: response.data });
       localStorage.setItem("token", response.data.token);
-      console.log("Get Auth User", response);
     })
     .catch(function (error) {
       console.log(error);

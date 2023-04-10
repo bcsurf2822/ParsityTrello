@@ -4,8 +4,10 @@ import { useEffect } from "react";
 
 const Protected = () => {
   const authorized = useSelector(state => state.authentication.authorized);
+  const userId = useSelector((state) => state.authentication.id);
   const location = useLocation();
   const navigate = useNavigate();
+  console.log("Protected Data:", userId);
 
   useEffect(() => {
     if (authorized) {
@@ -20,7 +22,7 @@ const Protected = () => {
       state = {{from: location.pathname}} />
     );
   } 
-  return <Outlet />;
+  return <Outlet userId={userId} />;
 };
  
 export default Protected;
