@@ -142,7 +142,7 @@ router.patch("/lists/:listId/cards", async (req, res, next) => {
 
 // Delete cards
 router.delete(
-  "/boards/:boardId/lists/:listId/cards/:cardId/delete",
+  "/board/:boardId/lists/:listId/cards/:cardId",
   async (req, res, next) => {
     try {
       const { boardId, listId, cardId } = req.params;
