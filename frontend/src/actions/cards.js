@@ -5,6 +5,7 @@ import {
   POST_CARD,
   FETCH_COMMENTS,
   POST_COMMENT,
+  DELETE_CARD,
   CLEAR_CARDS,
 } from "./types";
 
@@ -57,6 +58,17 @@ export const updateCards = (listId, cards) => async (dispatch) => {
     });
   } catch (error) {
     console.error("Error updating cards", error);
+  }
+};
+
+//DELETE CARD
+export const deleteCards = (cardId, listId, boardId) => async (dispatch) => {
+  try {
+    await axios.delete(useProxy(`/board/${boardId}/lists/${listId}/cards/${cardId}`))
+
+    dispatch({ type: DELETE_CARD, payload: {cardId, listId}});
+  } catch (error) {
+    console.error("Error Deleting Card", error);
   }
 };
 

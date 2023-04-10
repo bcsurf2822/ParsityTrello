@@ -2,10 +2,13 @@ import { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import Modal from "react-modal";
 import xSvg from "../public/x-mark.svg";
+import TrashSvg from "../public/trash.svg";
 import Avatar from "../public/Avatar.png";
+import { useParams } from "react-router-dom";
 import CommentComponent from "./commentComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { postComment } from "../actions/cards";
+import { deleteCards } from "../actions/cards";
 
 const CardComponent = ({ card, index, listId }) => {
   const [modal, toggleModal] = useState(false);
@@ -21,6 +24,9 @@ const CardComponent = ({ card, index, listId }) => {
   const userId = user.id;
   const cardId = card._id;
 
+  const {id} = useParams();
+  const boardId = id;
+
   const cardDetail = () => {
     openModal();
   };
@@ -28,6 +34,10 @@ const CardComponent = ({ card, index, listId }) => {
   const addComment = () => {
     dispatch(postComment(listId, cardId, comment, userId))
     setComment("");
+  }
+
+  const handleDeleteCard = () => {
+    dispatch(deleteCards(cardId, listId, boardId));
   }
 
   return (
@@ -43,7 +53,12 @@ const CardComponent = ({ card, index, listId }) => {
               onClick={cardDetail}
             >
               <div className="py-2 pl-2">
-                <p>{card.title}</p>
+                <p>{card.title}</p><img
+                      src={TrashSvg}
+                      alt="trashsvg"
+                      className="object-contain w-6 mr-2 cursor-pointer"
+                      onClick={handleDeleteCard}
+                    />
               </div>
             </div>
             <div className="">
