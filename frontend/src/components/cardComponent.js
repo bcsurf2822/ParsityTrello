@@ -44,10 +44,7 @@ const CardComponent = ({ card, index, listId }) => {
   const {id} = useParams();
   const boardId = id;
 
-  const cardDetail = () => {
-    openModal();
-  };
-  
+
 
   const addComment = () => {
     dispatch(postComment(listId, cardId, comment, userId));
