@@ -23,7 +23,7 @@ router.get("/generate-boards", async (req, res, next) => {
     }
 
     // Generate boards, lists, cards, and comments
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < 1; i++) {
       let board = new Board();
       board.title = faker.random.arrayElement(boardTitles);
 
@@ -39,7 +39,7 @@ router.get("/generate-boards", async (req, res, next) => {
           card.description = faker.lorem.paragraph();
 
           // Create comments and add them to the card
-          for (let l = 0; l < 2; l++) {
+          for (let l = 0; l < 1; l++) {
             let comment = new Comment();
             comment.comment = faker.lorem.sentence();
           

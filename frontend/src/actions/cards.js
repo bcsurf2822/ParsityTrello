@@ -105,3 +105,38 @@ export const fetchComments = (boardId, listId, cardId) => async (dispatch) => {
     console.error("Error fetching comments:", error);
   }
 };
+
+// POST description in card
+export const postDescription = (listId, cardId, description) => async () => 
+{
+  try {
+    const response = await axios.post(
+      useProxy(`/lists/${listId}/cards/${cardId}/description`), {description}
+    )
+
+    if (response.status === 201) {
+    } else {
+      console.error("Error posting description:", response);
+    }
+  } catch (error) {
+    console.error("Error posting description:", error);
+  }
+}
+
+// POST label in card
+export const postLabel = (listId, cardId, label, color) => async () => 
+{
+  try {
+    const response = await axios.post(
+      useProxy(`/lists/${listId}/cards/${cardId}/label`), {label, color}
+    )
+
+    if (response.status === 201) {
+    } else {
+      console.error("Error posting description:", response);
+    }
+  } catch (error) {
+    console.error("Error posting description:", error);
+  }
+}
+
