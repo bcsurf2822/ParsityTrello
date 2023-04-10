@@ -186,4 +186,80 @@ router.delete(
   }
 );
 
+// TODO: post description in card
+router.post(
+  "/lists/:listId/cards/:cardId/description",
+  async (req, res, next) => {
+    try {
+      const { listId, cardId } = req.params;
+      const { description } = req.body;
+
+      const list = await List.findOne({ _id: listId, "cards._id": cardId });
+
+      if (!list) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      const cardIndex = list.cards.findIndex(
+        (card) => card._id.toString() === cardId
+      );
+
+      if (cardIndex === -1) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      // Post description to card
+      list.cards[cardIndex].description = description.description;
+
+      // Save
+      await list.save();
+
+      res.status(201).send({ message: "Description added"});
+    } catch (err) {
+      res.status(500).send({ error: "Server Error" });
+    }
+  } 
+);
+
+// TODO: post label in card
+router.post(
+  "/lists/:listId/cards/:cardId/label",
+  async (req, res, next) => {
+    try {
+      const { listId, cardId } = req.params;
+      const { label, color } = req.body;
+
+      const list = await List.findOne({ _id: listId, "cards._id": cardId });
+
+      if (!list) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      const cardIndex = list.cards.findIndex(
+        (card) => card._id.toString() === cardId
+      );
+
+      if (cardIndex === -1) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      // Create a new label
+      const newLabel = {
+        text: label,
+        color: color,
+      };
+
+      // Add the comment to the card
+      list.cards[cardIndex].label.unshift(newLabel);
+      await list.save();
+
+      res.status(201).send({ message: "Label added" });
+    } catch (err) {
+      console.log(err);
+      res.status(500).send({ error: "Server Error" });
+    }
+  }
+);
+
+
 module.exports = router;
