@@ -261,5 +261,41 @@ router.post(
   }
 );
 
+// `/lists/${listId}/cards/${cardId}/title`
+// TODO: PATCH title in card
+router.patch(
+  "/lists/:listId/cards/:cardId/title",
+  async (req, res, next) => {
+    try {
+      const { listId, cardId } = req.params;
+      const { title } = req.body;
+
+      const list = await List.findOne({ _id: listId, "cards._id": cardId });
+
+      if (!list) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      const cardIndex = list.cards.findIndex(
+        (card) => card._id.toString() === cardId
+      );
+
+      if (cardIndex === -1) {
+        return res.status(404).send({ error: "Card not found in the list" });
+      }
+
+      // Post description to card
+      list.cards[cardIndex].title = title;
+
+      // Save
+      await list.save();
+
+      res.status(201).send({ message: "Description added"});
+    } catch (err) {
+      res.status(500).send({ error: "Server Error" });
+    }
+  } 
+)
+
 
 module.exports = router;
