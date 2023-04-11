@@ -12,7 +12,6 @@ Modal.setAppElement("#root");
 
 const Home = () => {
   const userId = localStorage.getItem("id")
-  console.log("Home userId:", userId);
   const [modal, toggleModal] = useState(false);
   const [newBoard, setNewBoard] = useState("");
 
