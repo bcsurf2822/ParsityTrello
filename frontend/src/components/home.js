@@ -27,7 +27,7 @@ const Home = () => {
   };
 
   const addBoard = () => {
-    dispatch(postBoards(newBoard));
+    dispatch(postBoards(newBoard, userId));
     setNewBoard("");
     closeModal();
     console.log("dispatch sent!");

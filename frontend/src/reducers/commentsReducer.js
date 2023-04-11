@@ -6,7 +6,7 @@ const commentsReducer = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_COMMENTS:
       return { ...state, [action.payload.cardId]: action.payload.comments };
-    case POST_COMMENT: // Add this case
+    case POST_COMMENT:
       return {
         ...state,
         [action.payload.cardId]: [
