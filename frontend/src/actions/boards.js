@@ -10,25 +10,15 @@ const useProxy = function (route) {
   return `http://localhost:8000${route}`;
 };
 
-export const postBoards = (title) => async (dispatch) => {
+export const postBoards = (title, userId) => async (dispatch) => {
   try {
-    const response = await axios.post(useProxy("/boards"), {title});
+    const response = await axios.post(useProxy("/boards"), { title, userId });
 
-    dispatch({type: POST_BOARDS, payload: response.data});
+    dispatch({ type: POST_BOARDS, payload: response.data });
   } catch (error) {
     console.error("Unable to Post", error);
   }
 };
-
-// export const fetchBoards = () => async (dispatch) => {
-//   try {
-//     const response = await axios.get(useProxy("/boards"));
-
-//     dispatch({ type: FETCH_BOARDS, payload: response.data.results });
-//   } catch (error) {
-//     console.error("Error fetching boards:", error);
-//   }
-// };
 
 // New fetch boards by userId
 export const fetchBoards = (userId) => async (dispatch) => {

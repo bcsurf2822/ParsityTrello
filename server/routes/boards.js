@@ -6,10 +6,14 @@ const { Label, Card, Board, User, List, Comment } = require("../models/models");
 router.post("/boards", async (req, res, next) => {
   try {
     console.log("body", req.body);
-    const postedBoard = req.body;
-    const newBoard = new Board(postedBoard);
-    newBoard.save();
-    console.log("New Board", newBoard);
+    const { title, userId } = req.body;
+    const newBoard = new Board({ title, user: userId });
+    await newBoard.save();
+
+    const user = await User.findById(userId);
+    user.boards.push(newBoard);
+    await user.save();
+
     res.status(201).send(newBoard);
   } catch (err) {
     console.log(err);

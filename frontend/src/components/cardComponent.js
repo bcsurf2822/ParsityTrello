@@ -11,9 +11,6 @@ import { postDescription } from "../actions/cards";
 import { deleteCards } from "../actions/cards";
 
 const CardComponent = ({ card, index, listId }) => {
-  const { id } = useParams();
-  const boardId = id;
-
   const [modal, toggleModal] = useState(false);
   const openModal = () => toggleModal(true);
   const closeModal = () => toggleModal(false);
@@ -43,7 +40,7 @@ const CardComponent = ({ card, index, listId }) => {
   };
 
   // set label
-  const [label, setLabel] = useState();
+  const [label, setLabel] = useState("");
 
   const submitLabel = () => {
     dispatch(postLabel(listId, cardId, label, selectedColor));
