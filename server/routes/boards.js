@@ -42,7 +42,6 @@ router.get("/boards", async (req, res, next) => {
 router.get("/user/:userId/boards", async (req, res, next) => {
   try {
     const userId = req.params.userId;
-    console.log("Backend userId:", userId);
     const user = await User.findById(userId).populate('boards');
     if (user) {
       res.status(200).send({ boards: user.boards });
@@ -61,7 +60,6 @@ router.get("/user/:userId/boards", async (req, res, next) => {
 router.delete("/boards/:board", async (req, res, next) => {
   try {
     const boardById = await Board.findByIdAndRemove(req.params.board);
-    console.log(boardById);
     if (!boardById) {
       res.status(404).send({ error: "Invalid ID" });
     }

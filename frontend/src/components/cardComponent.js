@@ -191,7 +191,7 @@ const CardComponent = ({ card, index, listId }) => {
                       <label className="block mt-4">
                         <span className="text-sm mb-2">Labels</span>
                         {card.label.map((label) => (
-                          <div className={`bg-gray-200 rounded-md px-2 py-2 text-sm my-2 ${label.color}`}>
+                          <div className={`rounded-md px-2 py-2 text-sm my-2 ${label.color}`}>
                             {label.text}
                           </div>
                         ))}

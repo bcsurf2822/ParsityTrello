@@ -22,7 +22,6 @@ export const postBoards = (title, userId) => async (dispatch) => {
 
 // New fetch boards by userId
 export const fetchBoards = (userId) => async (dispatch) => {
-  console.log("fetchBoards userId:", userId);
   try {
     const response = await axios.get(useProxy(`/user/${userId}/boards`));
 
@@ -36,7 +35,6 @@ export const deleteBoard = (id) => async (dispatch) => {
   try {
     const response = await axios.delete(useProxy(`/boards/${id}`))
 
-    console.log(response);
     dispatch({type: DELETE_BOARDS, payload: id})
   } catch (error) {
     console.error("Unable to delete board");

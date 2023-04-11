@@ -9,12 +9,9 @@ const listsReducer = (state = initialState, action) => {
     case FETCH_LIST:
       return {...state, list: action.payload};
     case UPDATE_LISTS:
-      console.log("Reducer - Updating lists:", action.payload.lists);
       return { ...state, list: action.payload.lists };
     case POST_LIST:
       return {...state, list: [...state.list, action.payload]};
-    // case DELETE_LIST:
-    //   return {...state, list: state.list.filter((list) => list._id !== action.payload)};
     case DELETE_LIST:
       return {...state, list: state.list.filter((list) => list._id !== action.payload._id)};
     case CLEAR_LIST:

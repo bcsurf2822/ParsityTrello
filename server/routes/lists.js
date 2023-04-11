@@ -20,9 +20,6 @@ router.post("/board/:boardId/lists", async (req, res, next) => {
       _id: newList._id,
       title: newList.title,
     });
-    console.log("request", req.body);
-    console.log("new List", newList);
-    console.log("board", boardId);
 
     await boardById.save();
     res.status(201).send(newList);
@@ -83,7 +80,6 @@ router.delete("/boards/:boardId/lists/:listId", async (req, res, next) => {
     const listIndex = boardById.lists.findIndex(
       (list) => list._id.toString() === listId
     );
-    console.log("ListIndex", listIndex)
 
     if (listIndex === -1) {
       return res.status(404).send({ error: "List not found in the board" });

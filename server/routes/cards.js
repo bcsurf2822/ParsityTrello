@@ -246,7 +246,7 @@ router.post(
       // Create a new label
       const newLabel = {
         text: label,
-        color: color,
+        color: color || "bg-gray-200",
       };
 
       // Add the comment to the card
